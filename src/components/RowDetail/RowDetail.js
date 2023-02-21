@@ -1,43 +1,127 @@
 /* eslint-disable prettier/prettier */
-import {View, Text} from 'react-native';
+/* eslint-disable react-native/no-inline-styles */
+import {View, Text, Linking} from 'react-native';
 import React from 'react';
 import stylesGeneral from '../../styles/General';
 import styles from './RowDetailCss';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import stylesStatus from '../../styles/Status';
 
 export default function RowDetail({
   title,
   text,
   styleDesc,
+  colorStatus,
   nameIcon,
+  nameIconFront,
+  colorIconFront,
   redirectName,
   navigation,
   noneBorderBottom,
+  eye,
+  showEye,
+  onTouchStartEye,
+  onTouchStart,
+  marginTop,
+  marginLeft,
+  urlLink,
+  bankMethod,
+  nameBank,
+  accountNumber,
+  accountName,
 }) {
+  // const toast = useToast();
+  const handlePress = async () => {
+    // const supported = await Linking.canOpenURL(urlLink);
+    // if (supported) {
+    //   await Linking.openURL(urlLink);
+    // } else {
+    //   toastShow(toast, "Don't know how to open URI: " + urlLink);
+    // }
+    await Linking.openURL(urlLink);
+  };
   return (
     <View
-      style={[
-        styles.info_detail_item,
-        stylesGeneral.flexRow,
-        noneBorderBottom && styles.borderBt0,
-      ]}
       onTouchStart={
-        redirectName ? () => navigation.navigate(redirectName) : () => {}
+        onTouchStart
+          ? onTouchStart
+          : redirectName
+          ? () => navigation.navigate(redirectName)
+          : () => {}
       }>
-      <Text style={[styles.info_detail_title, stylesGeneral.text_black]}>
-        {title}
-      </Text>
-      {text && (
+      <View
+        style={[
+          styles.info_detail_item,
+          stylesGeneral.flexRow,
+          noneBorderBottom && styles.borderBt0,
+          {
+            paddingBottom: !noneBorderBottom ? 10 : 0,
+            marginTop: marginTop,
+          },
+        ]}>
+        {nameIconFront && (
+          <FontAwesome5 name={nameIconFront} size={20} color={colorIconFront} />
+        )}
         <Text
-          style={[
-            styles.info_detail_desc,
-            stylesGeneral.text_black,
-            styleDesc,
-          ]}>
-          {text}
+          style={[styles.info_detail_title, {marginLeft: marginLeft}]}
+          onTouchStart={eye ? onTouchStartEye : () => {}}>
+          {title}{' '}
+          {eye && (
+            <FontAwesome5
+              name={showEye ? 'eye' : 'eye-slash'}
+              size={15}
+              color={'#000'}
+            />
+          )}
         </Text>
-      )}
-      {nameIcon && <FontAwesome5 name={nameIcon} size={12} />}
+        {text && (
+          <Text
+            style={[
+              styles.info_detail_desc,
+              stylesGeneral.text_black,
+              styleDesc,
+              stylesStatus[colorStatus],
+            ]}
+            onPress={urlLink ? handlePress : () => {}}>
+            {text}
+          </Text>
+        )}
+        {bankMethod && (
+          <View style={{flex: 1, marginLeft: 8}}>
+            <Text
+              style={[
+                styles.info_detail_desc,
+                stylesGeneral.text_black,
+                stylesGeneral.text_right,
+              ]}>
+              {nameBank}
+            </Text>
+            <Text
+              style={[
+                styles.info_detail_desc,
+                stylesGeneral.text_black,
+                stylesGeneral.text_right,
+              ]}>
+              {accountName}
+            </Text>
+            <Text
+              style={[
+                styles.info_detail_desc,
+                stylesGeneral.text_black,
+                stylesGeneral.text_right,
+              ]}>
+              {accountNumber}
+            </Text>
+          </View>
+        )}
+        {nameIcon && (
+          <FontAwesome5
+            name={nameIcon}
+            size={12}
+            style={{flex: 1, textAlign: 'right'}}
+          />
+        )}
+      </View>
     </View>
   );
 }

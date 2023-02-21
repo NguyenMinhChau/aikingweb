@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/react-in-jsx-scope */
 import {
@@ -6,42 +8,60 @@ import {
   Text,
   ImageBackground,
   TouchableOpacity,
-  Image,
   ScrollView,
   ActivityIndicator,
 } from 'react-native';
-import {FormInput} from '../../components';
+import {Footer, FormInput} from '../../components';
 import {useAppContext} from '../../utils';
-import {setFormValue} from '../../app/payloads/form';
+import {setFormValuePL} from '../../app/payloads/form';
 import styles from './FormCss';
 import stylesGeneral from '../../styles/General';
-import stylesStatus from '../../styles/Status';
+// import SvgUri from 'react-native-svg-uri';
+import {routers} from '../../routers/Routers';
+import {WHITE_COLOR} from '../../styles/colors';
+import {useEffect} from 'react';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+// import {SvgUri} from 'react-native-svg';
 
 const Form = ({
-  uriBgc = require('../../assets/images/bg-login01.png'),
-  uriLogo = require('../../assets/images/header-logo01.png'),
+  uriBgc = require('../../assets/images/bg-login.png'),
+  uriLogo = require('../../assets/Icons/logo.svg'),
   titleForm,
   textBtn,
   bolUsername,
   bolEmail,
+  bolPhone,
   bolPwd,
   bolOTP,
   refEmail,
+  refPhone,
   refPwd,
   refUsername,
   refOtp,
   children,
   onPress,
   isProcess,
+  navigation,
 }) => {
   const {state, dispatch} = useAppContext();
   const {
-    form: {username, email, password, otpCode},
+    form: {username, email, password, otpCode, phone},
     message: {error, success},
   } = state;
+  useEffect(() => {
+    dispatch(
+      setFormValuePL({
+        username: '',
+        email: '',
+        password: '',
+        otpCode: '',
+        phone: '',
+      }),
+    );
+  }, []);
   const handleChange = (name, value) => {
     dispatch(
-      setFormValue({
+      setFormValuePL({
         ...state.form,
         [name]: value,
       }),
@@ -61,86 +81,92 @@ const Form = ({
         }}
         showsVerticalScrollIndicator={false}>
         <View style={[styles.content]}>
-          <View style={[stylesGeneral.flexCenter, stylesGeneral.mb10]}>
-            <Image
-              style={[styles.image_form]}
+          <View
+            style={[styles.logoContainer]}
+            onTouchStart={() => {
+              navigation.navigate(routers.Home);
+            }}>
+            <FontAwesome5 name="hand-holding-usd" size={70} color={'white'} />
+            {/* <SvgUri
+              width="80"
+              height="80"
               source={uriLogo}
-              resizeMode="contain"
-            />
+              // uri="http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg"
+            /> */}
           </View>
-          <Text style={[styles.title_form, stylesGeneral.text_black]}>
-            {titleForm}
-          </Text>
-          {(error || success) && (
-            <View style={[styles.error_container, stylesGeneral.flexCenter]}>
-              <Text
-                style={[
-                  error ? stylesStatus.cancel : stylesStatus.complete,
-                  stylesGeneral.text_center,
-                ]}>
-                {error || success}
+          <View style={[styles.form_container]}>
+            {bolUsername && (
+              <FormInput
+                labelTransform="Họ và tên"
+                ref={refUsername}
+                onChangeText={value => handleChange('username', value)}
+                value={username}
+                nameSymbol="user"
+                colorSymbol="#fff"
+                isTransformFocus={username ? false : true}
+              />
+            )}
+            {bolPhone && (
+              <FormInput
+                labelTransform="Phone"
+                ref={refPhone}
+                onChangeText={value => handleChange('phone', value)}
+                value={phone}
+                nameSymbol="phone"
+                colorSymbol="#fff"
+                keyboardType="phone-pad"
+                isTransformFocus={phone ? false : true}
+              />
+            )}
+            {bolEmail && (
+              <FormInput
+                labelTransform="Email"
+                ref={refEmail}
+                onChangeText={value => handleChange('email', value)}
+                value={email}
+                nameSymbol="envelope"
+                colorSymbol="#fff"
+                isTransformFocus={email ? false : true}
+              />
+            )}
+            {bolOTP && (
+              <FormInput
+                labelTransform="OTP"
+                ref={refOtp}
+                onChangeText={value => handleChange('otpCode', value)}
+                value={otpCode}
+                nameSymbol="shield-alt"
+                colorSymbol="#fff"
+                isTransformFocus={otpCode ? false : true}
+              />
+            )}
+            {bolPwd && (
+              <FormInput
+                labelTransform="Mật khẩu"
+                secureTextEntry={true}
+                ref={refPwd}
+                onChangeText={value => handleChange('password', value)}
+                value={password}
+                color="#fff"
+                showPwd
+                nameSymbol="lock"
+                colorSymbol="#fff"
+                isTransformFocus={password ? false : true}
+              />
+            )}
+            <TouchableOpacity
+              activeOpacity={1}
+              onPress={onPress}
+              style={[isProcess && stylesGeneral.op6]}
+              disabled={isProcess}>
+              <Text style={[styles.button, stylesGeneral.fz16]}>
+                {isProcess ? <ActivityIndicator color="white" /> : textBtn}
               </Text>
-            </View>
-          )}
-          {bolUsername && (
-            <FormInput
-              label="Username"
-              ref={refUsername}
-              placeholder="Enter your username"
-              onChangeText={value => handleChange('username', value)}
-              value={username}
-              nameSymbol="user"
-            />
-          )}
-          {bolEmail && (
-            <FormInput
-              label="Email"
-              ref={refEmail}
-              placeholder="Enter your email"
-              onChangeText={value => handleChange('email', value)}
-              value={email}
-              nameSymbol="envelope"
-            />
-          )}
-          {bolOTP && (
-            <FormInput
-              label="OTP"
-              ref={refOtp}
-              placeholder="Enter your OTP"
-              onChangeText={value => handleChange('otpCode', value)}
-              value={otpCode}
-              nameSymbol="shield-alt"
-            />
-          )}
-          {bolPwd && (
-            <FormInput
-              label="Password"
-              placeholder="Enter your password"
-              secureTextEntry={true}
-              ref={refPwd}
-              onChangeText={value => handleChange('password', value)}
-              value={password}
-              color="#000"
-              showPwd
-              nameSymbol="lock"
-            />
-          )}
-          <TouchableOpacity
-            activeOpacity={0.6}
-            style={[styles.input_item, isProcess && stylesGeneral.op6]}
-            onPress={onPress}
-            disabled={isProcess}>
-            <Text
-              style={[
-                styles.input_btn,
-                stylesStatus.confirmbgcbold,
-                stylesGeneral.fz16,
-              ]}>
-              {isProcess ? <ActivityIndicator color="white" /> : textBtn}
-            </Text>
-          </TouchableOpacity>
-          {children}
+            </TouchableOpacity>
+            {children}
+          </View>
         </View>
+        <Footer colorText={WHITE_COLOR} marginTop={10} />
       </ScrollView>
     </ImageBackground>
   );

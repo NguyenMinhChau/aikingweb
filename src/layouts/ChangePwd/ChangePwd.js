@@ -1,35 +1,39 @@
 /* eslint-disable prettier/prettier */
-import {
-  View,
-  Text,
-  Alert,
-  TouchableOpacity,
-  RefreshControl,
-  ActivityIndicator,
-} from 'react-native';
-import React, {useCallback, useState} from 'react';
-import {FormInput, ModalLoading} from '../../components';
-import {useAppContext} from '../../utils';
-import requestRefreshToken from '../../utils/axios/refreshToken';
-import {setFormValue} from '../../app/payloads/form';
-import {setCurrentUser} from '../../app/payloads/user';
-import {setMessage} from '../../app/payloads/message';
-import {SVchangePassword} from '../../services/user';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {View, RefreshControl} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './ChangePwdCss';
-import stylesGeneral from '../../styles/General';
 import stylesStatus from '../../styles/Status';
-import {ScrollView} from 'native-base';
+import {useAppContext} from '../../utils';
+import {setFormValuePL} from '../../app/payloads/form';
+import {ScrollView, useToast} from 'native-base';
+import {toastShow} from '../../utils/toast';
+import {ButtonSubmitCp, Footer, InputItem} from '../../components';
+import {userChangePasswordSV} from '../../services/user';
+import requestRefreshToken from '../../utils/axios/refreshToken';
+import {setCurrentUserPL} from '../../app/payloads/user';
 
-export default function ChangePwd({navigation}) {
+const ChangePwd = ({navigation}) => {
+  const toast = useToast();
   const {state, dispatch} = useAppContext();
   const {
     currentUser,
-    form: {password, oldPwd, confirmPwd},
-    message: {error},
+    form: {oldPwd, newPwd, confirmPwd},
   } = state;
-  const [loading, setLoading] = useState(false);
-  const [isProcess, setIsProcess] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const [pwdCr, setPwdCr] = useState(false);
+  const [pwdNew, setPwdNew] = useState(false);
+  const [pwdNewConfirm, setPwdNewConfirm] = useState(false);
+  const [isProcess, setIsProcess] = useState(false);
+  useEffect(() => {
+    dispatch(
+      setFormValuePL({
+        oldPwd: '',
+        newPwd: '',
+        confirmPwd: '',
+      }),
+    );
+  }, []);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
@@ -37,44 +41,59 @@ export default function ChangePwd({navigation}) {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
-  const handleChangeInput = (name, val) => {
+  const handlePwdCr = () => {
+    setPwdCr(!pwdCr);
+  };
+  const handlePwdNew = () => {
+    setPwdNew(!pwdNew);
+  };
+  const handlePwdNewConfirm = () => {
+    setPwdNewConfirm(!pwdNewConfirm);
+  };
+  const handleChange = (name, value) => {
     dispatch(
-      setFormValue({
+      setFormValuePL({
         ...state.form,
-        [name]: val,
+        [name]: value,
       }),
     );
   };
-  const changePwdAPI = data => {
-    SVchangePassword({
-      id: currentUser?.id,
-      oldPWD: oldPwd,
-      newPWD: password,
-      setLoading,
-      navigation,
-      token: data?.token,
-      dispatch,
-      setMessage,
-      setFormValue,
+  const handleSendPwd = dataToken => {
+    userChangePasswordSV({
+      id_user: currentUser?.id,
+      token: dataToken?.token,
+      oldPassword: oldPwd,
+      newPassword: newPwd,
+      toast,
       setIsProcess,
+      navigation,
     });
   };
   const handleSubmit = async () => {
     try {
-      if (!oldPwd || !password || !confirmPwd) {
-        Alert.alert('Error', 'Please fill all fields');
-      } else if (password !== confirmPwd) {
-        Alert.alert('Error', 'Password not match');
+      await 1;
+      if (!oldPwd || !newPwd || !confirmPwd) {
+        toastShow(toast, 'Vui lòng nhập đầy đủ thông tin');
+        return;
+      } else if (newPwd !== confirmPwd) {
+        toastShow(toast, 'Mật khẩu xác thực không khớp');
+        return;
       } else {
-        await 1;
         setIsProcess(true);
         requestRefreshToken(
           currentUser,
-          changePwdAPI,
+          handleSendPwd,
           state,
           dispatch,
-          setCurrentUser,
-          currentUser?.id,
+          setCurrentUserPL,
+          toast,
+        );
+        dispatch(
+          setFormValuePL({
+            oldPwd: '',
+            newPwd: '',
+            confirmPwd: '',
+          }),
         );
       }
     } catch (err) {
@@ -88,55 +107,50 @@ export default function ChangePwd({navigation}) {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
       style={[styles.container]}>
-      {error && (
-        <View style={[stylesGeneral.mb10, stylesGeneral.flexCenter]}>
-          <Text style={[stylesStatus.cancel, stylesGeneral.fz16]}>{error}</Text>
-        </View>
-      )}
-      <FormInput
-        label="Current Password"
-        placeholder="Enter your current password"
-        showPwd
-        color="#000"
-        secureTextEntry
-        onChangeText={val => handleChangeInput('oldPwd', val)}
-        nameSymbol="lock"
+      <View style={[styles.fragment_input_container]}>
+        <InputItem
+          label="Mật khẩu hiện tại"
+          placeholder="Nhập mật khẩu hiện tại"
+          nameInput="oldPwd"
+          value={oldPwd}
+          handleChange={handleChange}
+          isPassword
+          isShowPwd={pwdCr}
+          handleShowPwd={handlePwdCr}
+        />
+        <InputItem
+          label="Mật khẩu mới"
+          placeholder="Nhập mật khẩu mới"
+          nameInput="newPwd"
+          value={newPwd}
+          handleChange={handleChange}
+          isPassword
+          isShowPwd={pwdNew}
+          handleShowPwd={handlePwdNew}
+          marginTop={10}
+        />
+        <InputItem
+          label="Xác nhận mật khẩu"
+          placeholder="Xác nhận mật khẩu"
+          nameInput="confirmPwd"
+          value={confirmPwd}
+          handleChange={handleChange}
+          isPassword
+          isShowPwd={pwdNewConfirm}
+          handleShowPwd={handlePwdNewConfirm}
+          marginTop={10}
+        />
+      </View>
+      <ButtonSubmitCp
+        isProcess={isProcess}
+        handleSubmit={handleSubmit}
+        bgcButton={stylesStatus.confirmbgcbold}
+        buttonText="Thay đổi"
+        marginTop={15}
       />
-      <FormInput
-        label="New Password"
-        placeholder="Enter your new password"
-        showPwd
-        color="#000"
-        secureTextEntry
-        onChangeText={val => handleChangeInput('password', val)}
-        nameSymbol="lock"
-      />
-      <FormInput
-        label="Confirm Password"
-        placeholder="Enter your new password again"
-        showPwd
-        color="#000"
-        secureTextEntry
-        onChangeText={val => handleChangeInput('confirmPwd', val)}
-        nameSymbol="lock"
-      />
-      <TouchableOpacity
-        activeOpacity={0.6}
-        onPress={handleSubmit}
-        disabled={!password || !oldPwd || !confirmPwd || isProcess}
-        style={[
-          styles.btn,
-          (!password || !oldPwd || !confirmPwd || isProcess) &&
-            stylesGeneral.op6,
-          stylesGeneral.flexCenter,
-          stylesGeneral.mt10,
-          stylesStatus.confirmbgcbold,
-        ]}>
-        <Text style={[stylesStatus.white, stylesGeneral.fwbold]}>
-          {isProcess ? <ActivityIndicator color="white" /> : 'Change Password'}
-        </Text>
-      </TouchableOpacity>
-      {loading && <ModalLoading />}
+      <Footer marginTop={20} marginBottom={20} />
     </ScrollView>
   );
-}
+};
+
+export default ChangePwd;

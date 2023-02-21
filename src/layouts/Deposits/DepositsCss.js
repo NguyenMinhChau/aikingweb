@@ -1,47 +1,42 @@
 /* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
+import {
+  BACKGROUND_COLOR_SCREEN,
+  CANCEL_COLOR,
+  COMPLETE_COLOR,
+  WHITE_COLOR,
+} from '../../styles/colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 12,
+    backgroundColor: BACKGROUND_COLOR_SCREEN,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
   },
-  container_btn: {
+  fragment_input_container: {
     width: '100%',
-    borderRadius: 10,
-  },
-  btn: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-    fontWeight: 'bold',
-    fontSize: 17,
-    width: '100%',
-    textAlign: 'center',
-  },
-  listDeposits: {
-    //flex: 1,
-    marginBottom: 130,
-  },
-  item: {
-    borderColor: '#4CAF50',
+    padding: 20,
+    borderRadius: 20,
+    backgroundColor: WHITE_COLOR,
+    position: 'relative',
+    borderColor: '#ccc',
     borderWidth: 1,
-    borderRadius: 8,
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    marginTop: 8,
   },
-  row: {
-    justifyContent: 'space-between',
-    marginBottom: 8,
-  },
-  row_title: {
+  money_VND: {
+    marginTop: 15,
     fontSize: 16,
     fontWeight: 'bold',
+    color: COMPLETE_COLOR,
+    letterSpacing: 0.5,
   },
-  row_desc: {
+  text_link: {
+    marginTop: 15,
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: 'bold',
+    letterSpacing: 0.5,
+    color: CANCEL_COLOR,
+    textDecorationLine: 'underline',
   },
 });
 

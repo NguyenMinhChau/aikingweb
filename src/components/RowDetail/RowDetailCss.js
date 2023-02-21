@@ -1,21 +1,24 @@
 /* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
+import {BORDER_BOTTOM_DASHED_COLOR} from '../../styles/colors';
 
 const styles = StyleSheet.create({
   info_detail_item: {
     justifyContent: 'space-between',
-    borderBottomColor: '#ededed',
-    borderBottomWidth: 1,
-    marginVertical: 5,
+    alignItems: 'center',
+    borderBottomColor: BORDER_BOTTOM_DASHED_COLOR,
+    borderBottomWidth: 2,
+    borderStyle: 'dashed',
   },
   info_detail_title: {
     fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    fontWeight: '480',
+    color: '#7d7d7d',
+    letterSpacing: 0.7,
+    marginLeft: 15,
   },
   info_detail_desc: {
-    fontSize: 16,
-    marginBottom: 10,
+    fontSize: 15,
     fontWeight: '500',
   },
   borderBt0: {

@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-const dataBank = [
+export const dataBank = [
   {
     id: 1,
     name: 'DongA Bank',
@@ -189,4 +189,3 @@ const dataBank = [
     name: 'Wooribank',
   },
 ];
-export default dataBank;

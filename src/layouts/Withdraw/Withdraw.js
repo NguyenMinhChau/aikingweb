@@ -1,146 +1,168 @@
 /* eslint-disable prettier/prettier */
-/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable react/react-in-jsx-scope */
-import {useCallback, useEffect, useState} from 'react';
-import {
-  Text,
-  RefreshControl,
-  View,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
-import {DataTable} from 'react-native-paper';
-import {useAppContext} from '../../utils';
-import {formatUSDT, formatVND} from '../../utils/format/Money';
-import {Header, NodataText} from '../../components';
-import stylesGeneral from '../../styles/General';
-import stylesStatus from '../../styles/Status';
-import {getAllWithdraws} from '../../app/payloads/getAll';
-import {SVgetWithdrawByEmailUser} from '../../services/withdraw';
-import {dateFormat} from '../../utils/format/Date';
-import {textLower} from '../../utils/format/textLowercase';
-import {routersMain} from '../../routers/Main';
+import {RefreshControl, Text, View} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './WithdrawCss';
+import {ScrollView, useToast} from 'native-base';
+import {
+  ButtonSubmitCp,
+  CreditCard,
+  Footer,
+  InputItem,
+  LoginRegisterAction,
+} from '../../components';
+import {useAppContext} from '../../utils';
+import {setWithdrawsPL} from '../../app/payloads/withdraw';
+import {formatVND} from '../../utils/format/Money';
+import stylesStatus from '../../styles/Status';
+import {toastShow} from '../../utils/toast';
+import {routersMain} from '../../routers/Main';
+import {adminGetUserByIdSV} from '../../services/admin';
+import {autoFormatNumberInputChange} from '../../utils/format/NumberFormat';
+import {userCreateWithdrawSV} from '../../services/user';
+import requestRefreshToken from '../../utils/axios/refreshToken';
+import {setCurrentUserPL} from '../../app/payloads/user';
+import {getAsyncStore} from '../../utils/localStore/localStore';
 
 const Withdraw = ({navigation}) => {
+  const toast = useToast();
   const {state, dispatch} = useAppContext();
   const {
     currentUser,
-    data: {dataWithdraws},
+    userById,
+    withdraw: {amount},
   } = state;
   const [refreshing, setRefreshing] = useState(false);
+  const [isProcess, setIsProcess] = useState(false);
   useEffect(() => {
-    SVgetWithdrawByEmailUser({
-      email: currentUser?.email,
-      dispatch,
-      getAllWithdraws,
-    });
+    dispatch(
+      setWithdrawsPL({
+        amount: '',
+      }),
+    );
   }, []);
-  const data = dataWithdraws || [];
+  useEffect(() => {
+    if (currentUser) {
+      adminGetUserByIdSV({
+        id_user: currentUser?.id,
+        dispatch,
+        toast,
+      });
+    }
+  }, [currentUser]);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    SVgetWithdrawByEmailUser({
-      email: currentUser?.email,
-      dispatch,
-      getAllWithdraws,
-    });
+    dispatch(
+      setWithdrawsPL({
+        amount: '',
+      }),
+    );
+    setIsProcess(false);
+    if (currentUser) {
+      adminGetUserByIdSV({
+        id_user: currentUser?.id,
+        dispatch,
+        toast,
+      });
+    }
     wait(2000).then(() => setRefreshing(false));
   }, []);
-  const renderItem = ({item}) => {
-    return (
-      <DataTable.Row>
-        <DataTable.Cell numeric style={[styles.title_table]}>
-          {formatUSDT(item?.amountUsd)}
-        </DataTable.Cell>
-        <DataTable.Cell numeric style={[styles.title_table]}>
-          {formatVND(item?.amountVnd)}
-        </DataTable.Cell>
-        <DataTable.Cell numeric style={[styles.title_table]}>
-          {dateFormat(item?.createAt, 'DD/MM/YYYY HH:mm:ss')}
-        </DataTable.Cell>
-        <DataTable.Cell numeric style={[styles.title_table]}>
-          <Text
-            style={[
-              textLower(item?.status) === 'onhold'
-                ? stylesStatus.vip
-                : textLower(item?.status) === 'completed' ||
-                  textLower(item?.status) === 'complete'
-                ? stylesStatus.complete
-                : textLower(item?.status) === 'canceled' ||
-                  textLower(item?.status) === 'cancel'
-                ? stylesStatus.cancel
-                : textLower(item?.status) === 'confirmed' ||
-                  textLower(item?.status) === 'confirm'
-                ? stylesStatus.confirm
-                : stylesStatus.demo,
-            ]}>
-            {item?.status}
-          </Text>
-        </DataTable.Cell>
-      </DataTable.Row>
-    );
+  const handleChange = (name, value) => {
+    dispatch(setWithdrawsPL({[name]: value}));
   };
+  const handleSendWithdraw = data => {
+    userCreateWithdrawSV({
+      id_user: currentUser?.id,
+      idPayment: userById?.payment?.bank?.idPayment,
+      email_user: currentUser?.email,
+      amountVND: Number(amount.replace(/\./g, '')),
+      toast,
+      navigation,
+      token: data?.token,
+      setIsProcess,
+      userById: userById,
+    });
+  };
+  const handleSubmit = async () => {
+    await 1;
+    if (!amount) {
+      toastShow(toast, 'Vui lòng nhập đầy đủ thông tin');
+    } else {
+      setIsProcess(true);
+      requestRefreshToken(
+        currentUser,
+        handleSendWithdraw,
+        state,
+        dispatch,
+        setCurrentUserPL,
+        toast,
+      );
+    }
+  };
+  const checkBank =
+    userById?.payment?.bank?.account &&
+    userById?.payment?.bank?.name &&
+    userById?.payment?.bank?.bankName
+      ? true
+      : false;
   return (
-    <View style={[styles.container]}>
-      <View style={[styles.content]}>
-        <Header />
-        <TouchableOpacity
-          style={[styles.container_btn, stylesStatus.primarybgcbold]}
-          onPress={() => navigation.navigate(routersMain.CreateWithdraw)}>
-          <Text style={[styles.btn, stylesStatus.white]}>Create</Text>
-        </TouchableOpacity>
-        <View style={[styles.listWithdraw, stylesGeneral.mt10]}></View>
-      </View>
-      {data.length > 0 ? (
-        <DataTable style={{flex: 1, marginBottom: 40}}>
-          <DataTable.Header>
-            <DataTable.Title
-              style={[styles.title_table, stylesGeneral.text_black]}
-              numeric>
-              Send
-            </DataTable.Title>
-            <DataTable.Title
-              style={[styles.title_table, stylesGeneral.text_black]}
-              numeric>
-              Receied
-            </DataTable.Title>
-            <DataTable.Title
-              style={[styles.title_table, stylesGeneral.text_black]}
-              numeric>
-              Date
-            </DataTable.Title>
-            <DataTable.Title
-              style={[styles.title_table, stylesGeneral.text_black]}
-              numeric>
-              Status
-            </DataTable.Title>
-          </DataTable.Header>
-          <View style={[styles.listWithdraw]}>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              refreshControl={
-                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }
-              // contentContainerStyle={{flex: 1}}
-              data={data}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={renderItem}
-            />
-          </View>
-        </DataTable>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      style={[styles.container]}>
+      {!currentUser ? (
+        <LoginRegisterAction navigation={navigation} marginBottom={15} />
       ) : (
-        <NodataText
-          text="No Data Withdraw"
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-        />
+        <>
+          {checkBank ? (
+            <>
+              <CreditCard
+                bankName={userById?.payment?.bank?.bankName || '___'}
+                cardNumber={userById?.payment?.bank?.account || '___'}
+                accountName={userById?.payment?.bank?.name || '___'}
+              />
+              <View style={[styles.fragment_input_container]}>
+                <InputItem
+                  label="Số tiền"
+                  placeholder="Nhập số tiền cần rút"
+                  nameInput="amount"
+                  value={autoFormatNumberInputChange(amount)}
+                  handleChange={handleChange}
+                  unit={amount && 'VND'}
+                />
+              </View>
+              <Text
+                onPress={() => navigation.navigate(routersMain.History)}
+                style={[styles.text_link]}>
+                *Xem lịch sử nạp tiền/rút tiền
+              </Text>
+              <ButtonSubmitCp
+                isProcess={isProcess}
+                handleSubmit={handleSubmit}
+                bgcButton={stylesStatus.confirmbgcbold}
+                buttonText="Tiếp tục"
+                marginTop={15}
+              />
+            </>
+          ) : (
+            <ButtonSubmitCp
+              handleSubmit={() =>
+                navigation.navigate(routersMain.ReceivingAccount)
+              }
+              bgcButton={stylesStatus.confirmbgcbold}
+              buttonText="Tạo tài khoản ngân hàng"
+            />
+          )}
+        </>
       )}
-    </View>
+      <Footer marginTop={20} marginBottom={20} />
+    </ScrollView>
   );
 };
 

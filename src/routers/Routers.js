@@ -1,12 +1,12 @@
 /* eslint-disable prettier/prettier */
-import {Home, History, Profile} from '../layouts';
+import {Home, Profile, Transaction, Deposits, Withdraw} from '../layouts';
 
 export const routers = {
-  Home: 'Home',
-  History: 'History',
-  Profile: 'Profile',
-  // Deposits: 'Deposits',
-  // Withdraw: 'Withdraw',
+  Home: 'Trang chủ',
+  Deposits: 'Nạp tiền',
+  Withdraw: 'Rút tiền',
+  Transaction: 'Giao dịch',
+  Profile: 'Tài khoản',
 };
 
 const RouterObject = [
@@ -18,12 +18,34 @@ const RouterObject = [
     size: null,
   },
   {
-    name: routers.History,
-    component: History,
-    icon: 'history',
+    name: routers.Deposits,
+    component: Deposits,
+    icon: 'wallet',
     color: null,
     size: null,
   },
+  {
+    name: routers.Withdraw,
+    component: Withdraw,
+    icon: 'money-check-alt',
+    color: null,
+    size: null,
+  },
+  {
+    name: routers.Transaction,
+    component: Transaction,
+    icon: 'hand-holding-usd',
+    color: null,
+    size: null,
+  },
+  // {
+  //   name: routers.Home,
+  //   component: Home,
+  //   icon: 'home',
+  //   color: null,
+  //   size: null,
+  //   custom: true,
+  // },
   {
     name: routers.Profile,
     component: Profile,

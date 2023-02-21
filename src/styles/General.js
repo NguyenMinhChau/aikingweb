@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
+import {PRIMARY_COLOR} from './colors';
 
 const stylesGeneral = StyleSheet.create({
   dflex: {
@@ -20,10 +21,16 @@ const stylesGeneral = StyleSheet.create({
   text_black: {
     color: 'black',
   },
+  text_primary: {
+    color: PRIMARY_COLOR,
+  },
   flexCenterJustify: {
     justifyContent: 'center',
   },
   flexSpaceBetween: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   flexEnd: {
@@ -69,11 +76,20 @@ const stylesGeneral = StyleSheet.create({
   fz16: {
     fontSize: 16,
   },
+  fz20: {
+    fontSize: 20,
+  },
   fw500: {
     fontWeight: '500',
   },
   text_center: {
     textAlign: 'center',
+  },
+  text_right: {
+    textAlign: 'right',
+  },
+  text_left: {
+    textAlign: 'left',
   },
   w100: {
     width: '100%',

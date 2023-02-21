@@ -3,90 +3,68 @@
 // import {getAsyncStore} from '../utils/localStore/localStore';
 import {
   SET_CURRENT_USER,
+  SET_USER_BY_ID,
   SET_FORM,
   SET_MESSAGE,
-  SET_AMOUNT_COIN,
-  SET_AMOUNT_SELL,
-  SET_FORM_DEPOSITS_VALUE,
-  SET_FORM_WITHDRAW_VALUE,
-  SET_FORM_PROFILE_PAYMENT_VALUE,
-  SET_TOKEN_FORGOT_PASSWORD,
-  SET_PRICE_COIN_SOCKET,
-  SET_RATE_VALUE,
-  SET_RATE_DEPOSIT_WITHDRAW_VALUE,
-  SET_RATE_DEPOSIT_VALUE,
-  SET_RATE_WITHDRAW_VALUE,
-  SET_AMOUNT_USDT,
-  GET_ALL_COIN,
-  GET_ALL_PAYMENT_ADMIN,
-  GET_ALL_DEPOSITS,
-  GET_ALL_WITHDRAW,
-  SET_SEARCH_VALUE,
-  SET_CODE_VALUE,
-  GET_BY_ID,
-  GET_PAYMENT_ADMIN_BY_ID,
-  GET_BY_SYMBOL,
-  GET_USER_BY_ID,
-  GET_HISTORY_BUY,
-  GET_HISTORY_SELL,
-  SET_USER_BY_ID_EMAIL,
+  SET_TOKEN_FORGOT,
+  SET_RECEIVING_ACCOUNT,
+  SET_DEPOSITS,
+  SET_WITHDRAWS,
+  SET_CONTRACTS,
+  SET_SEND_FUNDS,
+  SET_DATA_DEPOSITS_HISTORY,
+  SET_DATA_WITHDRAWS_HISTORY,
 } from './actions';
 
 const initialState = {
-  userById: null,
   currentUser: null,
-  amountCoin: '',
-  amountSell: '',
-  amountUsdt: '',
-  codeVerify: '',
+  userById: null,
   tokenForgot: null,
-  priceCoinSocket: null,
-  rate: '',
-  rateDeposit: '',
-  rateWithdraw: '',
-  rateDepositWithdraw: null,
-  dataPaymentAdmin: null,
-  paymentAdminById: null,
-  deposits: {
-    amountUSDT: '',
-    bank: '',
-  },
-  withdraw: {
-    amountUSDT: '',
-  },
-  profilePayment: {
-    bank: '',
+  dataDepositsHistory: [],
+  dataWithdrawsHistory: [],
+  receivingAccount: {
     accountName: '',
     accountNumber: '',
+    bankName: '',
   },
-  user: {
-    id: '',
-    email: '',
+  deposits: {
+    amount: '',
+    bankId: '',
   },
-  search: '',
+  withdraw: {
+    amount: '',
+    otpCode: '',
+  },
+  contract: {
+    cycle: '',
+    principal: '',
+    rate: '',
+    otpCode: '',
+  },
+  send_funds: {
+    fund: '',
+    send_time: '',
+    period: '',
+    deposits: '',
+    interest_rate: '',
+    interest_payment_period: '',
+    principal_payment_time: '',
+  },
   message: {
     del: '',
     cre: '',
     upd: '',
     error: '',
-    success: '',
   },
   form: {
     email: '',
     username: '',
     password: '',
+    phone: '',
     oldPwd: '',
     confirmPwd: '',
     otpCode: '',
   },
-  data: {
-    dataCoins: [],
-    dataDeposits: [],
-    dataWithdraws: [],
-    dataById: null,
-    dataBySymbol: null,
-  },
-  history: {dataBuyHistory: [], dataSellHistory: []},
 };
 
 const reducer = (state, action) => {
@@ -96,25 +74,10 @@ const reducer = (state, action) => {
         ...state,
         currentUser: action.payload,
       };
-    case SET_RATE_VALUE:
+    case SET_USER_BY_ID:
       return {
         ...state,
-        rate: action.payload,
-      };
-    case SET_RATE_DEPOSIT_WITHDRAW_VALUE:
-      return {
-        ...state,
-        rateDepositWithdraw: action.payload,
-      };
-    case SET_RATE_DEPOSIT_VALUE:
-      return {
-        ...state,
-        rateDeposit: action.payload,
-      };
-    case SET_RATE_WITHDRAW_VALUE:
-      return {
-        ...state,
-        rateWithdraw: action.payload,
+        userById: action.payload,
       };
     case SET_FORM:
       return {
@@ -132,40 +95,20 @@ const reducer = (state, action) => {
           ...action.payload,
         },
       };
-    case GET_ALL_COIN:
+    case SET_TOKEN_FORGOT:
       return {
         ...state,
-        data: {
-          ...state.data,
-          dataCoins: action.payload,
+        tokenForgot: action.payload,
+      };
+    case SET_RECEIVING_ACCOUNT:
+      return {
+        ...state,
+        receivingAccount: {
+          ...state.receivingAccount,
+          ...action.payload,
         },
       };
-    case GET_ALL_PAYMENT_ADMIN:
-      return {
-        ...state,
-        dataPaymentAdmin: action.payload,
-      };
-    case SET_SEARCH_VALUE:
-      return {
-        ...state,
-        search: action.payload,
-      };
-    case SET_AMOUNT_COIN:
-      return {
-        ...state,
-        amountCoin: action.payload,
-      };
-    case SET_AMOUNT_SELL:
-      return {
-        ...state,
-        amountSell: action.payload,
-      };
-    case SET_AMOUNT_USDT:
-      return {
-        ...state,
-        amountUsdt: action.payload,
-      };
-    case SET_FORM_DEPOSITS_VALUE:
+    case SET_DEPOSITS:
       return {
         ...state,
         deposits: {
@@ -173,7 +116,7 @@ const reducer = (state, action) => {
           ...action.payload,
         },
       };
-    case SET_FORM_WITHDRAW_VALUE:
+    case SET_WITHDRAWS:
       return {
         ...state,
         withdraw: {
@@ -181,94 +124,31 @@ const reducer = (state, action) => {
           ...action.payload,
         },
       };
-    case SET_FORM_PROFILE_PAYMENT_VALUE:
+    case SET_CONTRACTS:
       return {
         ...state,
-        profilePayment: {
-          ...state.profilePayment,
+        contract: {
+          ...state.contract,
           ...action.payload,
         },
       };
-    case SET_PRICE_COIN_SOCKET:
+    case SET_SEND_FUNDS:
       return {
         ...state,
-        priceCoinSocket: action.payload,
-      };
-    case SET_CODE_VALUE:
-      return {
-        ...state,
-        codeVerify: action.payload,
-      };
-    case SET_TOKEN_FORGOT_PASSWORD:
-      return {
-        ...state,
-        tokenForgot: action.payload,
-      };
-    case GET_BY_ID:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          dataById: action.payload,
-        },
-      };
-    case GET_PAYMENT_ADMIN_BY_ID:
-      return {
-        ...state,
-        paymentAdminById: action.payload,
-      };
-    case GET_BY_SYMBOL:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          dataBySymbol: action.payload,
-        },
-      };
-    case GET_USER_BY_ID:
-      return {
-        ...state,
-        userById: action.payload,
-      };
-    case SET_USER_BY_ID_EMAIL:
-      return {
-        ...state,
-        user: {
-          ...state.user,
+        send_funds: {
+          ...state.send_funds,
           ...action.payload,
         },
       };
-    case GET_ALL_DEPOSITS:
+    case SET_DATA_DEPOSITS_HISTORY:
       return {
         ...state,
-        data: {
-          ...state.data,
-          dataDeposits: action.payload,
-        },
+        dataDepositsHistory: action.payload,
       };
-    case GET_ALL_WITHDRAW:
+    case SET_DATA_WITHDRAWS_HISTORY:
       return {
         ...state,
-        data: {
-          ...state.data,
-          dataWithdraws: action.payload,
-        },
-      };
-    case GET_HISTORY_BUY:
-      return {
-        ...state,
-        history: {
-          ...state.history,
-          dataBuyHistory: action.payload,
-        },
-      };
-    case GET_HISTORY_SELL:
-      return {
-        ...state,
-        history: {
-          ...state.history,
-          dataSellHistory: action.payload,
-        },
+        dataWithdrawsHistory: action.payload,
       };
     default:
       break;

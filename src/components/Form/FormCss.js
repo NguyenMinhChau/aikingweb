@@ -1,52 +1,62 @@
 /* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
+import {PRIMARY_COLOR, WHITE_COLOR} from '../../styles/colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    position: 'relative',
   },
   scrollview: {
     width: '100%',
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0,0,0,0.5)',
   },
   content: {
-    backgroundColor: 'white',
-    borderRadius: 0,
-    paddingHorizontal: 18,
-    paddingVertical: 24,
-    marginBottom: 35,
-  },
-  title_form: {
-    textAlign: 'center',
-    fontSize: 25,
-    fontWeight: 'bold',
-    fontStyle: 'italic',
-    marginVertical: 10,
-  },
-  error_container: {
+    flex: 5,
+    justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 12,
+    flexDirection: 'column',
   },
-  error_text: {
-    color: 'red',
-    letterSpacing: 0.5,
+  logoContainer: {
+    width: 100,
+    height: 100,
   },
-  input_btn: {
+  logo: {
     width: '100%',
-    textAlign: 'center',
-    paddingHorizontal: 12,
+    height: '100%',
+  },
+  form_container: {
+    width: '80%',
+  },
+  button: {
+    width: '100%',
+    paddingHorizontal: 10,
     paddingVertical: 12,
     borderRadius: 5,
-    color: 'white',
+    marginVertical: 10,
     fontWeight: 'bold',
-    marginVertical: 12,
+    textAlign: 'center',
+    backgroundColor: PRIMARY_COLOR,
+    color: WHITE_COLOR,
   },
-  image_form: {
-    alignItems: 'center',
+  footer: {
+    width: '100%',
     justifyContent: 'center',
-    width: 200,
-    height: 50,
+    alignItems: 'center',
+    marginTop: 'auto',
+    marginBottom: 10,
+    flex: 1,
+  },
+  footer_text: {
+    fontWeight: 'bold',
+    fontSize: 13,
+    color: '#ccc',
+    marginTop: 20,
   },
 });
 

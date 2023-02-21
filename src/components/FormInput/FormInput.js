@@ -2,15 +2,17 @@
 /* eslint-disable react/react-in-jsx-scope */
 /* eslint-disable prettier/prettier */
 /* eslint-disable prettier/prettier */
-import {forwardRef, useState} from 'react';
+import {forwardRef, useRef, useState} from 'react';
 import {Text, TextInput, View} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {PRIMARY_COLOR} from '../../styles/colors';
 import styles from './FormInputCss';
-import stylesGeneral from '../../styles/General';
 
 const FormInput = (
   {
     label,
+    labelTransform,
+    isTransformFocus,
     value,
     placeholder,
     secureTextEntry = false,
@@ -30,30 +32,59 @@ const FormInput = (
   const handleShowPwd = () => {
     setIsShowPwd(!isShowPwd);
   };
+  const refLabelFocus = useRef(null);
   return (
     <View style={[styles.input_item]}>
-      <Text style={[styles.label, stylesGeneral.text_black]}>{label}</Text>
+      {label && <Text style={[styles.label]}>{label}</Text>}
       <View style={[styles.input_relative]}>
         {nameSymbol && (
           <View style={[styles.icon_symbol]}>
             <FontAwesome5 name={nameSymbol} size={20} color={colorSymbol} />
           </View>
         )}
+        {labelTransform && (
+          <Text ref={refLabelFocus} style={[styles.labelTransform]}>
+            {labelTransform}
+          </Text>
+        )}
         <TextInput
           // ascii-capable, number-pad, name-phone-pad, numbers-and-punctuation, phone-pad
           keyboardType={keyboardType}
-          placeholder={placeholder}
+          placeholder={placeholder ? placeholder : ''}
           style={[
             styles.input,
             icon && styles.input_padding_right,
             nameSymbol && styles.input_padding_left,
           ]}
+          placeholderTextColor="#fff"
           secureTextEntry={!isShowPwd && secureTextEntry}
           ref={ref}
           onChangeText={onChangeText}
           onChange={onChange}
           value={value}
-          cursorColor="#4CAF50"
+          cursorColor={PRIMARY_COLOR}
+          onFocus={() => {
+            if (isTransformFocus) {
+              refLabelFocus &&
+                refLabelFocus.current.setNativeProps({
+                  style: {
+                    top: '10%',
+                    left: 0,
+                  },
+                });
+            }
+          }}
+          onBlur={() => {
+            if (isTransformFocus) {
+              refLabelFocus &&
+                refLabelFocus.current.setNativeProps({
+                  style: {
+                    top: '50%',
+                    left: 30,
+                  },
+                });
+            }
+          }}
         />
         {(icon || color) && (
           <View style={[styles.icon]}>

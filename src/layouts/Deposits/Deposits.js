@@ -1,138 +1,147 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable react/react-in-jsx-scope */
-import {
-  View,
-  Text,
-  RefreshControl,
-  FlatList,
-  TouchableOpacity,
-} from 'react-native';
-import {useCallback, useEffect, useState} from 'react';
-import {useAppContext} from '../../utils';
-import {formatUSDT, formatVND} from '../../utils/format/Money';
-import {getAllDeposits} from '../../app/payloads/getAll';
-import {Header, NodataText, RowDetail} from '../../components';
-import {SVgetDepositsByEmailUser} from '../../services/deposits';
-import {dateFormat} from '../../utils/format/Date';
-import {textLower} from '../../utils/format/textLowercase';
-import {routersMain} from '../../routers/Main';
+/* eslint-disable no-unused-vars */
+import {View, Text, RefreshControl} from 'react-native';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './DepositsCss';
+import {ScrollView, useToast} from 'native-base';
+import {
+  ButtonSubmitCp,
+  Footer,
+  InputItem,
+  LoginRegisterAction,
+  SelectValueCp,
+} from '../../components';
+import {useAppContext} from '../../utils';
+import {setDepositsPL} from '../../app/payloads/deposits';
+import {dataBankAdmin} from '../../utils/dataBankAdmin';
 import stylesStatus from '../../styles/Status';
+import {formatVND} from '../../utils/format/Money';
+import {toastShow} from '../../utils/toast';
+import {routersMain} from '../../routers/Main';
+import {
+  autoFormatNumberInputChange,
+  convertNumberMultiple,
+} from '../../utils/format/NumberFormat';
+import {userCreateDepositsSV} from '../../services/user';
+import requestRefreshToken from '../../utils/axios/refreshToken';
+import {setCurrentUserPL} from '../../app/payloads/user';
 import stylesGeneral from '../../styles/General';
 
 const Deposits = ({navigation}) => {
+  const toast = useToast();
   const {state, dispatch} = useAppContext();
   const {
     currentUser,
-    data: {dataDeposits},
+    deposits: {amount, bankId},
   } = state;
   const [refreshing, setRefreshing] = useState(false);
+  const [isProcess, setIsProcess] = useState(false);
+  const [itemBank, setItemBank] = useState(null);
   useEffect(() => {
-    SVgetDepositsByEmailUser({
-      email: currentUser?.email,
-      dispatch,
-      getAllDeposits,
-    });
+    dispatch(
+      setDepositsPL({
+        amount: '',
+        bankId: '',
+      }),
+    );
   }, []);
-  const data =
-    dataDeposits.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
-    ) || [];
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    SVgetDepositsByEmailUser({
-      email: currentUser?.email,
-      dispatch,
-      getAllDeposits,
-    });
+    dispatch(
+      setDepositsPL({
+        amount: '',
+        bankId: '',
+      }),
+    );
+    setIsProcess(false);
     wait(2000).then(() => setRefreshing(false));
   }, []);
-  const renderItem = ({item}) => {
-    return (
-      <TouchableOpacity
-        activeOpacity={0.6}
-        style={[styles.item]}
-        onPress={() =>
-          navigation.navigate({
-            name: routersMain.SingleDeposits,
-            params: {
-              data: item,
-              bankAdmin: item?.bankAdmin,
-            },
-          })
-        }>
-        <RowDetail
-          noneBorderBottom
-          title="Created At"
-          text={dateFormat(item?.createdAt, 'DD/MM/YYYY HH:mm:ss')}
-        />
-        <RowDetail
-          noneBorderBottom
-          title="Status"
-          text={item?.status}
-          styleDesc={[
-            styles.row_desc,
-            stylesStatus.status,
-            textLower(item?.status) === 'onhold'
-              ? stylesStatus.vipbgc
-              : textLower(item?.status) === 'completed' ||
-                textLower(item?.status) === 'complete'
-              ? stylesStatus.completebgc
-              : textLower(item?.status) === 'canceled' ||
-                textLower(item?.status) === 'cancel'
-              ? stylesStatus.cancelbgc
-              : textLower(item?.status) === 'confirmed' ||
-                textLower(item?.status) === 'confirm'
-              ? stylesStatus.confirmbgc
-              : stylesStatus.demobgc,
-          ]}
-        />
-        <RowDetail
-          title="Amount USD"
-          text={formatUSDT(item?.amountUsd)}
-          noneBorderBottom
-        />
-        <RowDetail
-          title="Amount VND"
-          text={formatVND(item?.amountVnd)}
-          noneBorderBottom
-        />
-      </TouchableOpacity>
-    );
+  const handleChange = (name, value) => {
+    dispatch(setDepositsPL({[name]: value}));
+  };
+  const handleSetItem = item => {
+    setItemBank(item);
+  };
+  const handleSenDeposits = data => {
+    userCreateDepositsSV({
+      id_user: currentUser?.id,
+      email_user: currentUser?.email,
+      idPayment: 1,
+      amountVND: Number(amount.replace(/\./g, '')),
+      token: data?.token,
+      toast,
+      setIsProcess,
+      navigation,
+      itemBank,
+    });
+  };
+  const handleSubmit = async () => {
+    await 1;
+    if (!amount || !bankId) {
+      toastShow(toast, 'Vui lòng nhập đầy đủ thông tin');
+    } else {
+      setIsProcess(true);
+      requestRefreshToken(
+        currentUser,
+        handleSenDeposits,
+        state,
+        dispatch,
+        setCurrentUserPL,
+        toast,
+      );
+    }
   };
   return (
-    <View style={[styles.container]}>
-      <Header />
-      <View
-        style={[styles.container_btn, stylesStatus.primarybgcbold]}
-        onTouchStart={() => navigation.navigate(routersMain.CreateDeposits)}>
-        <Text style={[styles.btn, stylesStatus.white]}>Create</Text>
-      </View>
-      <View style={[styles.listDeposits, stylesGeneral.mt10]}>
-        {data.length > 0 ? (
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            onEndReachedThreshold={0.5}
-            data={data}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={renderItem}
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      style={[styles.container]}>
+      {!currentUser ? (
+        <LoginRegisterAction navigation={navigation} marginBottom={15} />
+      ) : (
+        <>
+          <View style={[styles.fragment_input_container]}>
+            <SelectValueCp
+              label="Ngân hàng thụ hưởng"
+              placeholder="Chọn ngân hàng thụ hưởng"
+              valueSelect={bankId}
+              data={dataBankAdmin}
+              handleChange={handleChange}
+              nameSelect="bankId"
+              marginTop={10}
+              handleSetItem={handleSetItem}
+            />
+            <InputItem
+              label="Số tiền nạp"
+              placeholder="Nhập số tiền cần nạp"
+              nameInput="amount"
+              value={autoFormatNumberInputChange(amount)}
+              handleChange={handleChange}
+              unit={amount && 'VND'}
+            />
+          </View>
+          <Text
+            onPress={() => navigation.navigate(routersMain.History)}
+            style={[styles.text_link]}>
+            *Xem lịch sử nạp tiền/rút tiền
+          </Text>
+          <ButtonSubmitCp
+            isProcess={isProcess}
+            handleSubmit={handleSubmit}
+            bgcButton={stylesStatus.confirmbgcbold}
+            buttonText="Tiếp tục"
+            marginTop={15}
           />
-        ) : (
-          <NodataText
-            text=" No Deposits"
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
-        )}
-      </View>
-    </View>
+        </>
+      )}
+      <Footer marginTop={20} marginBottom={20} />
+    </ScrollView>
   );
 };
 

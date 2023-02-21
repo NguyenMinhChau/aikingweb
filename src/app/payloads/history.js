@@ -1,15 +1,18 @@
 /* eslint-disable prettier/prettier */
-import {GET_HISTORY_BUY, GET_HISTORY_SELL} from '../actions';
+import {
+  SET_DATA_DEPOSITS_HISTORY,
+  SET_DATA_WITHDRAWS_HISTORY,
+} from '../actions';
 
-export const getHistoryBuy = payload => {
+export const setDepositsHistoryPL = payload => {
   return {
-    type: GET_HISTORY_BUY,
+    type: SET_DATA_DEPOSITS_HISTORY,
     payload,
   };
 };
-export const getHistorySell = payload => {
+export const setWithdrawsHistoryPL = payload => {
   return {
-    type: GET_HISTORY_SELL,
+    type: SET_DATA_WITHDRAWS_HISTORY,
     payload,
   };
 };

@@ -1,30 +1,33 @@
 /* eslint-disable prettier/prettier */
-import {Text, ScrollView, RefreshControl} from 'react-native';
-import React from 'react';
+/* eslint-disable no-unused-vars */
+import {View, Text, RefreshControl} from 'react-native';
+import React, {useCallback, useState} from 'react';
 import styles from './ContactCss';
-import stylesGeneral from '../../styles/General';
+import {ScrollView} from 'native-base';
 
-export default function Contact() {
-  const [refreshing, setRefreshing] = React.useState(false);
+const Contact = () => {
+  const [refreshing, setRefreshing] = useState(false);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
   return (
     <ScrollView
-      style={[styles.container]}
       showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
-      <Text style={[styles.text, stylesGeneral.text_black]}>
-        If you have any questions about trading with ShopCoinUSA, do not
-        hesitate to contact our support team by:{' '}
-        <Text style={[styles.email]}>spshopcoinusa@gmail.com</Text>
+      }
+      style={[styles.container]}>
+      <Text style={[styles.text]}>
+        If you have any questions about Provident Fund, do not hesitate to
+        contact our support team by:{' '}
+        <Text style={[styles.email]}>spprovidentfund@gmail.com</Text>
       </Text>
     </ScrollView>
   );
-}
+};
+
+export default Contact;

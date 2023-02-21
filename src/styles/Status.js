@@ -1,5 +1,17 @@
 /* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
+import {
+  BGC_CANCEL_COLOR,
+  BGC_COMPLETE_COLOR,
+  BGC_CONFIRM_COLOR,
+  BGC_VIP_COLOR,
+  CANCEL_COLOR,
+  COMPLETE_COLOR,
+  CONFIRM_COLOR,
+  PRIMARY_COLOR,
+  VIP_COLOR,
+  WHITE_COLOR,
+} from './colors';
 
 const stylesStatus = StyleSheet.create({
   status: {
@@ -12,80 +24,59 @@ const stylesStatus = StyleSheet.create({
     textTransform: 'capitalize',
   },
   confirm: {
-    color: '#007aff',
-  },
-  pending: {
-    color: '#007aff',
-  },
-  demo: {
-    color: '#007aff',
+    color: CONFIRM_COLOR,
   },
   complete: {
-    color: '#4CAF50',
+    color: COMPLETE_COLOR,
   },
   vip: {
-    color: '#ffab00',
+    color: VIP_COLOR,
   },
   cancel: {
-    color: '#d50000',
+    color: CANCEL_COLOR,
   },
   primary: {
-    color: '#4CAF50',
+    color: PRIMARY_COLOR,
   },
   white: {
-    color: 'white',
+    color: WHITE_COLOR,
   },
+
   confirmbgc: {
-    color: '#007aff',
-    backgroundColor: '#e6f5ff',
+    color: CONFIRM_COLOR,
+    backgroundColor: BGC_CONFIRM_COLOR,
   },
   confirmbgcbold: {
-    color: '#fff',
-    backgroundColor: '#007aff',
-  },
-  pendingbgc: {
-    color: '#007aff',
-    backgroundColor: '#e6f5ff',
-  },
-  pendingbgcbold: {
-    color: '#fff',
-    backgroundColor: '#007aff',
-  },
-  demobgc: {
-    color: '#007aff',
-    backgroundColor: '#e6f5ff',
-  },
-  demobgcbold: {
-    color: '#fff',
-    backgroundColor: '#007aff',
+    color: WHITE_COLOR,
+    backgroundColor: CONFIRM_COLOR,
   },
   completebgc: {
-    color: '#4CAF50',
-    backgroundColor: '#edf7ee',
+    color: COMPLETE_COLOR,
+    backgroundColor: BGC_COMPLETE_COLOR,
   },
   completebgcbold: {
-    color: '#fff',
-    backgroundColor: '#4CAF50',
+    color: WHITE_COLOR,
+    backgroundColor: COMPLETE_COLOR,
   },
   vipbgc: {
-    color: '#ffab00',
-    backgroundColor: '#fff7e6',
+    color: VIP_COLOR,
+    backgroundColor: BGC_VIP_COLOR,
   },
   vipbgcbold: {
-    color: '#fff',
-    backgroundColor: '#ffab00',
+    color: WHITE_COLOR,
+    backgroundColor: VIP_COLOR,
   },
   cancelbgc: {
-    color: '#d50000',
-    backgroundColor: '#ffebea',
+    color: CANCEL_COLOR,
+    backgroundColor: BGC_CANCEL_COLOR,
   },
   cancelbgcbold: {
-    color: '#fff',
-    backgroundColor: '#d50000',
+    color: WHITE_COLOR,
+    backgroundColor: CANCEL_COLOR,
   },
   primarybgcbold: {
-    color: '#fff',
-    backgroundColor: '#4CAF50',
+    color: WHITE_COLOR,
+    backgroundColor: PRIMARY_COLOR,
   },
 });
 

@@ -11,9 +11,13 @@ export const authPost = async (path, options = {}) => {
   const res = await authInstance.post(path, options);
   return res.data;
 };
+export const authGet = async (path, options = {}) => {
+  const res = await authInstance.get(path, options);
+  return res.data;
+};
 // REFRESH TOKEN
 export const refreshToken = async (path, options = {}) => {
-  const res = await authInstance.post(path, options);
+  const res = await authInstance.get(path, options);
   return res.data;
 };
 // ADMIN
@@ -58,37 +62,5 @@ export const userPut = async (path, options = {}, others = {}) => {
 };
 export const userDelete = async (path, options = {}) => {
   const res = await userInstance.delete(path, options);
-  return res.data;
-};
-// COINS
-export const coinInstance = axios.create({
-  baseURL: `${URL_SERVER}coins/`,
-  // baseURL: 'http://localhost:8000/coins/',
-  withCredentials: true,
-});
-export const coinGet = async (path, options = {}) => {
-  const res = await coinInstance.get(path, options);
-  return res.data;
-};
-export const coinPost = async (path, options = {}, others = {}) => {
-  const res = await coinInstance.post(path, options, others);
-  return res.data;
-};
-export const coinPut = async (path, options = {}, others = {}) => {
-  const res = await coinInstance.put(path, options, others);
-  return res.data;
-};
-export const coinDelete = async (path, options = {}, others = {}) => {
-  const res = await coinInstance.delete(path, options, others);
-  return res.data;
-};
-// RATE
-export const rateInstance = axios.create({
-  baseURL: `${URL_SERVER}rates/`,
-  // baseURL: 'http://localhost:8000/coins/',
-  withCredentials: true,
-});
-export const rateGet = async (path, options = {}) => {
-  const res = await rateInstance.get(path, options);
   return res.data;
 };

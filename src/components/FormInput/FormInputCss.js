@@ -1,26 +1,36 @@
 /* eslint-disable prettier/prettier */
 import {StyleSheet} from 'react-native';
+import {PRIMARY_COLOR, WHITE_COLOR} from '../../styles/colors';
 
 const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
-    fontStyle: 'italic',
+    color: WHITE_COLOR,
+  },
+  labelTransform: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    color: WHITE_COLOR,
+    position: 'absolute',
+    top: '50%',
+    left: 30,
+    transform: [{translateY: -12}],
   },
   input: {
     fontSize: 17,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    borderRadius: 6,
+    borderBottomWidth: 1.5,
+    borderBottomColor: WHITE_COLOR,
     paddingHorizontal: 8,
     paddingVertical: 10,
     marginVertical: 10,
-    fontStyle: 'italic',
+    fontWeight: 'bold',
+    color: WHITE_COLOR,
   },
   input_padding_right: {
     paddingRight: 45,
   },
   input_padding_left: {
-    paddingLeft: 45,
+    paddingLeft: 30,
   },
   input_relative: {
     position: 'relative',
@@ -29,14 +39,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     position: 'absolute',
     top: '50%',
-    right: 15,
+    right: 0,
     transform: [{translateY: -10}],
   },
   icon_symbol: {
     flexDirection: 'row',
     position: 'absolute',
     top: '50%',
-    left: 15,
     transform: [{translateY: -10}],
   },
 });
