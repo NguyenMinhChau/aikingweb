@@ -1,5 +1,3 @@
 <resources>
     <string name="app_name">Provident Fund | AIKING GROUP</string>
-    <!-- CODE PUSH/reactNativeCodePush_androidDeploymentKey -->
-    <string moduleConfig="true" name="CodePushDeploymentKey">2EkywB0_BcMD3ILAiWijtmSNnNW6cJdbFuzwy</string>
 </resources>

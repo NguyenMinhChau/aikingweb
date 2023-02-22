@@ -277,8 +277,18 @@ const Profile = ({navigation}) => {
           nameIconFront="phone"
           colorIconFront={PRIMARY_COLOR}
           marginTop={10}
-          noneBorderBottom
           marginLeft={10}
+        />
+        <RowDetail
+          title="Thông tin ứng dụng"
+          nameIcon="chevron-right"
+          navigation={navigation}
+          redirectName={routersMain.InfoApp}
+          nameIconFront="question-circle"
+          colorIconFront={CANCEL_COLOR}
+          marginTop={10}
+          marginLeft={10}
+          noneBorderBottom
         />
       </View>
       {currentUser ? (

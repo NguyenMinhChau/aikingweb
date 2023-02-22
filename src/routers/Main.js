@@ -31,6 +31,7 @@ import {
   FundManagement,
   SendFunds,
   UploadDocument,
+  InfoApp,
   UsdInvestmentFund,
   History,
   AgriculturalDevelopmentFund,
@@ -73,6 +74,7 @@ export const routersMain = {
   UploadDeposits: 'Tải hóa đơn nạp tiền',
   VerifyWithdraw: 'Xác thực rút tiền',
   UploadDocument: 'Giấy tờ',
+  InfoApp: 'Thông tin ứng dụng',
   History: 'Lịch sử',
   MainPage: 'MainPage',
 };
@@ -245,6 +247,11 @@ const MainObject = [
   {
     name: routersMain.UploadDocument,
     component: UploadDocument,
+    options: 'custom',
+  },
+  {
+    name: routersMain.InfoApp,
+    component: InfoApp,
     options: 'custom',
   },
   {

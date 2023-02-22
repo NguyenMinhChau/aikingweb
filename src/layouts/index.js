@@ -36,6 +36,7 @@ export {default as VerifyWithdraw} from './VerifyWithdraw/VerifyWithdraw';
 export {default as DepositsHistory} from './DepositsHistory/DepositsHistory';
 export {default as WithdrawHistory} from './WithdrawHistory/WithdrawHistory';
 export {default as UploadDocument} from './UploadDocument/UploadDocument';
+export {default as InfoApp} from './InfoApp/InfoApp';
 export {default as Login} from './Login/Login';
 export {default as Contact} from './Contact/Contact';
 export {default as Register} from './Register/Register';

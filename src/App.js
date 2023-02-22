@@ -1,49 +1,39 @@
-/* eslint-disable no-unused-vars */
 import React, {useEffect} from 'react';
+import {Image, Text, View, Linking} from 'react-native';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {NativeBaseProvider} from 'native-base';
 import {ProviderContext} from './app/';
 import {Main} from './navigation';
-import codePush from 'react-native-code-push';
-import {Image, Text, View, BackHandler} from 'react-native';
+import VersionCheck from 'react-native-version-check';
 import stylesStatus from './styles/Status';
 import stylesGeneral from './styles/General';
 import styles from './styles/AppCss';
-
-const CODE_PUSH_OPTIONS = {
-  checkFrequency: codePush.CheckFrequency.ON_APP_START,
-  // installMode: codePush.InstallMode.IMMEDIATE,
-};
+import {URL_APP_PLAY_STORE, PACKAGE_NAME_APP} from '@env';
 
 const App = () => {
   const [updateApp, setUpdateApp] = React.useState(false);
   const [versionNew, setVersionNew] = React.useState(null);
   useEffect(() => {
     const init = async () => {
-      const update = await codePush.checkForUpdate();
-      if (update) {
-        codePush.sync({
-          updateDialog: true,
-          installMode: codePush.InstallMode.IMMEDIATE,
-        });
-        setVersionNew(update?.appVersion);
-        setUpdateApp(true);
-      } else {
-        codePush.sync({
-          updateDialog: false,
-          installMode: codePush.InstallMode.IMMEDIATE,
-        });
-        setUpdateApp(false);
-        console.log('The app is up to date.');
-      }
+      VersionCheck.needUpdate({
+        packageName: PACKAGE_NAME_APP,
+      }).then(async res => {
+        if (res?.isNeeded) {
+          setUpdateApp(true);
+          setVersionNew(res?.latestVersion);
+        } else {
+          setUpdateApp(false);
+          setVersionNew(null);
+        }
+      });
     };
-    // init();
+    init();
   }, []);
   const toogleUpdateApp = () => {
     setUpdateApp(!updateApp);
   };
-  const handleExitApp = () => {
-    BackHandler.exitApp();
+  const handleRedirectPlayStore = () => {
+    Linking.openURL(`${URL_APP_PLAY_STORE}`);
   };
   return (
     <ProviderContext>
@@ -52,7 +42,7 @@ const App = () => {
           <Main />
         </PaperProvider>
       </NativeBaseProvider>
-      {/* {updateApp && versionNew && (
+      {updateApp && versionNew && (
         <View style={[styles.modal_container]}>
           <View style={[styles.modal_content]}>
             <View style={[styles.modal_header]}>
@@ -69,8 +59,7 @@ const App = () => {
             <View style={[styles.modal_body]}>
               <Text style={[styles.text_body]}>
                 Phiên bản v{versionNew} đã có sẵn. Vui lòng cập nhật để có trải
-                nghiệm tốt nhất bằng cách đóng và trở lại ứng dụng, Cảm ơn quý
-                khách!
+                nghiệm tốt nhất. Cảm ơn quý khách!
               </Text>
             </View>
             <View style={[styles.modal_footer]}>
@@ -84,16 +73,16 @@ const App = () => {
                 Bỏ qua
               </Text>
               <Text
-                onPress={handleExitApp}
+                onPress={handleRedirectPlayStore}
                 style={[styles.text_footer, stylesStatus.confirmbgc]}>
-                Thoát
+                Cập nhật
               </Text>
             </View>
           </View>
         </View>
-      )} */}
+      )}
     </ProviderContext>
   );
 };
 
-export default codePush(CODE_PUSH_OPTIONS)(App);
+export default App;

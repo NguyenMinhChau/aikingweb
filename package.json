@@ -23,7 +23,6 @@
     "react": "18.1.0",
     "react-native": "0.70.5",
     "react-native-animated-progress": "^1.0.2",
-    "react-native-code-push": "^7.1.0",
     "react-native-device-info": "^10.4.0",
     "react-native-document-picker": "^8.1.2",
     "react-native-dotenv": "^3.4.2",
@@ -37,6 +36,7 @@
     "react-native-svg-uri": "^1.2.3",
     "react-native-time-date-picker": "^1.2.0",
     "react-native-vector-icons": "^9.2.0",
+    "react-native-version-check": "^3.4.7",
     "react-native-web-swiper": "^2.2.4",
     "socket.io-client": "^4.5.3"
   },
