@@ -32,6 +32,7 @@ import {
 import {formatVND, formatVNDCurency} from '../../utils/format/Money';
 import {
   userAddContractSV,
+  userGetAssetSV,
   userGetContractSV,
   userGetTotalMoneySV,
 } from '../../services/user';
@@ -57,6 +58,8 @@ const SendFunds = ({navigation}) => {
   const {state, dispatch} = useAppContext();
   const {
     currentUser,
+    dataContracts,
+    dataAssets,
     send_funds: {
       fund,
       send_time,
@@ -75,13 +78,14 @@ const SendFunds = ({navigation}) => {
   const [showEye, setShowEye] = useState(false);
   const [isModalSubmit, setIsModalSubmit] = useState(false);
   const [disbursement, setDisbursement] = useState(null);
-  const [dataContract, setDataContract] = useState(null);
+  // const [dataContract, setDataContract] = useState(null);
   const handleSendContract = dataToken => {
     userGetContractSV({
       id_user: currentUser?.id,
       toast,
-      setDataContract,
+      // setDataContract,
       token: dataToken?.token,
+      dispatch,
     });
   };
   const handleGetMoneySV = dataToken => {
@@ -95,10 +99,26 @@ const SendFunds = ({navigation}) => {
       token: dataToken?.token,
     });
   };
+  const handleSendAssets = dataToken => {
+    userGetAssetSV({
+      id_user: currentUser?.id,
+      token: dataToken?.token,
+      dispatch,
+      toast,
+    });
+  };
   useEffect(() => {
     requestRefreshToken(
       currentUser,
       handleSendContract,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
       state,
       dispatch,
       setCurrentUserPL,
@@ -140,8 +160,10 @@ const SendFunds = ({navigation}) => {
     );
   }, [setItem, useDebouncePeriod, useDebounceDeposits]);
   const DATA_MERGE =
-    dataContract &&
-    [...dataContract?.usd, ...dataContract?.agriculture]?.sort((a, b) => {
+    dataContracts &&
+    dataContracts?.usd &&
+    dataContracts?.agriculture &&
+    [...dataContracts?.usd, ...dataContracts?.agriculture]?.sort((a, b) => {
       return a?.id - b?.id;
     });
   const ID_FINAL = DATA_MERGE && DATA_MERGE[DATA_MERGE.length - 1]?.id;
@@ -151,6 +173,14 @@ const SendFunds = ({navigation}) => {
   };
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
     wait(2000).then(() => setRefreshing(false));
   }, []);
   const handleShowEye = () => {
@@ -221,6 +251,8 @@ const SendFunds = ({navigation}) => {
   const handleSetItem = item => {
     setSetItem(item);
   };
+  const totalAssets =
+    parseFloat(dataAssets?.fund_wallet) + 0 + parseFloat(dataAssets?.surplus);
   return (
     <>
       <ImageBackground
@@ -235,8 +267,14 @@ const SendFunds = ({navigation}) => {
             onTouchStart={handleShowEye}
             paddingHorizontal={15}
             navigation={navigation}
+            totalAssets={totalAssets || 0}
           />
-          <WelcomeHD showEye={showEye} />
+          <WelcomeHD
+            showEye={showEye}
+            walletFund={parseFloat(dataAssets?.fund_wallet) || 0}
+            walletInvestment={0}
+            surplus={parseFloat(dataAssets?.surplus) || 0}
+          />
           {!currentUser && <LoginRegisterHD navigation={navigation} />}
         </View>
       </ImageBackground>

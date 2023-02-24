@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import {
   Image,
@@ -8,7 +9,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './HomeCss';
 import {
   Footer,
@@ -22,12 +23,15 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import stylesGeneral from '../../styles/General';
 import {routersMain} from '../../routers/Main';
 import {useAppContext} from '../../utils';
-import {Toast} from 'native-base';
+import {Toast, useToast} from 'native-base';
 import {TOAST_COLOR_SUCCESS, WHITE_COLOR} from '../../styles/colors';
 import {formatUSDT} from '../../utils/format/Money';
 import Top from '../../HeaderStyles/Top';
 import WelcomeHD from '../../HeaderStyles/WelcomeHD';
 import LoginRegisterHD from '../../HeaderStyles/LoginRegisterHD';
+import {userGetAssetSV} from '../../services/user';
+import requestRefreshToken from '../../utils/axios/refreshToken';
+import {setCurrentUserPL} from '../../app/payloads/user';
 
 const images = [
   {
@@ -45,15 +49,33 @@ const images = [
 ];
 
 const Home = ({navigation}) => {
-  const {state} = useAppContext();
-  const {currentUser} = state;
+  const toast = useToast();
+  const {state, dispatch} = useAppContext();
+  const {currentUser, dataAssets} = state;
   const [isShowAssets, setIsShowAssets] = React.useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [showEye, setShowEye] = useState(false);
   const handleShowEye = () => {
     setShowEye(!showEye);
   };
-  // console.log('currentUser', currentUser);
+  const handleSendAssets = dataToken => {
+    userGetAssetSV({
+      id_user: currentUser?.id,
+      token: dataToken?.token,
+      dispatch,
+      toast,
+    });
+  };
+  useEffect(() => {
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
+  }, []);
   const handleShowAssest = () => {
     setIsShowAssets(!isShowAssets);
   };
@@ -62,6 +84,14 @@ const Home = ({navigation}) => {
   };
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
     wait(2000).then(() => setRefreshing(false));
   }, []);
   const showToast = () => {
@@ -79,6 +109,10 @@ const Home = ({navigation}) => {
       placement: 'top',
     });
   };
+  const totalAssets =
+    parseFloat(dataAssets?.fund_wallet) +
+    parseFloat(0) +
+    parseFloat(dataAssets?.surplus);
   return (
     <>
       <ImageBackground
@@ -88,8 +122,17 @@ const Home = ({navigation}) => {
         source={require('../../assets/images/bg-login.png')}
         resizeMode="cover">
         <View style={[styles.container_total]}>
-          <Top showEye={showEye} onTouchStart={handleShowEye} />
-          <WelcomeHD showEye={showEye} />
+          <Top
+            showEye={showEye}
+            onTouchStart={handleShowEye}
+            totalAssets={totalAssets || 0}
+          />
+          <WelcomeHD
+            showEye={showEye}
+            walletFund={parseFloat(dataAssets?.fund_wallet) || 0}
+            walletInvestment={0}
+            surplus={parseFloat(dataAssets?.surplus) || 0}
+          />
           {!currentUser && <LoginRegisterHD navigation={navigation} />}
         </View>
       </ImageBackground>

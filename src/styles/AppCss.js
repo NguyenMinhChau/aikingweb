@@ -2,6 +2,25 @@
 import {StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
+  image_loader: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  image_loader_item: {
+    width: 100,
+    height: 100,
+    marginVertical: 10,
+    borderRadius: 10,
+  },
+  text_loader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#ccc',
+    letterSpacing: 0.5,
+    lineHeight: 24,
+    fontStyle: 'italic',
+  },
   modal_container: {
     top: 0,
     left: 0,

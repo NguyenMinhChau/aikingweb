@@ -14,6 +14,8 @@ import {
   SET_SEND_FUNDS,
   SET_DATA_DEPOSITS_HISTORY,
   SET_DATA_WITHDRAWS_HISTORY,
+  SET_DATA_CONTRACTS,
+  SET_DATA_ASSETS,
 } from './actions';
 
 const initialState = {
@@ -22,6 +24,8 @@ const initialState = {
   tokenForgot: null,
   dataDepositsHistory: [],
   dataWithdrawsHistory: [],
+  dataContracts: [],
+  dataAssets: null,
   receivingAccount: {
     accountName: '',
     accountNumber: '',
@@ -149,6 +153,16 @@ const reducer = (state, action) => {
       return {
         ...state,
         dataWithdrawsHistory: action.payload,
+      };
+    case SET_DATA_CONTRACTS:
+      return {
+        ...state,
+        dataContracts: action.payload,
+      };
+    case SET_DATA_ASSETS:
+      return {
+        ...state,
+        dataAssets: action.payload,
       };
     default:
       break;

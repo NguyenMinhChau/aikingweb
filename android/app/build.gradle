@@ -139,8 +139,9 @@ android {
         applicationId "com.mobiletransactions"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 7
-        versionName "1.0"
+        versionCode 10
+        // playStore: 1.0 mỗi lần update playStore thì tăng cả version code/name
+        versionName "1.1"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
         if (isNewArchitectureEnabled()) {

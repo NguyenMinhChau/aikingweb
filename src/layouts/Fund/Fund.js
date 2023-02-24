@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
 import {ImageBackground, RefreshControl, Text, View} from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './FundCss';
-import {ScrollView} from 'native-base';
+import {ScrollView, useToast} from 'native-base';
 import {Footer, LoginRegisterAction, MenuItem} from '../../components';
 import {useAppContext} from '../../utils';
 import stylesGeneral from '../../styles/General';
@@ -10,22 +11,55 @@ import {routersMain} from '../../routers/Main';
 import Top from '../../HeaderStyles/Top';
 import WelcomeHD from '../../HeaderStyles/WelcomeHD';
 import LoginRegisterHD from '../../HeaderStyles/LoginRegisterHD';
+import {userGetAssetSV} from '../../services/user';
+import requestRefreshToken from '../../utils/axios/refreshToken';
+import {setCurrentUserPL} from '../../app/payloads/user';
 
 const Fund = ({navigation}) => {
-  const {state} = useAppContext();
-  const {currentUser} = state;
+  const toast = useToast();
+  const {state, dispatch} = useAppContext();
+  const {currentUser, dataAssets} = state;
   const [refreshing, setRefreshing] = useState(false);
   const [showEye, setShowEye] = useState(false);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
+  const handleSendAssets = dataToken => {
+    userGetAssetSV({
+      id_user: currentUser?.id,
+      token: dataToken?.token,
+      dispatch,
+      toast,
+    });
+  };
+  useEffect(() => {
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
+  }, []);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
     wait(2000).then(() => setRefreshing(false));
   }, []);
   const handleShowEye = () => {
     setShowEye(!showEye);
   };
+  const totalFund =
+    parseFloat(dataAssets?.sum_usd_contract) +
+    parseFloat(dataAssets?.sum_agriculture_contract);
   return (
     <>
       <ImageBackground
@@ -41,8 +75,16 @@ const Fund = ({navigation}) => {
             paddingHorizontal={15}
             navigation={navigation}
             fund
+            totalFund={totalFund}
           />
-          <WelcomeHD showEye={showEye} fund />
+          <WelcomeHD
+            showEye={showEye}
+            fund
+            totalFundInvestment={parseFloat(dataAssets?.sum_usd_contract) || 0}
+            totalFundAgricultural={
+              parseFloat(dataAssets?.sum_agriculture_contract) || 0
+            }
+          />
           {!currentUser && <LoginRegisterHD navigation={navigation} />}
         </View>
       </ImageBackground>

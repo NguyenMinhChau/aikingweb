@@ -11,20 +11,25 @@ import {BLACK_COLOR} from '../../styles/colors';
 import {dateFormat} from '../../utils/format/Date';
 import {toastShow} from '../../utils/toast';
 import {useToast} from 'native-base';
-import {userGetDisbursementByIdContractSV} from '../../services/user';
+import {
+  userCancelContractSV,
+  userGetDisbursementByIdContractSV,
+} from '../../services/user';
 import stylesGeneral from '../../styles/General';
 import {useAppContext} from '../../utils';
+import requestRefreshToken from '../../utils/axios/refreshToken';
+import {setCurrentUserPL} from '../../app/payloads/user';
 
 const UsdInvestmentFund = ({data}) => {
   const toast = useToast();
-  const {state} = useAppContext();
+  const {state, dispatch} = useAppContext();
   const {currentUser} = state;
   const [refreshing, setRefreshing] = useState(false);
   const [isModalDetail, setIsModalDetail] = useState(false);
   const [isProcessModal, setIsProcessModal] = useState(false);
   const [itemFund, setItemFund] = useState(null);
   const [disbursement, setDisbursement] = useState([]);
-  let data_usd = data?.usd.sort((a, b) => b?.id - a?.id);
+  let data_usd = data?.usd?.sort((a, b) => b?.id - a?.id);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
@@ -32,17 +37,29 @@ const UsdInvestmentFund = ({data}) => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
   }, []);
+  const handleCancelContractSV = (dataToken, id) => {
+    userCancelContractSV({
+      id_contract: id,
+      id_user: currentUser?.id,
+      toast,
+      token: dataToken?.token,
+      setIsProcessModal,
+      setIsModalDetail,
+      dispatch,
+    });
+  };
   const handleCancelContract = async id => {
     await 1;
     setIsProcessModal(true);
-    setTimeout(() => {
-      setIsProcessModal(false);
-      setIsModalDetail(false);
-      toastShow(
-        toast,
-        `Hủy hợp đồng với id = ${id}, chức năng đang được phát triển!`,
-      );
-    }, 3000);
+    requestRefreshToken(
+      currentUser,
+      handleCancelContractSV,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+      id,
+    );
   };
   useEffect(() => {
     data_usd?.map(item => {
@@ -72,7 +89,6 @@ const UsdInvestmentFund = ({data}) => {
       }
     }
   }
-  // console.log('data_usd', data_usd);
   const colorStatus = item => {
     switch (item?.status) {
       case 'Completed':
@@ -96,7 +112,7 @@ const UsdInvestmentFund = ({data}) => {
         }
         style={[styles.container]}>
         <Text style={[styles.text_total]}>
-          Tổng số: {data_usd?.length} quỹ đầu tư USD
+          Tổng số: {data_usd?.length || 0} quỹ đầu tư USD
         </Text>
         {data_usd?.length > 0 ? (
           data_usd?.map((item, index) => {
@@ -131,7 +147,9 @@ const UsdInvestmentFund = ({data}) => {
                   </Text>
                 </View>
                 <Text style={[styles.disbursement, stylesStatus.cancel]}>
-                  {formatVNDCurency(item?.disbursement)}
+                  {item?.disbursement
+                    ? formatVNDCurency(item?.disbursement)
+                    : 'Đang tải...'}
                 </Text>
               </View>
             );

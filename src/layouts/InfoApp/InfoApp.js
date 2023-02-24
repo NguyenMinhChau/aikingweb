@@ -45,38 +45,40 @@ const InfoApp = () => {
       }
       style={[styles.container]}>
       <View style={[styles.item_container]}>
-        <View style={[styles.image_container]}>
+        <View style={[styles.content_container]}>
           <Image
             style={[styles.image_item]}
             source={require('../../assets/images/logo.png')}
             resizeMode="contain"
           />
-        </View>
-        <View style={[styles.info_container]}>
-          <Text style={[styles.text_version]}>
-            Phiên bản:{' '}
-            <Text style={[stylesGeneral.fwbold, stylesStatus.confirm]}>
-              v{DeviceInfo.getVersion()}
+          <View style={[styles.info_container]}>
+            <Text style={[styles.text_version]}>
+              Phiên bản:{' '}
+              <Text style={[stylesGeneral.fwbold, stylesStatus.confirm]}>
+                {DeviceInfo.getVersion()}
+              </Text>
             </Text>
-          </Text>
-          {versionNew ? (
-            <>
+            {versionNew ? (
               <Text style={[styles.text_version]}>
                 Đã có phiên bản mới:{' '}
                 <Text style={[stylesGeneral.fwbold, stylesStatus.complete]}>
-                  v{versionNew}
+                  {versionNew}
                 </Text>
               </Text>
-              <Text
-                style={[styles.btn_update, stylesStatus.confirmbgcbold]}
-                onPress={handleRedirectPlayStore}>
-                Cập nhật
+            ) : (
+              <Text style={[styles.text_version]}>
+                Đã là phiên bản mới nhất
               </Text>
-            </>
-          ) : (
-            <Text style={[styles.text_version]}>Đã là phiên bản mới nhất</Text>
-          )}
+            )}
+          </View>
         </View>
+        {versionNew && (
+          <Text
+            style={[styles.btn_update, stylesStatus.confirmbgcbold]}
+            onPress={handleRedirectPlayStore}>
+            Cập nhật
+          </Text>
+        )}
       </View>
       <Footer />
     </ScrollView>

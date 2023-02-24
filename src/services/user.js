@@ -13,6 +13,8 @@ import {
   setDepositsHistoryPL,
   setWithdrawsHistoryPL,
 } from '../app/payloads/history';
+import {setDataContractPL} from '../app/payloads/contracts';
+import {setDataAssetsPL} from '../app/payloads/assets';
 
 // FORGOT PASSWORD USER
 export const userForgotPwdSV = async (props = {}) => {
@@ -525,7 +527,7 @@ export const userAddContractSV = async (props = {}) => {
 };
 // GET CONTRACT
 export const userGetContractSV = async (props = {}) => {
-  const {toast, token, id_user, setDataContract} = props;
+  const {toast, token, id_user, dispatch} = props;
   const resGet = await userGet(`contract/${id_user}`, {
     headers: {
       token: token,
@@ -534,7 +536,7 @@ export const userGetContractSV = async (props = {}) => {
   // console.log('userGetContractSV: ', resGet);
   switch (resGet.code) {
     case 0:
-      setDataContract(resGet?.data);
+      dispatch(setDataContractPL(resGet?.data));
       break;
     case 1:
     case 2:
@@ -569,6 +571,50 @@ export const userGetDisbursementByIdContractSV = async (props = {}) => {
       break;
   }
 };
+// HỦY HỢP ĐỒNG
+export const userCancelContractSV = async (props = {}) => {
+  const {
+    id_contract,
+    id_user,
+    toast,
+    token,
+    setIsProcessModal,
+    setIsModalDetail,
+    dispatch,
+  } = props;
+  const resPost = await userPost(`destroy/contract/${id_contract}`, {
+    token: token,
+    headers: {
+      token: token,
+    },
+  });
+  // console.log('userCancelContractSV: ', resPost);
+  switch (resPost.code) {
+    case 0:
+      const resGet = await userGet(`contract/${id_user}`, {
+        headers: {
+          token: token,
+        },
+      });
+      dispatch(setDataContractPL(resGet?.data));
+      setIsProcessModal(false);
+      setIsModalDetail(false);
+      toastShow(
+        toast,
+        'Hủy hợp đồng thành công. Vui lòng chờ admin xét duyệt.',
+      );
+      break;
+    case 1:
+    case 2:
+    case 304:
+    case 500:
+      setIsProcessModal(false);
+      toastShow(toast, `Hủy hợp đồng thất bại thất bại. ${resPost?.message}`);
+      break;
+    default:
+      break;
+  }
+};
 // UPLOAD LICENSE USER
 export const userUploadLicenseSV = async (props = {}) => {
   const {id_user, navigation, token, toast, imageForm, setIsProcess} = props;
@@ -578,13 +624,21 @@ export const userUploadLicenseSV = async (props = {}) => {
     imageLicenseFont: imageForm[2],
     imageLicenseBeside: imageForm[3],
   };
-  const resPut = await userPut(`image/${id_user}`, {
-    ...object,
-    token: token,
-    headers: {
+  const resPut = await userPut(
+    `image/${id_user}`,
+    {
+      ...object,
       token: token,
+      headers: {
+        token: token,
+      },
     },
-  });
+    {
+      headers: {
+        token: token,
+      },
+    },
+  );
   // console.log('userUploadLicenseSV: ', resPut);
   switch (resPut.code) {
     case 0:
@@ -600,6 +654,35 @@ export const userUploadLicenseSV = async (props = {}) => {
       toastShow(
         toast,
         'Cập nhật giấy tờ thất bại. Vui lòng chọn lại tất cả 4 ảnh để cập nhật, xin cảm ơn!',
+        'error',
+        5000,
+      );
+      break;
+    default:
+      break;
+  }
+};
+// LẤY TÀI SẢN
+export const userGetAssetSV = async (props = {}) => {
+  const {id_user, token, toast, dispatch} = props;
+  const resGet = await userGet(`total/assets/${id_user}`, {
+    token: token,
+    headers: {
+      token: token,
+    },
+  });
+  // console.log('userGetAssetSV: ', resGet);
+  switch (resGet.code) {
+    case 0:
+      dispatch(setDataAssetsPL(resGet?.data));
+      break;
+    case 1:
+    case 2:
+    case 304:
+    case 500:
+      toastShow(
+        toast,
+        `Tải tài sản thất bại. ${resGet?.message}`,
         'error',
         5000,
       );

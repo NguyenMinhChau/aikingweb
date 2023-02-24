@@ -20,7 +20,7 @@ const requestRefreshToken = async (
       const date = new Date();
       if (decodedToken.exp < date.getTime() / 1000) {
         const res = await refreshToken(`refreshToken/${currentUser?.id}`);
-        console.log('refreshToken', res);
+        // console.log('refreshToken', res);
         if (res.code === 0) {
           const refreshUser = {
             ...currentUser,

@@ -1,7 +1,9 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, RefreshControl, Image} from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useState, useEffect} from 'react';
 import styles from './ProfileCss';
 import {ScrollView, useToast} from 'native-base';
 import {
@@ -28,23 +30,55 @@ import {toastShow} from '../../utils/toast';
 import stylesGeneral from '../../styles/General';
 import {formatVND} from '../../utils/format/Money';
 import {authLogoutSV} from '../../services/authen';
+import stylesStatus from '../../styles/Status';
+import {userGetAssetSV} from '../../services/user';
+import requestRefreshToken from '../../utils/axios/refreshToken';
+import {setCurrentUserPL} from '../../app/payloads/user';
 
 const Profile = ({navigation}) => {
   const toast = useToast();
   const [refreshing, setRefreshing] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showMoney, setShowMoney] = useState(false);
+  const [authemEmail, setAuthemEmail] = useState(true);
   const [isProcessOTP, setIsProcessOTP] = useState(false);
   const {state, dispatch} = useAppContext();
   const {
     currentUser,
+    dataAssets,
     form: {otpCode},
   } = state;
+  const handleSendAssets = dataToken => {
+    userGetAssetSV({
+      id_user: currentUser?.id,
+      token: dataToken?.token,
+      dispatch,
+      toast,
+    });
+  };
+  useEffect(() => {
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
+  }, []);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
     wait(2000).then(() => setRefreshing(false));
   }, []);
   const handleChange = (name, value) => {
@@ -106,6 +140,10 @@ const Profile = ({navigation}) => {
     });
   };
   const uriImage = require('../../assets/images/ProvidentFundLogo.png');
+  const totalAssets =
+    parseFloat(dataAssets?.fund_wallet) +
+    parseFloat(0) +
+    parseFloat(dataAssets?.surplus);
   return (
     <ScrollView
       style={[styles.container]}
@@ -137,9 +175,23 @@ const Profile = ({navigation}) => {
                   />
                 </View>
                 <View
-                  style={[styles.authen_btn, stylesGeneral.mt10]}
-                  onTouchStart={() => setShowModal(true)}>
-                  <Text style={[styles.authen_text]}>Xác thực ngay</Text>
+                  style={[
+                    styles.authen_btn,
+                    stylesGeneral.mt10,
+                    authemEmail
+                      ? stylesStatus.completebgc
+                      : stylesStatus.cancelbgc,
+                  ]}
+                  onTouchStart={
+                    authemEmail ? () => {} : () => setShowModal(true)
+                  }>
+                  <Text
+                    style={[
+                      styles.authen_text,
+                      authemEmail ? stylesStatus.complete : stylesStatus.cancel,
+                    ]}>
+                    {authemEmail ? 'Đã xác thực' : 'Xác thực ngay'}
+                  </Text>
                 </View>
                 <ModalAuthenPhone
                   stateModal={showModal}
@@ -155,7 +207,7 @@ const Profile = ({navigation}) => {
           <View style={[styles.item_container]}>
             <RowDetail
               title="Tổng tài sản"
-              text={showMoney ? formatVND(currentUser?.balance) : '*****₫'}
+              text={showMoney ? formatVND(totalAssets) : '*****₫'}
               nameIconFront="hand-holding-usd"
               colorIconFront={PRIMARY_COLOR}
               styleDesc={{flex: 1, textAlign: 'right', color: PRIMARY_COLOR}}

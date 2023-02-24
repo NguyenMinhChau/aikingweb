@@ -11,20 +11,25 @@ import {toastShow} from '../../utils/toast';
 import {ModalCp, RowDetail} from '../../components';
 import {BLACK_COLOR} from '../../styles/colors';
 import {dateFormat} from '../../utils/format/Date';
-import {userGetDisbursementByIdContractSV} from '../../services/user';
+import {
+  userCancelContractSV,
+  userGetDisbursementByIdContractSV,
+} from '../../services/user';
 import stylesGeneral from '../../styles/General';
 import {useAppContext} from '../../utils';
+import requestRefreshToken from '../../utils/axios/refreshToken';
+import {setCurrentUserPL} from '../../app/payloads/user';
 
 const AgriculturalDevelopmentFund = ({data}) => {
   const toast = useToast();
-  const {state} = useAppContext();
+  const {state, dispatch} = useAppContext();
   const {currentUser} = state;
   const [refreshing, setRefreshing] = useState(false);
   const [isModalDetail, setIsModalDetail] = useState(false);
   const [isProcessModal, setIsProcessModal] = useState(false);
   const [itemFund, setItemFund] = useState(null);
   const [disbursement, setDisbursement] = useState([]);
-  let data_agriculture = data?.agriculture.sort((a, b) => b?.id - a?.id);
+  let data_agriculture = data?.agriculture?.sort((a, b) => b?.id - a?.id);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
@@ -75,17 +80,29 @@ const AgriculturalDevelopmentFund = ({data}) => {
         return 'confirm';
     }
   };
+  const handleCancelContractSV = (dataToken, id) => {
+    userCancelContractSV({
+      id_contract: id,
+      id_user: currentUser?.id,
+      toast,
+      token: dataToken?.token,
+      setIsProcessModal,
+      setIsModalDetail,
+      dispatch,
+    });
+  };
   const handleCancelContract = async id => {
     await 1;
     setIsProcessModal(true);
-    setTimeout(() => {
-      setIsProcessModal(false);
-      setIsModalDetail(false);
-      toastShow(
-        toast,
-        `Hủy hợp đồng với id = ${id}, chức năng đang được phát triển!`,
-      );
-    }, 3000);
+    requestRefreshToken(
+      currentUser,
+      handleCancelContractSV,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+      id,
+    );
   };
   return (
     <>
@@ -96,7 +113,7 @@ const AgriculturalDevelopmentFund = ({data}) => {
         }
         style={[styles.container]}>
         <Text style={[styles.text_total]}>
-          Tổng số: {data_agriculture?.length} quỹ phát triển nông nghiệp
+          Tổng số: {data_agriculture?.length || 0} quỹ phát triển nông nghiệp
         </Text>
         {data_agriculture?.length > 0 ? (
           data_agriculture?.map((item, index) => {
@@ -131,7 +148,9 @@ const AgriculturalDevelopmentFund = ({data}) => {
                   </Text>
                 </View>
                 <Text style={[styles.disbursement, stylesStatus.cancel]}>
-                  {formatVNDCurency(item?.disbursement)}
+                  {item?.disbursement
+                    ? formatVNDCurency(item?.disbursement)
+                    : 'Đang tải...'}
                 </Text>
               </View>
             );

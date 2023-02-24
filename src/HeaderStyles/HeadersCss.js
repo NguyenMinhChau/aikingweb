@@ -97,6 +97,8 @@ export default StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
+    // marginVertical: 10,
   },
   Total_capital_text: {
     fontSize: 14,
@@ -111,6 +113,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: WHITE_COLOR,
     fontFamily: PRIMARY_FONT_ANDROID,
+    textAlign: 'center',
   },
   Total_capital_number_curency: {
     fontSize: 12,
@@ -125,7 +128,8 @@ export default StyleSheet.create({
     width: '100%',
     marginTop: 15,
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
   },
 });

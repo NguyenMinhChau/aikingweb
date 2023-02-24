@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
   },
   container_total: {
-    justifyContent:'center',
+    justifyContent: 'center',
     alignItems: 'center',
     paddingVertical: 15,
     paddingHorizontal: 15,

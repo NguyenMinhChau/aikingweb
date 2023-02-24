@@ -1,13 +1,17 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
 import {Text, RefreshControl, View, Image, ImageBackground} from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './InterestRateTableCss';
-import {ScrollView} from 'native-base';
+import {ScrollView, useToast} from 'native-base';
 import {Footer} from '../../components';
 import Top from '../../HeaderStyles/Top';
 import WelcomeHD from '../../HeaderStyles/WelcomeHD';
 import LoginRegisterHD from '../../HeaderStyles/LoginRegisterHD';
 import {useAppContext} from '../../utils';
+import {userGetAssetSV} from '../../services/user';
+import requestRefreshToken from '../../utils/axios/refreshToken';
+import {setCurrentUserPL} from '../../app/payloads/user';
 
 const LIST_TABS = [
   {
@@ -23,21 +27,52 @@ const LIST_TABS = [
 ];
 
 const InterestRateTable = ({navigation}) => {
-  const {state} = useAppContext();
-  const {currentUser} = state;
+  const toast = useToast();
+  const {state, dispatch} = useAppContext();
+  const {currentUser, dataAssets} = state;
   const [refreshing, setRefreshing] = useState(false);
   const [showEye, setShowEye] = useState(false);
   const [isTab, setIsTab] = useState(1);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
+  const handleSendAssets = dataToken => {
+    userGetAssetSV({
+      id_user: currentUser?.id,
+      token: dataToken?.token,
+      dispatch,
+      toast,
+    });
+  };
+  useEffect(() => {
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
+  }, []);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
     wait(2000).then(() => setRefreshing(false));
   }, []);
   const handleShowEye = () => {
     setShowEye(!showEye);
   };
+  const totalAssets =
+    parseFloat(dataAssets?.fund_wallet) +
+    parseFloat(0) +
+    parseFloat(dataAssets?.surplus);
   return (
     <>
       <ImageBackground
@@ -52,8 +87,14 @@ const InterestRateTable = ({navigation}) => {
             onTouchStart={handleShowEye}
             paddingHorizontal={15}
             navigation={navigation}
+            totalAssets={totalAssets || 0}
           />
-          <WelcomeHD showEye={showEye} />
+          <WelcomeHD
+            showEye={showEye}
+            walletFund={parseFloat(dataAssets?.fund_wallet) || 0}
+            walletInvestment={0}
+            surplus={parseFloat(dataAssets?.surplus) || 0}
+          />
           {!currentUser && <LoginRegisterHD navigation={navigation} />}
         </View>
       </ImageBackground>

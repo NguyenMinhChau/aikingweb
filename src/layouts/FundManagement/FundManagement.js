@@ -11,7 +11,7 @@ import Top from '../../HeaderStyles/Top';
 import WelcomeHD from '../../HeaderStyles/WelcomeHD';
 import LoginRegisterHD from '../../HeaderStyles/LoginRegisterHD';
 import {useAppContext} from '../../utils';
-import {userGetContractSV} from '../../services/user';
+import {userGetAssetSV, userGetContractSV} from '../../services/user';
 import requestRefreshToken from '../../utils/axios/refreshToken';
 import {setCurrentUserPL} from '../../app/payloads/user';
 
@@ -31,25 +31,28 @@ const LIST_TABS = [
 const FundManagement = ({navigation}) => {
   const toast = useToast();
   const {state, dispatch} = useAppContext();
-  const {currentUser} = state;
+  const {currentUser, dataContracts, dataAssets} = state;
   // console.log('currentUser', currentUser);
   const [refreshing, setRefreshing] = useState(false);
   const [isTab, setIsTab] = useState(1);
   const [showEye, setShowEye] = useState(false);
-  const [dataContract, setDataContract] = useState(null);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
-  const onRefresh = useCallback(() => {
-    setRefreshing(true);
-    wait(2000).then(() => setRefreshing(false));
-  }, []);
   const handleSendContract = dataToken => {
     userGetContractSV({
       id_user: currentUser?.id,
       toast,
-      setDataContract,
+      dispatch,
       token: dataToken?.token,
+    });
+  };
+  const handleSendAssets = dataToken => {
+    userGetAssetSV({
+      id_user: currentUser?.id,
+      token: dataToken?.token,
+      dispatch,
+      toast,
     });
   };
   useEffect(() => {
@@ -61,10 +64,41 @@ const FundManagement = ({navigation}) => {
       setCurrentUserPL,
       toast,
     );
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    requestRefreshToken(
+      currentUser,
+      handleSendContract,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
+    requestRefreshToken(
+      currentUser,
+      handleSendAssets,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
+    wait(2000).then(() => setRefreshing(false));
   }, []);
   const handleShowEye = () => {
     setShowEye(!showEye);
   };
+  const totalAssets =
+    parseFloat(dataAssets?.fund_wallet) + 0 + parseFloat(dataAssets?.surplus);
   return (
     <>
       <ImageBackground
@@ -79,8 +113,14 @@ const FundManagement = ({navigation}) => {
             onTouchStart={handleShowEye}
             paddingHorizontal={15}
             navigation={navigation}
+            totalAssets={totalAssets || 0}
           />
-          <WelcomeHD showEye={showEye} />
+          <WelcomeHD
+            showEye={showEye}
+            walletFund={parseFloat(dataAssets?.fund_wallet) || 0}
+            walletInvestment={0}
+            surplus={parseFloat(dataAssets?.surplus) || 0}
+          />
           {!currentUser && <LoginRegisterHD navigation={navigation} />}
         </View>
       </ImageBackground>
@@ -112,7 +152,7 @@ const FundManagement = ({navigation}) => {
           {LIST_TABS.map((Item, index) => {
             return (
               isTab === Item?.id && (
-                <Item.component key={index} data={dataContract} />
+                <Item.component key={index} data={dataContracts} />
               )
             );
           })}

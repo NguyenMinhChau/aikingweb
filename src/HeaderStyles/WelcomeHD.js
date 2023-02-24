@@ -5,6 +5,7 @@ import React from 'react';
 import styles from './HeadersCss';
 import {useAppContext} from '../utils';
 import {formatVND} from '../utils/format/Money';
+import stylesStatus from '../styles/Status';
 
 const WelcomeHD = ({
   showEye,
@@ -31,7 +32,7 @@ const WelcomeHD = ({
             <View style={[styles.Total_capital_container_list]}>
               <View style={[styles.Total_capital_container]}>
                 <Text style={[styles.Total_capital_text]}>Tổng đầu tư USD</Text>
-                <Text style={[styles.Total_capital_number]}>
+                <Text style={[styles.Total_capital_number, stylesStatus.vip]}>
                   {showEye ? formatVND(totalFundInvestment) : '*****₫'}{' '}
                   <Text style={[styles.Total_capital_number_curency]}></Text>
                 </Text>
@@ -40,7 +41,8 @@ const WelcomeHD = ({
                 <Text style={[styles.Total_capital_text]}>
                   Quỹ phát triển nông nghiệp
                 </Text>
-                <Text style={[styles.Total_capital_number]}>
+                <Text
+                  style={[styles.Total_capital_number, stylesStatus.complete]}>
                   {showEye ? formatVND(totalFundAgricultural) : '*****₫'}{' '}
                   <Text style={[styles.Total_capital_number_curency]}></Text>
                 </Text>
@@ -50,7 +52,7 @@ const WelcomeHD = ({
             <View style={[styles.Total_capital_container_list]}>
               <View style={[styles.Total_capital_container]}>
                 <Text style={[styles.Total_capital_text]}>Ví quỹ</Text>
-                <Text style={[styles.Total_capital_number]}>
+                <Text style={[styles.Total_capital_number, stylesStatus.vip]}>
                   {showEye ? formatVND(walletFund) : '*****₫'}{' '}
                   <Text style={[styles.Total_capital_number_curency]}></Text>
                 </Text>
@@ -64,7 +66,8 @@ const WelcomeHD = ({
               </View>
               <View style={[styles.Total_capital_container]}>
                 <Text style={[styles.Total_capital_text]}>Số dư</Text>
-                <Text style={[styles.Total_capital_number]}>
+                <Text
+                  style={[styles.Total_capital_number, stylesStatus.complete]}>
                   {showEye ? formatVND(surplus) : '*****₫'}{' '}
                   <Text style={[styles.Total_capital_number_curency]}></Text>
                 </Text>
