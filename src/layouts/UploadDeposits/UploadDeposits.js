@@ -23,6 +23,7 @@ import {
 import requestRefreshToken from '../../utils/axios/refreshToken';
 import {setCurrentUserPL} from '../../app/payloads/user';
 import {URL_SERVER} from '@env';
+import Clipboard from '@react-native-community/clipboard';
 
 const UploadDeposits = ({navigation, route}) => {
   const toast = useToast();
@@ -110,6 +111,10 @@ const UploadDeposits = ({navigation, route}) => {
         return 'confirm';
     }
   };
+  const copyToClipboard = value => {
+    Clipboard.setString(value);
+    toastShow(toast, 'Sao chép thành công.');
+  };
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -122,6 +127,7 @@ const UploadDeposits = ({navigation, route}) => {
           title="Trạng thái"
           text={data?.status}
           marginLeft={0}
+          marginRight={8}
           colorIconFront={PRIMARY_COLOR}
           styleDesc={{flex: 1, textAlign: 'right', color: PRIMARY_COLOR}}
           colorStatus={colorStatus(data)}
@@ -130,6 +136,7 @@ const UploadDeposits = ({navigation, route}) => {
           title="Ngày tạo"
           text={dateFormat(data?.createdAt, 'DD/MM/YYYY HH:mm:ss')}
           marginLeft={0}
+          marginRight={8}
           colorIconFront={PRIMARY_COLOR}
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           marginTop={10}
@@ -138,6 +145,7 @@ const UploadDeposits = ({navigation, route}) => {
           title="Số tiền nạp"
           text={formatVND(data?.amount)}
           marginLeft={0}
+          marginRight={8}
           colorIconFront={PRIMARY_COLOR}
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           marginTop={10}
@@ -145,6 +153,7 @@ const UploadDeposits = ({navigation, route}) => {
         <RowDetail
           title="Ngân hàng thụ hưởng"
           marginLeft={0}
+          marginRight={8}
           colorIconFront={PRIMARY_COLOR}
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           marginTop={10}
@@ -152,6 +161,9 @@ const UploadDeposits = ({navigation, route}) => {
           nameBank={itemBank?.name}
           accountNumber={itemBank?.accountNumber}
           accountName={itemBank?.accountName}
+          maxWidth={100}
+          copy
+          funcCopy={copyToClipboard}
         />
         <View
           style={[styles.btn_upload_container, stylesStatus.primarybgcbold]}

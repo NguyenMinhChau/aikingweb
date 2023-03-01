@@ -26,6 +26,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
     marginVertical: 0,
   },
+  text_copy: {
+    fontSize: 16,
+  },
 });
 
 export default styles;

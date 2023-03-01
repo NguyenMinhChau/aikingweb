@@ -24,11 +24,15 @@ export default function RowDetail({
   onTouchStart,
   marginTop,
   marginLeft,
+  marginRight,
   urlLink,
   bankMethod,
   nameBank,
   accountNumber,
   accountName,
+  copy,
+  funcCopy,
+  maxWidth,
 }) {
   // const toast = useToast();
   const handlePress = async () => {
@@ -63,7 +67,14 @@ export default function RowDetail({
           <FontAwesome5 name={nameIconFront} size={20} color={colorIconFront} />
         )}
         <Text
-          style={[styles.info_detail_title, {marginLeft: marginLeft}]}
+          style={[
+            styles.info_detail_title,
+            {
+              marginLeft: marginLeft,
+              maxWidth: maxWidth,
+              marginRight: marginRight,
+            },
+          ]}
           onTouchStart={eye ? onTouchStartEye : () => {}}>
           {title}{' '}
           {eye && (
@@ -111,6 +122,20 @@ export default function RowDetail({
                 stylesGeneral.text_right,
               ]}>
               {accountNumber}
+              {copy && (
+                <>
+                  {' | '}
+                  <Text
+                    style={[
+                      styles.text_copy,
+                      stylesStatus.confirm,
+                      stylesGeneral.fwbold,
+                    ]}
+                    onPress={() => funcCopy(accountNumber)}>
+                    Sao chép
+                  </Text>
+                </>
+              )}
             </Text>
           </View>
         )}

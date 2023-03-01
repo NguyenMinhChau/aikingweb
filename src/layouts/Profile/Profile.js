@@ -215,6 +215,7 @@ const Profile = ({navigation}) => {
               showEye={showMoney}
               onTouchStartEye={() => setShowMoney(!showMoney)}
               marginLeft={10}
+              marginRight={8}
             />
             <RowDetail
               title="Tài khoản nhận tiền"
@@ -226,6 +227,7 @@ const Profile = ({navigation}) => {
               nameIconFront="money-check"
               colorIconFront={COMPLETE_COLOR}
               marginLeft={10}
+              marginRight={8}
             />
             <RowDetail
               title="Giấy phép lái xe/CCCD"
@@ -238,6 +240,7 @@ const Profile = ({navigation}) => {
               nameIconFront="id-badge"
               colorIconFront={VIP_COLOR}
               marginLeft={20}
+              marginRight={8}
             />
           </View>
           <View style={[styles.item_container]}>
@@ -249,6 +252,7 @@ const Profile = ({navigation}) => {
               nameIconFront="sync-alt"
               colorIconFront={PRIMARY_COLOR}
               marginLeft={10}
+              marginRight={8}
             />
             <RowDetail
               title="Tài khoản liên kết"
@@ -261,6 +265,7 @@ const Profile = ({navigation}) => {
               marginTop={10}
               noneBorderBottom
               marginLeft={10}
+              marginRight={8}
             />
           </View>
         </>
@@ -276,6 +281,7 @@ const Profile = ({navigation}) => {
           nameIconFront="swatchbook"
           colorIconFront={PRIMARY_COLOR}
           marginLeft={10}
+          marginRight={8}
         />
         <RowDetail
           title="Mời bạn bè"
@@ -287,6 +293,7 @@ const Profile = ({navigation}) => {
           colorIconFront={VIP_COLOR}
           marginTop={10}
           marginLeft={10}
+          marginRight={8}
         />
         <RowDetail
           title="Hoa hồng cho nhà đầu tư"
@@ -298,6 +305,7 @@ const Profile = ({navigation}) => {
           colorIconFront={CANCEL_COLOR}
           marginTop={10}
           marginLeft={10}
+          marginRight={8}
         />
         <RowDetail
           title="Aiking.com trên website"
@@ -309,6 +317,7 @@ const Profile = ({navigation}) => {
           colorIconFront={PRIMARY_COLOR}
           marginTop={10}
           marginLeft={10}
+          marginRight={8}
         />
         <RowDetail
           title="Hướng dẫn sử dụng"
@@ -320,6 +329,7 @@ const Profile = ({navigation}) => {
           colorIconFront={PRIMARY_COLOR}
           marginTop={10}
           marginLeft={10}
+          marginRight={8}
         />
         <RowDetail
           title="CSKH"
@@ -330,6 +340,7 @@ const Profile = ({navigation}) => {
           colorIconFront={PRIMARY_COLOR}
           marginTop={10}
           marginLeft={10}
+          marginRight={8}
         />
         <RowDetail
           title="Thông tin ứng dụng"
@@ -341,6 +352,7 @@ const Profile = ({navigation}) => {
           marginTop={10}
           marginLeft={10}
           noneBorderBottom
+          marginRight={8}
         />
       </View>
       {currentUser ? (

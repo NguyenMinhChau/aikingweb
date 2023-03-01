@@ -44,6 +44,7 @@ const CustomerCare = ({navigation}) => {
           marginTop={10}
           nameIconFront="phone"
           marginLeft={10}
+          marginRight={8}
         />
         <RowDetail
           title="Zalo"
@@ -53,6 +54,7 @@ const CustomerCare = ({navigation}) => {
           marginTop={10}
           nameIconFront="comment"
           marginLeft={10}
+          marginRight={8}
         />
         <RowDetail
           title="Facebook"
@@ -62,6 +64,7 @@ const CustomerCare = ({navigation}) => {
           nameIconFront="facebook-square"
           styleDesc={{flex: 1, textAlign: 'right', color: PRIMARY_COLOR}}
           marginTop={10}
+          marginRight={8}
           marginLeft={10}
         />
         <RowDetail
@@ -73,6 +76,7 @@ const CustomerCare = ({navigation}) => {
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           noneBorderBottom
           marginTop={10}
+          marginRight={8}
         />
         <Text style={[styles.text_footer]}>
           AIKING INVESTMENT chân thành cảm ơn quý nhà Đầu tư.

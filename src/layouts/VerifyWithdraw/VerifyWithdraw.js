@@ -9,6 +9,7 @@ import {
   View,
 } from 'react-native';
 import React, {useCallback, useState} from 'react';
+import Clipboard from '@react-native-community/clipboard';
 import styles from './VerifyWithdrawCss';
 import {ScrollView, useToast} from 'native-base';
 import {Footer, InputItem, RowDetail} from '../../components';
@@ -142,6 +143,10 @@ const VerifyWithdraw = ({navigation, route}) => {
       id,
     );
   };
+  const copyToClipboard = value => {
+    Clipboard.setString(value);
+    toastShow(toast, 'Sao chép thành công.');
+  };
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -154,6 +159,7 @@ const VerifyWithdraw = ({navigation, route}) => {
           title="Trạng thái"
           text={data?.data?.status}
           marginLeft={0}
+          marginRight={8}
           colorIconFront={PRIMARY_COLOR}
           styleDesc={{flex: 1, textAlign: 'right', color: PRIMARY_COLOR}}
         />
@@ -161,6 +167,7 @@ const VerifyWithdraw = ({navigation, route}) => {
           title="Ngày tạo"
           text={dateFormat(data?.data?.createdAt, 'DD/MM/YYYY HH:mm:ss')}
           marginLeft={0}
+          marginRight={8}
           colorIconFront={PRIMARY_COLOR}
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           marginTop={10}
@@ -169,6 +176,7 @@ const VerifyWithdraw = ({navigation, route}) => {
           title="Số tiền rút"
           text={formatVND(data?.data?.amount)}
           marginLeft={0}
+          marginRight={8}
           colorIconFront={PRIMARY_COLOR}
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           marginTop={10}
@@ -176,6 +184,7 @@ const VerifyWithdraw = ({navigation, route}) => {
         <RowDetail
           title="Ngân hàng thụ hưởng"
           marginLeft={0}
+          marginRight={8}
           colorIconFront={PRIMARY_COLOR}
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           marginTop={10}
@@ -183,6 +192,9 @@ const VerifyWithdraw = ({navigation, route}) => {
           nameBank={data?.bankName}
           accountNumber={data?.accountNumber}
           accountName={data?.accountName}
+          maxWidth={100}
+          copy
+          funcCopy={copyToClipboard}
         />
         <InputItem
           label="OTP"
