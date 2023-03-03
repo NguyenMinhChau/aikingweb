@@ -43,11 +43,11 @@ const UploadDocument = ({navigation}) => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
   const handleSelectCCCDFront = async () => {
-    await ImagePicker.openCamera({
-      width: 300,
+    await ImagePicker.openPicker({
+      width: 500,
       height: 400,
       cropping: true,
-      compressImageQuality: 0.7,
+      compressImageQuality: 1,
       includeBase64: true,
     }).then(image => {
       const object = {
@@ -63,11 +63,11 @@ const UploadDocument = ({navigation}) => {
     });
   };
   const handleSelectCCCDBack = async () => {
-    await ImagePicker.openCamera({
-      width: 300,
+    await ImagePicker.openPicker({
+      width: 500,
       height: 400,
       cropping: true,
-      compressImageQuality: 0.7,
+      compressImageQuality: 1,
       includeBase64: true,
     }).then(image => {
       const object = {
@@ -83,11 +83,11 @@ const UploadDocument = ({navigation}) => {
     });
   };
   const handleSelectLicenseFront = async () => {
-    await ImagePicker.openCamera({
-      width: 300,
+    await ImagePicker.openPicker({
+      width: 500,
       height: 400,
       cropping: true,
-      compressImageQuality: 0.7,
+      compressImageQuality: 1,
       includeBase64: true,
     }).then(image => {
       const object = {
@@ -103,11 +103,11 @@ const UploadDocument = ({navigation}) => {
     });
   };
   const handleSelectLicenseBack = async () => {
-    await ImagePicker.openCamera({
-      width: 300,
+    await ImagePicker.openPicker({
+      width: 500,
       height: 400,
       cropping: true,
-      compressImageQuality: 0.7,
+      compressImageQuality: 1,
       includeBase64: true,
     }).then(image => {
       const object = {
