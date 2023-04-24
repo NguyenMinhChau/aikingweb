@@ -1,0 +1,49 @@
+/* SELECT */
+.select_form_container {
+	position: relative;
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	padding: 8px 12px;
+	border: 1.5px solid #ccc;
+	border-radius: 7px;
+	margin-top: 3px;
+	margin-bottom: 6px;
+}
+
+.select_form_container:hover {
+	border-color: var(--primary-color);
+	cursor: pointer;
+}
+
+.select_list {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+	background-color: var(--white-color);
+	border: 1.5px solid #ccc;
+	border-radius: 7px;
+	z-index: 20;
+	max-height: 150px;
+	overflow: auto;
+}
+
+.select_list_item {
+	padding: 8px 12px;
+	border-bottom: 1px solid #ccc;
+	cursor: pointer;
+	transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.select_list_item:last-child {
+	border-bottom: none;
+}
+
+.select_list_item:hover {
+	background-color: var(--primary-color);
+}
+
+.select_form_icon i {
+	font-size: 20px;
+}
