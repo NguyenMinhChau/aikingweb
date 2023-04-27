@@ -25,6 +25,7 @@ export default function SelectValueCp({
 	setStateSelect,
 }: SelectValueCpType) {
 	const { dispatch } = useAppContext();
+
 	return (
 		<div className={`${cx('select_container')}`}>
 			<div className={`${cx('select_label')}`}>{label}</div>

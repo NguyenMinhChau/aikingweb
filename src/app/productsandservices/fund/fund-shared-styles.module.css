@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    justify-content: center;
+    max-width: 100%;
+    margin: 1rem auto;
+}
+
+.form_wrapper {
+    flex: 1;
+    width: 50%;
+    margin-right: 0.5rem;
+    border: 0.0625rem solid #D1D5DB;
+    border-radius: 0.375rem;
+    padding: 1rem;
+    position: relative;
+    min-width: 400px;
+}
+
+@media only screen and (max-width: 800px) {
+    .container {
+        flex-wrap: wrap;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .form_wrapper {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+}

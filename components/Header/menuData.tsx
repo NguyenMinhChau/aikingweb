@@ -70,7 +70,7 @@ const menuData: Menu[] = [
 					{
 						id: 334,
 						title: 'Giao dịch',
-						path: routers.fundTransaction,
+						path: routers.fundHistory,
 						newTab: false,
 					},
 					{

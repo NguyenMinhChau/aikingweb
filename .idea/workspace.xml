@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3e32f7e8-59a3-4b9f-b676-3a6fc9a0fc74" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.eslintrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.prettierrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/LoginRegisterCp/LoginRegisterCp.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/LoginRegisterCp/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/SlideHeader/SliderHeader.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/SlideHeader/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/deposits/deposit.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/fund-shared-styles.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/history/History.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/history/layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/history/page.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/profile/profile.module.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/withdraw/withdraw.module.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/FormInput/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/FormInput/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/Header/menuData.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/Header/menuData.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SelectValueCp/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/SelectValueCp/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/components/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routers/routers.ts" beforeDir="false" afterPath="$PROJECT_DIR$/routers/routers.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/forgotPassword/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/forgotPassword/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/forgotPassword/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/forgotPassword/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/productsandservices/fund/customer-care/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/customer-care/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/productsandservices/fund/deposits/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/deposits/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/productsandservices/fund/deposits/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/deposits/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/productsandservices/fund/profile/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/profile/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/productsandservices/fund/profile/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/profile/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/productsandservices/fund/transaction/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/transaction/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/productsandservices/fund/transaction/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/transaction/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/productsandservices/fund/withdraw/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/withdraw/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/productsandservices/fund/withdraw/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/productsandservices/fund/withdraw/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tailwind.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/tailwind.config.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2OsXbt9HmhnO0f04KR90yOFmcMa" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "com.google.cloudcode.ide_session_index": "20230427_0002",
+    "last_opened_file_path": "/Users/tritran/Documents/personal/freelance/aikingweb",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Users/tritran/Documents/personal/freelance/aikingweb/node_modules/typescript/lib",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3e32f7e8-59a3-4b9f-b676-3a6fc9a0fc74" name="Changes" comment="" />
+      <created>1682350337851</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1682350337851</updated>
+      <workItem from="1682350339589" duration="9977000" />
+      <workItem from="1682428912050" duration="18099000" />
+      <workItem from="1682520383829" duration="13586000" />
+      <workItem from="1682605408879" duration="14914000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>

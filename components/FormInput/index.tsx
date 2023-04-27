@@ -18,6 +18,7 @@ type FormInputType = {
 	readOnly?: boolean;
 	onEnter?: (e: any) => void;
 	unit?: string;
+	children?: React.ReactNode;
 };
 
 function FormInput(

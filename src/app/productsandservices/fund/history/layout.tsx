@@ -1,7 +1,7 @@
 export const metadata = {
-  title: `Nạp tiền • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
+  title: `Lịch sử • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
 }
-export default function DepositsLayout({
+export default function HistoryLayout({
   children,
 }: {
   children: React.ReactNode

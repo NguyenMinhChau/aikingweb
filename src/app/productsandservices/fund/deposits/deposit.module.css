@@ -1,0 +1,22 @@
+.swiper_image {
+    flex: 1;
+    width: 50%;
+    min-width: 400px;
+}
+
+.deposit_info {
+    position: absolute;
+    top: -1.5rem;
+    background: white;
+    padding: 0.3125rem;
+    color: #f40305;
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+.see_history_data {
+    margin: 0.625rem 0;
+    color: #f40305;
+    font-weight: 500;
+    cursor: pointer;
+}

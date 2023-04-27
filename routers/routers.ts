@@ -7,6 +7,7 @@ const routers = {
 	services: '/productsandservices/services',
 	fundHome: '/productsandservices/fund/home',
 	fundDeposits: '/productsandservices/fund/deposits',
+	fundHistory: '/productsandservices/fund/history',
 	fundWithdraw: '/productsandservices/fund/withdraw',
 	fundTransaction: '/productsandservices/fund/transaction',
 	fundProfile: '/productsandservices/fund/profile',

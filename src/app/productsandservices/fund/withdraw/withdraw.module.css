@@ -1,0 +1,23 @@
+.swiper_image {
+    flex: 1;
+    width: 50%;
+    min-width: 400px;
+}
+
+.withdraw_info_title {
+    position: absolute;
+    top: -20px;
+    background: white;
+    padding: 5px;
+    color: #f40305;
+    font-weight: 600;
+    font-size: 20px;
+    max-width: 240px;
+}
+
+.see_history_data {
+    margin: 10px 0;
+    color: #f40305;
+    font-weight: 500;
+    cursor: pointer;
+}

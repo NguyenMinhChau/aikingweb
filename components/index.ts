@@ -14,5 +14,8 @@ export { default as TableData } from './TableData/';
 export { default as General } from './General/';
 export { default as CustomercareLine } from './CustomercareLine/';
 export { default as FormInput } from './FormInput/';
+export { default as SliderHeader } from './SlideHeader';
+export { default as LoginRegisterCp } from './LoginRegisterCp';
 export { default as Breadcrumb } from './Common/Breadcrumb';
 export { default as SectionTitle } from './Common/SectionTitle';
+
