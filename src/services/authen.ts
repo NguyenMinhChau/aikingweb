@@ -8,7 +8,7 @@ import {
 } from '@/helpers/localStore/localStore';
 // AUTHENTICATION
 export const authInstance = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_URL_SERVER}authentication/`,
+  baseURL: `${process.env.NEXT_PUBLIC_URL_SERVER}auth/`,
   withCredentials: true,
 });
 
@@ -30,8 +30,8 @@ export const authRegisterSV = async (props: any) => {
     password: password,
     username: username,
   });
-  switch (resPost.code) {
-    case 0:
+  switch (resPost.status) {
+    case 201:
       setIsProcess(false);
       setSnackbar({
         open: true,
@@ -57,22 +57,22 @@ export const authRegisterSV = async (props: any) => {
 };
 // LOGIN AUTHEN
 export const authLoginSV = async (props: any) => {
-  const { email, password, setSnackbar, dispatch, history, setIsProcess } =
+  const { username, password, setSnackbar, history, dispatch, setIsProcess } =
     props;
   const resPost = await authPost('login', {
-    email: email,
+    username: username,
     password: password,
   });
-  switch (resPost.code) {
-    case 0:
+  switch (resPost.status) {
+    case 200: {
       await setStore({
-        token: resPost?.data?.accessToken,
-        username: resPost?.data?.user?.payment?.username,
-        email: resPost?.data?.user?.payment?.email,
-        rule: resPost?.data?.user?.payment.rule,
-        rank: resPost?.data?.user?.rank,
-        id: resPost?.data?.user?._id,
-        balance: resPost?.data?.user?.Wallet?.balance,
+        token: resPost.metadata?.token,
+        username: resPost.metadata?.user?.payment?.username,
+        email: resPost.metadata?.user?.payment?.email,
+        rule: resPost.metadata?.user?.payment?.rule,
+        rank: resPost.metadata?.user?.rank,
+        id: resPost.metadata?.user?._id,
+        balance: resPost.metadata?.user?.Wallet?.balance,
       });
       await dispatch(
         setData({
@@ -87,9 +87,7 @@ export const authLoginSV = async (props: any) => {
       });
       history(routers.home);
       break;
-    case 1:
-    case 2:
-    case 304:
+    }
     case 500:
       setIsProcess(false);
       setSnackbar({
@@ -104,15 +102,14 @@ export const authLoginSV = async (props: any) => {
 };
 // LOGOUT AUTHEN
 export const authLogoutSV = async (props: any) => {
-  const { id_user, history, setSnackbar, dispatch } = props;
-  const resGet = await authGet(`logout/${id_user}`, {});
-  // console.log('authLogoutSV: ', resGet);
-  switch (resGet.code) {
-    case 0:
+  const { email, history, setSnackbar, dispatch } = props;
+  const resGet = await authPost(`logout/${email}`, {});
+  switch (resGet.status) {
+    case 200:
       await removeStore();
       await dispatch(
         setData({
-          currentUser: getStore(),
+          currentUser: null,
         })
       );
       setSnackbar({

@@ -1,6 +1,59 @@
+'use client';
 import Link from 'next/link';
+import { useAppContext } from '@/helpers';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { setData } from '@/appState/reducer';
+import { FormInput } from '@/components';
+import { authRegisterSV } from '@/services/authen';
 
 const SignupPage = () => {
+  const { state, dispatch } = useAppContext();
+  const { email, username, password } = state.set;
+  const [isProcess, setIsProcess] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    type: '',
+    message: '',
+  });
+  const { push } = useRouter();
+
+  const onChangeEmail = (e: any) => {
+    dispatch(setData({ email: e.target.value }));
+  };
+
+  const onChangePassword = (e: any) => {
+    dispatch(setData({ password: e.target.value }));
+  };
+
+  const onChangeUserName = (e: any) => {
+    dispatch(setData({ username: e.target.value }));
+  };
+
+  const onEnter = () => {
+    setIsProcess(true);
+    authRegisterSV({
+      email,
+      password,
+      username,
+      history: push,
+      setIsProcess,
+      setSnackbar,
+    });
+  };
+
+  const handleSignUp = () => {
+    setIsProcess(true);
+    authRegisterSV({
+      email,
+      password,
+      username,
+      history: push,
+      setIsProcess,
+      setSnackbar,
+    });
+  };
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pt-36 pb-16 md:pb-20 lg:pt-[180px] lg:pb-28">
@@ -16,48 +69,36 @@ const SignupPage = () => {
                 </p>
                 <form>
                   <div className="mb-8">
-                    <label
-                      htmlFor="name"
-                      className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                    >
-                      {' '}
-                      Họ và tên{' '}
-                    </label>
-                    <input
+                    <FormInput
+                      label="Họ và tên"
                       type="text"
-                      name="name"
                       placeholder="Nhập họ và tên"
-                      className="w-full rounded-md border border-transparent py-3 px-6 text-base text-body-color placeholder-body-color shadow-one outline-none focus:border-primary focus-visible:shadow-none dark:bg-[#242B51] dark:shadow-signUp"
+                      name="username"
+                      value={username}
+                      onChange={onChangeUserName}
+                      onEnter={onEnter}
                     />
                   </div>
                   <div className="mb-8">
-                    <label
-                      htmlFor="email"
-                      className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                    >
-                      {' '}
-                      Email{' '}
-                    </label>
-                    <input
+                    <FormInput
+                      label="Email"
                       type="email"
+                      placeholder="Nhập email"
                       name="email"
-                      placeholder="Nhập email của bạn"
-                      className="w-full rounded-md border border-transparent py-3 px-6 text-base text-body-color placeholder-body-color shadow-one outline-none focus:border-primary focus-visible:shadow-none dark:bg-[#242B51] dark:shadow-signUp"
+                      value={email}
+                      onChange={onChangeEmail}
+                      onEnter={onEnter}
                     />
                   </div>
                   <div className="mb-8">
-                    <label
-                      htmlFor="password"
-                      className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                    >
-                      {' '}
-                      Mật khẩu{' '}
-                    </label>
-                    <input
+                    <FormInput
+                      label="Mật khẩu"
                       type="password"
-                      name="password"
                       placeholder="Nhập mật khẩu"
-                      className="w-full rounded-md border border-transparent py-3 px-6 text-base text-body-color placeholder-body-color shadow-one outline-none focus:border-primary focus-visible:shadow-none dark:bg-[#242B51] dark:shadow-signUp"
+                      name="password"
+                      value={password}
+                      onChange={onChangePassword}
+                      onEnter={onEnter}
                     />
                   </div>
                   <div className="mb-8 flex">
@@ -105,10 +146,20 @@ const SignupPage = () => {
                       </span>
                     </label>
                   </div>
-                  <div className="mb-6">
-                    <button className="flex w-full items-center justify-center rounded-md bg-primary py-4 px-9 text-base font-medium text-white transition duration-300 ease-in-out hover:bg-opacity-80 hover:shadow-signUp">
-                      Đăng ký
-                    </button>
+                  <div className="mb-6 flex justify-center">
+                    {!isProcess ? (
+                      <button
+                        className="flex w-full items-center justify-center rounded-md bg-primary py-4 px-9 text-base font-medium text-white transition duration-300 ease-in-out hover:bg-opacity-80 hover:shadow-signUp"
+                        onClick={handleSignUp}
+                      >
+                        Đăng ký
+                      </button>
+                    ) : (
+                      <i
+                        className="bx bx-loader bx-spin bx-rotate-90"
+                        style={{ color: '#000' }}
+                      ></i>
+                    )}
                   </div>
                 </form>
                 <p className="text-center text-base font-medium text-body-color">

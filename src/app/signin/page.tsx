@@ -2,28 +2,30 @@
 import Link from 'next/link';
 import { FormInput } from '@/components';
 import { useAppContext } from '@/helpers';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { setData } from '@/appState/reducer';
 import { authLoginSV } from '@/services/authen';
+import { useRouter } from 'next/navigation';
 
 const SignInPage = () => {
   const { state, dispatch } = useAppContext();
-  const { email, password } = state.set;
+  const { username, password } = state.set;
   const [isProcess, setIsProcess] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     type: '',
     message: '',
   });
+  const { push } = useRouter();
 
   const handleLogin = () => {
     setIsProcess(true);
     authLoginSV({
-      email,
+      username,
       password,
       setSnackbar,
       dispatch,
-      history,
+      history: push,
       setIsProcess,
     });
     dispatch(
@@ -34,8 +36,8 @@ const SignInPage = () => {
     );
   };
 
-  const onChangeEmail = (e: any) => {
-    dispatch(setData({ email: e.target.value }));
+  const onChangeUserName = (e: any) => {
+    dispatch(setData({ username: e.target.value }));
   };
 
   const onChangePassword = (e: any) => {
@@ -49,12 +51,12 @@ const SignInPage = () => {
       <form>
         <div className="mb-8">
           <FormInput
-            label="Email"
-            type="email"
-            placeholder="Nhập email"
+            label="Họ và tên"
+            type="text"
+            placeholder="Nhập họ và tên"
             name="email"
-            value={email}
-            onChange={onChangeEmail}
+            value={username}
+            onChange={onChangeUserName}
             onEnter={onEnter}
           />
         </div>
@@ -109,7 +111,7 @@ const SignInPage = () => {
             </Link>
           </div>
         </div>
-        <div className="mb-6">
+        <div className="mb-6 flex justify-center">
           {!isProcess ? (
             <button
               className="flex w-full items-center justify-center rounded-md bg-primary py-4 px-9 text-base font-medium text-white transition duration-300 ease-in-out hover:bg-opacity-80 hover:shadow-signUp"
