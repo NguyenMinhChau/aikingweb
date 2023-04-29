@@ -1,6 +1,6 @@
 'use client';
 import { Inter } from 'next/font/google';
-import { Hero, SkeletonCP } from '../../components';
+import { Hero, SkeletonCP } from '../components';
 
 const inter = Inter({ subsets: ['latin'] });
 

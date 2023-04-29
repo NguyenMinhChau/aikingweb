@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import styles from './styles.module.css';
-import { Breadcrumb } from '../../../../../components';
+import { Breadcrumb } from '../../../../components';
 import ManagerFundUSDPage from './managerFundUSD';
 import ManagerFundAgricuturalPage from './managerFundAgricutural';
-import { useAppContext } from '../../../../../helpers';
+import { useAppContext } from '../../../../helpers';
 
 const cx = classNames.bind(styles);
 const LIST_TABS = [

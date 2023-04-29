@@ -1,6 +1,7 @@
 'use client';
-import { Footer, Header, ScrollToTop } from '../../components';
-import { UseProvider } from '../../appState/';
+
+import { Footer, Header, ScrollToTop } from '../components';
+import { UseProvider } from '../appState';
 import './globals.css';
 
 export default function RootLayout({

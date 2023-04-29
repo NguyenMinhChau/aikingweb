@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import className from 'classnames/bind';
 import styles from './styles.module.css';
-import { SearchIcon } from '../../public/svgs';
+import { SearchIcon } from '../../../public/svgs';
 
 const cx = className.bind(styles);
 type SearchType = {

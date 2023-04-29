@@ -1,10 +1,10 @@
 export const metadata = {
-	title: `Signup • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
+  title: `Signup • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
 };
 export default function SignupLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return <section>{children}</section>;
+  return <section>{children}</section>;
 }

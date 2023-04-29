@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import LogoLight from '../../public/images/logo/logo_light.png';
+import LogoLight from '../../../public/images/logo/logo_light.png';
 
 const Footer = () => {
 	return (

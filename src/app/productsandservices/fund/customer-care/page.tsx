@@ -6,7 +6,7 @@ import {
   Breadcrumb,
   CustomercareLine,
   Divider,
-} from '../../../../../components'
+} from '../../../../components'
 
 const cx = className.bind(styles)
 function CustomerCarePage() {

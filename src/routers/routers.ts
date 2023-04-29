@@ -18,5 +18,7 @@ const routers = {
 	fundCustomerCare: '/productsandservices/fund/customer-care',
 	recruitment: '/recruitment',
 	contact: '/contact',
+	login: '/login',
+	resetPwd: '/reset-password'
 };
 export default routers;

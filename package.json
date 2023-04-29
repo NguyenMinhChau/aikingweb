@@ -14,6 +14,7 @@
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.1",
     "@mui/styled-engine-sc": "^5.12.0",
+    "axios": "^1.4.0",
     "classnames": "^2.3.2",
     "moment": "^2.29.4",
     "next": "^13.3.1-canary.14",
@@ -28,15 +29,15 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@types/node": "18.15.11",
+    "@types/react": "18.0.37",
+    "@types/react-datepicker": "^4.10.0",
+    "@types/react-dom": "18.0.11",
+    "autoprefixer": "10.4.14",
     "eslint": "8.38.0",
     "eslint-config-next": "13.3.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "@types/node": "18.15.11",
-    "@types/react": "18.0.37",
-    "@types/react-dom": "18.0.11",
-    "@types/react-datepicker": "^4.10.0",
-    "autoprefixer": "10.4.14",
     "postcss": "8.4.22"
   }
 }

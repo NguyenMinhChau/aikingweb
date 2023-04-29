@@ -16,7 +16,7 @@ export default function LoginRegisterCp({ padding }: LoginRegisterCPProps) {
                     đăng nhập
                 </Link>{' '}
               hoặc{' '}
-              <Link href="" className='fwb warning'>
+              <Link href="src/components/LoginRegisterCp" className='fwb warning'>
                     đăng ký
                 </Link>{' '}
               để sử dụng tính năng này.

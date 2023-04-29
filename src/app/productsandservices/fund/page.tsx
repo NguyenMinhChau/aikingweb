@@ -1,6 +1,6 @@
 import React from 'react';
-import { Breadcrumb } from '../../../../components';
-import routers from '../../../../routers/routers';
+import { Breadcrumb } from '../../../components';
+import routers from '../../../routers/routers';
 import ServicesLinkItem from './home/servicesLinkItem';
 
 function FundPage() {

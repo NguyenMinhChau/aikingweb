@@ -1,13 +1,13 @@
-'use client'
-import React, { useState } from 'react'
-import { Breadcrumb } from '../../../../../components'
-import { dateFormat, useAppContext } from '../../../../../helpers'
-import className from 'classnames/bind'
+'use client';
+import React, { useState } from 'react';
+import { Breadcrumb } from '../../../../components';
+import { dateFormat, useAppContext } from '../../../../helpers';
+import className from 'classnames/bind';
 
-import styles from './History.module.css'
-import sharedStyles from '../fund-shared-styles.module.css'
-import { formatVND } from '../../../../../helpers/format/FormatMoney'
-const cx = className.bind(styles)
+import styles from './History.module.css';
+import sharedStyles from '../fund-shared-styles.module.css';
+import { formatVND } from '@/helpers/format/FormatMoney';
+const cx = className.bind(styles);
 
 const historyByTab: any = {
   deposit: {
@@ -66,14 +66,14 @@ const historyByTab: any = {
       },
     ],
   },
-}
+};
 
-type HistoryInterface = {}
+type HistoryInterface = {};
 const HistoryPage = ({}: HistoryInterface) => {
   const {
     state: { data = [] },
-  } = useAppContext()
-  const [tabId, setTabId] = useState('deposit')
+  } = useAppContext();
+  const [tabId, setTabId] = useState('deposit');
   const renderHeader = () => {
     return (
       <tr className={styles.table_header}>
@@ -82,11 +82,11 @@ const HistoryPage = ({}: HistoryInterface) => {
             <th className={styles.column_name} key={item.id}>
               {item.title}
             </th>
-          )
+          );
         })}
       </tr>
-    )
-  }
+    );
+  };
 
   const renderTableRow = ({
     stt,
@@ -107,18 +107,18 @@ const HistoryPage = ({}: HistoryInterface) => {
         <td className={styles.cell_value}>{userName}</td>
         <td className={styles.cell_value}>{state}</td>
       </tr>
-    )
-  }
+    );
+  };
 
   const renderDataTable = () => {
     if (!data || data.length == 0) {
-      return
+      return;
     }
 
     return data.map((row: any) => {
-      return renderTableRow(row)
-    })
-  }
+      return renderTableRow(row);
+    });
+  };
 
   return (
     <>
@@ -160,7 +160,7 @@ const HistoryPage = ({}: HistoryInterface) => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default HistoryPage
+export default HistoryPage;

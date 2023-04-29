@@ -7,13 +7,13 @@ import {
 	FormInput,
 	SelectDateCp,
 	SelectValueCp,
-} from '../../../../../components';
+} from '../../../../components';
 import {
 	moneyFormat,
 	numberFormat,
 	useAppContext,
-} from '../../../../../helpers';
-import { setData } from '../../../../../appState/reducer';
+} from '../../../../helpers';
+import { setData } from '../../../../appState/reducer';
 import className from 'classnames/bind';
 import styles from './styles.module.css';
 const cx = className.bind(styles);

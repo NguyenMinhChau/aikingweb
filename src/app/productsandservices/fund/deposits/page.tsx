@@ -1,20 +1,20 @@
-'use client'
-import { useState } from 'react'
-import Link from 'next/link'
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
 import {
   Breadcrumb,
   FormInput,
   SelectValueCp,
   Button,
-} from '../../../../../components'
-import { DataFundUSD, useAppContext } from '../../../../../helpers'
-import { autoFormatNumberInputChange } from '../../../../../helpers/format/NumberFormat'
-import { setData } from '../../../../../appState/reducer'
-import routers from '../../../../../routers/routers'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Pagination } from 'swiper'
-import styles from './deposit.module.css'
-import sharedStyles from '../fund-shared-styles.module.css'
+} from '@/components';
+import { DataFundUSD, useAppContext } from '@/helpers';
+import { autoFormatNumberInputChange } from '@/helpers/format/NumberFormat';
+import { setData } from '@/appState/reducer';
+import routers from '@/routers/routers';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper';
+import styles from './deposit.module.css';
+import sharedStyles from '../fund-shared-styles.module.css';
 
 const dataBankAdmin = [
   {
@@ -23,26 +23,26 @@ const dataBankAdmin = [
     accountName: 'AIKING GROUP',
     accountNumber: '0071000000001',
   },
-]
+];
 
 const IMAGE_SLIDERS = [
   {
     id: 1,
     url: 'https://images.unsplash.com/photo-1560264280-88b68371db39?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y3VzdG9tZXIlMjBzZXJ2aWNlfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=2000&q=60',
   },
-]
+];
 
 const DepositsPage = () => {
-  const { state, dispatch } = useAppContext()
-  const { amountDeposits, bankDeposits, file, currentUser } = state.set
-  const [showSelect, setShowSelect] = useState(false)
-  const [isProcessModalDeposits, setIsProcessModalDeposits] = useState(false)
-  const [isProcessUploadDeposits, setIsProcessUploadDeposits] = useState(false)
+  const { state, dispatch } = useAppContext();
+  const { amountDeposits, bankDeposits, file, currentUser } = state.set;
+  const [showSelect, setShowSelect] = useState(false);
+  const [isProcessModalDeposits, setIsProcessModalDeposits] = useState(false);
+  const [isProcessUploadDeposits, setIsProcessUploadDeposits] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     type: '',
     message: '',
-  })
+  });
 
   const handleSubmit = async () => {
     if (currentUser) {
@@ -51,18 +51,18 @@ const DepositsPage = () => {
           open: true,
           type: 'error',
           message: 'Bạn chưa nhập đủ thông tin',
-        })
+        });
       } else {
-        setIsProcessModalDeposits(true)
+        setIsProcessModalDeposits(true);
       }
     } else {
       setSnackbar({
         open: true,
         type: 'error',
         message: '',
-      })
+      });
     }
-  }
+  };
 
   const renderDepositForm = () => {
     return (
@@ -90,7 +90,7 @@ const DepositsPage = () => {
               setData({
                 amountDeposits: autoFormatNumberInputChange(e.target.value),
               })
-            )
+            );
           }}
           unit={amountDeposits && 'VND'}
         />
@@ -103,8 +103,8 @@ const DepositsPage = () => {
           Tiếp tục
         </Button>
       </div>
-    )
-  }
+    );
+  };
 
   const renderSwiperImage = () => {
     return (
@@ -128,8 +128,8 @@ const DepositsPage = () => {
           ))}
         </Swiper>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -140,9 +140,8 @@ const DepositsPage = () => {
           {renderSwiperImage()}
         </div>
       </div>
-
     </>
-  )
-}
+  );
+};
 
-export default DepositsPage
+export default DepositsPage;

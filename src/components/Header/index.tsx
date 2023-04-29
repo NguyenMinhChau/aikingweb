@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import menuData from './menuData';
 import { usePathname } from 'next/navigation';
 import styles from './Header.module.css';
-import LogoLight from '../../public/images/logo/logo_light.png';
+import LogoLight from '../../../public/images/logo/logo_light.png';
 
 const Header = () => {
 	// Navbar toggle

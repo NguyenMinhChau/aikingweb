@@ -1,4 +1,4 @@
-import { Breadcrumb } from '../../../../../components'
+import { Breadcrumb } from '../../../../components'
 
 const TransactionPage = () => {
   return (

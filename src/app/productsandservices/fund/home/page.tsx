@@ -6,10 +6,10 @@ import {
 	Divider,
 	SliderFund,
 	SnackbarCp,
-} from '../../../../../components';
+} from '../../../../components';
 import ServicesLinkItem from './servicesLinkItem';
-import routers from '../../../../../routers/routers';
-import { DataFundAgricutural, DataFundUSD } from '../../../../../helpers';
+import routers from '../../../../routers/routers';
+import { DataFundAgricutural, DataFundUSD } from '../../../../helpers';
 import 'swiper/css';
 import { useState } from 'react';
 

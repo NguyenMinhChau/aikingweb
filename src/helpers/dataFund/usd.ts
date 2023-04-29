@@ -1,6 +1,6 @@
-import Logo01 from '../../public/images/fundHome/background01.png';
-import Logo02 from '../../public/images/fundHome/background02.png';
-import Logo03 from '../../public/images/fundHome/background03.png';
+import Logo01 from '../../../public/images/fundHome/background01.png';
+import Logo02 from '../../../public/images/fundHome/background02.png';
+import Logo03 from '../../../public/images/fundHome/background03.png';
 const DataFundUSD = [
 	{
 		id: 'usd_1',

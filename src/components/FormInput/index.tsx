@@ -2,7 +2,7 @@
 import React, { forwardRef, useState } from 'react';
 import className from 'classnames/bind';
 import styles from './styles.module.css';
-import { EyeIcon, EyeShowIcon } from '../../public/svgs';
+import { EyeIcon, EyeShowIcon } from '../../../public/svgs';
 
 const cx = className.bind(styles);
 type FormInputType = {

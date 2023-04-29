@@ -1,7 +1,7 @@
-import Logo04 from '../../public/images/fundHome/background04.png';
-import Logo05 from '../../public/images/fundHome/background05.png';
-import Logo06 from '../../public/images/fundHome/background06.png';
-import Logo07 from '../../public/images/fundHome/background07.png';
+import Logo04 from '../../../public/images/fundHome/background04.png';
+import Logo05 from '../../../public/images/fundHome/background05.png';
+import Logo06 from '../../../public/images/fundHome/background06.png';
+import Logo07 from '../../../public/images/fundHome/background07.png';
 
 const DataFundAgricutural = [
 	{

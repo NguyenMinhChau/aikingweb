@@ -7,7 +7,7 @@ import { useAppContext } from '../../helpers';
 import { setData } from '../../appState/reducer';
 import Search from '../Search';
 import Button from '../Button';
-import { RefreshPageIcon } from '../../public/svgs';
+import { RefreshPageIcon } from '../../../public/svgs';
 import { refreshPage } from '../../helpers/refreshPage';
 import TableData from '../TableData';
 

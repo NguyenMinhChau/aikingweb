@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import InterestRateUSD from './usd';
 import InterestRateAgricutural from './agricutural';
 import styles from './styles.module.css';
-import { Breadcrumb } from '../../../../../components';
+import { Breadcrumb } from '../../../../components';
 const LIST_TABS = [
 	{
 		id: 1,

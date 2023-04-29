@@ -1,4 +1,4 @@
-import { Breadcrumb, SkeletonCP } from '../../../components';
+import { Breadcrumb, SkeletonCP } from '../../components';
 
 const ContactPage = () => {
 	return (
