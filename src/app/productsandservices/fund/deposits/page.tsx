@@ -1,7 +1,15 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { Breadcrumb, FormInput, SelectValueCp, Button } from '@/components';
+import {
+  Breadcrumb,
+  FormInput,
+  SelectValueCp,
+  Button,
+  Modal,
+  SnackbarCp,
+  LoginRegisterCp,
+} from '@/components';
 import { DataFundUSD, useAppContext } from '@/helpers';
 import { autoFormatNumberInputChange } from '@/helpers/format/NumberFormat';
 import { setData } from '@/appState/reducer';
@@ -10,6 +18,11 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper';
 import styles from './deposit.module.css';
 import sharedStyles from '../fund-shared-styles.module.css';
+import { refreshToken } from '@/services/authen';
+import {
+  userCreateDepositsSV,
+  userUploadBillsDepositsSV,
+} from '@/services/user';
 
 const dataBankAdmin = [
   {
@@ -33,11 +46,31 @@ const DepositsPage = () => {
   const [showSelect, setShowSelect] = useState(false);
   const [isProcessModalDeposits, setIsProcessModalDeposits] = useState(false);
   const [isProcessUploadDeposits, setIsProcessUploadDeposits] = useState(false);
-  const [snackbar, setSnackbar] = useState({
+  const [isModalUploadDeposits, setIsModalUploadDeposits] = useState(false);
+  const [dataReturn, setDataReturn] = useState(null);
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    type: string;
+    message: any;
+  }>({
     open: false,
     type: '',
     message: '',
   });
+
+  const handleSendDeposits = async (dataToken: any) => {
+    await userCreateDepositsSV({
+      id_user: currentUser?.id,
+      email_user: currentUser?.email,
+      idPayment: 1,
+      amountVND: amountDeposits.replace(/\./g, ''),
+      token: dataToken?.token,
+      setIsProcessModalDeposits,
+      setIsModalUploadDeposits,
+      setSnackbar,
+      setDataReturn,
+    });
+  };
 
   const handleSubmit = async () => {
     if (currentUser) {
@@ -49,13 +82,90 @@ const DepositsPage = () => {
         });
       } else {
         setIsProcessModalDeposits(true);
+        await refreshToken({
+          currentUser,
+          handleFunc: handleSendDeposits,
+          state,
+          dispatch,
+          setData,
+          setSnackbar,
+        });
       }
     } else {
       setSnackbar({
         open: true,
         type: 'error',
-        message: '',
+        message: <LoginRegisterCp />,
       });
+    }
+  };
+
+  const handleCloseSnackbar = (event: any, reason: any) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar({
+      ...snackbar,
+      open: false,
+    });
+  };
+
+  const handleModalDepositsTrue = (e) => {
+    e.stopPropagation();
+    setIsModalUploadDeposits(true);
+  };
+
+  const handleModalDepositsFalse = (e) => {
+    e.stopPropagation();
+    setIsModalUploadDeposits(false);
+    dispatch(
+      setData({
+        file: [],
+        amountDeposits: '',
+        bankDeposits: '',
+      })
+    );
+  };
+
+  const handleSendUpload = (dataToken) => {
+    userUploadBillsDepositsSV({
+      id_user: currentUser?.id,
+      dispatch,
+      id_deposits: dataReturn?.id,
+      image: file,
+      token: dataToken?.token,
+      setSnackbar,
+      setIsProcessUploadDeposits,
+      setIsModalUploadDeposits,
+    });
+  };
+
+  const handleUploadBillDeposits = async () => {
+    if (file.length === 0) {
+      setSnackbar({
+        open: true,
+        type: 'error',
+        message: 'Bạn chưa chọn file',
+      });
+    } else {
+      setIsProcessUploadDeposits(true);
+      setTimeout(() => {
+        refreshToken({
+          currentUser,
+          handleSendUpload,
+          state,
+          dispatch,
+          setData,
+          setSnackbar,
+        });
+        dispatch(
+          setData({
+            amountDeposits: '',
+            bankDeposits: '',
+            file: [],
+          })
+        );
+      }, 3000);
     }
   };
 
@@ -94,10 +204,73 @@ const DepositsPage = () => {
             Xem lịch sử nạp tiền/rút tiền
           </span>
         </Link>
-        <Button onClick={handleSubmit} isProcess={false} disabled={false}>
+        <Button
+          onClick={handleSubmit}
+          isProcess={isProcessModalDeposits}
+          disabled={isProcessModalDeposits}
+        >
           Tiếp tục
         </Button>
       </div>
+    );
+  };
+
+  const renderUploadForm = () => {
+    return (
+      <>
+        {isModalUploadDeposits && (
+          <Modal
+            openModal={handleModalDepositsTrue}
+            closeModal={handleModalDepositsFalse}
+            titleHeader="Tải hóa đơn nạp tiền"
+            actionButtonText="Gửi"
+            classNameButton={`infobgc`}
+            isProcess={isProcessUploadDeposits}
+            onClick={handleUploadBillDeposits}
+          >
+            {/*<CustomcareLine*/}
+            {/*  nameIcon="fa-solid fa-rotate-right"*/}
+            {/*  colorIcon="success"*/}
+            {/*  title="Trạng thái:"*/}
+            {/*  textLink={dataReturn?.status}*/}
+            {/*/>*/}
+            {/*<CustomcareLine*/}
+            {/*  nameIcon="fa-regular fa-clock"*/}
+            {/*  colorIcon="info"*/}
+            {/*  title="Ngày rút:"*/}
+            {/*  textLink={dateFormat(*/}
+            {/*    dataReturn?.createdAt,*/}
+            {/*    'DD/MM/YYYY HH:mm:ss'*/}
+            {/*  )}*/}
+            {/*/>*/}
+            {/*<CustomcareLine*/}
+            {/*  nameIcon="fa-solid fa-money-bill"*/}
+            {/*  colorIcon="warning"*/}
+            {/*  title="Số tiền rút:"*/}
+            {/*  textLink={formatVND(dataReturn?.amount || 0)}*/}
+            {/*/>*/}
+            {/*<CustomcareLine*/}
+            {/*  nameIcon="fa fa-bank"*/}
+            {/*  colorIcon="cancel"*/}
+            {/*  title="Ngân hàng thụ hưởng:"*/}
+            {/*  bankMethod*/}
+            {/*  bankName={bankDeposits?.name}*/}
+            {/*  accountName={bankDeposits?.accountName}*/}
+            {/*  accountNumber={bankDeposits?.accountNumber}*/}
+            {/*/>*/}
+            {/*<FileUploadSingle label="Tải hình ảnh" />*/}
+            {/*{urlImageFile && (*/}
+            {/*  <div className={`${cx('view_image')}`}>*/}
+            {/*    <Image*/}
+            {/*      src={urlImageFile}*/}
+            {/*      alt="image_upload"*/}
+            {/*      className={`${cx('image')}`}*/}
+            {/*    />*/}
+            {/*  </div>*/}
+            {/*)}*/}
+          </Modal>
+        )}
+      </>
     );
   };
 
@@ -133,8 +306,15 @@ const DepositsPage = () => {
         <div className={sharedStyles.container}>
           {renderDepositForm()}
           {renderSwiperImage()}
+          {renderUploadForm()}
         </div>
       </div>
+      <SnackbarCp
+        openSnackbar={snackbar.open}
+        handleCloseSnackbar={handleCloseSnackbar}
+        messageSnackbar={snackbar.message}
+        typeSnackbar={snackbar.type}
+      />
     </>
   );
 };

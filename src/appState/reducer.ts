@@ -1,9 +1,9 @@
-import { webStore } from '../helpers';
+import { getStore } from '@/helpers/localStore/localStore';
 import { SET_DATA, SET_TOGGLE } from './actions';
 
 export const initialState: any = {
   set: {
-    currentUser: null,
+    currentUser: getStore(),
     userById: null,
     item: null,
     username: '',

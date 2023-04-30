@@ -19,6 +19,7 @@ const routers = {
   recruitment: '/recruitment',
   contact: '/contact',
   login: '/signin',
+  signup: '/signup',
   resetPwd: '/reset-password',
 };
 export default routers;

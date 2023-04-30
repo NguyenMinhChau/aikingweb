@@ -1,11 +1,6 @@
 import axios from 'axios';
 import routers from '@/routers/routers';
 import { setData } from '@/appState/reducer';
-import {
-  getStore,
-  setStore,
-  removeStore,
-} from '@/helpers/localStore/localStore';
 
 // USERS
 export const userInstance = axios.create({
@@ -75,7 +70,7 @@ export const userAddPaymentSV = async (props: any) => {
 };
 // FORGOT PASSWORD USER
 export const userForgotPwdSV = async (props: any) => {
-  const { email, setIsProcess, history, setSnackbar } = props;
+  const { email, setIsProcess, setSnackbar } = props;
   let resPost = null;
   try {
     resPost = await userGet(`forgot/password/${email}`, {});
@@ -86,7 +81,6 @@ export const userForgotPwdSV = async (props: any) => {
         type: 'success',
         message: 'Gửi mã thành công, vui lòng kiểm tra email!',
       });
-      history(routers.resetPwd);
     }
   } catch (e) {
     setIsProcess(false);
@@ -130,42 +124,36 @@ export const userCreateDepositsSV = async (props: any) => {
     amountVND,
     token,
     setIsProcessModalDeposits,
-    setisModalUploadDeposits,
+    setIsModalUploadDeposits,
     setSnackbar,
     setDataReturn,
   } = props;
-  const resPost = await userPost(`deposit/${id_user}`, {
-    idPayment,
-    status: 'Pending',
-    amount: amountVND,
-    note: `pc_${email_user}`,
-    token: token,
-  });
-  // console.log('userCreateDepositsSV: ', resPost);
-  switch (resPost.code) {
-    case 0:
+  let resPost = null;
+  try {
+    resPost = await userPut(`deposit/${id_user}`, {
+      idPayment,
+      status: 'Pending',
+      amount: amountVND,
+      note: `pc_${email_user}`,
+      token: token,
+    });
+    if (resPost.status === 200) {
       setIsProcessModalDeposits(false);
-      setisModalUploadDeposits(true);
+      setIsModalUploadDeposits(true);
       setDataReturn(resPost?.data);
       setSnackbar({
         open: true,
         type: 'success',
         message: 'Vui lòng tải lên hóa đơn thanh toán!',
       });
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setIsProcessModalDeposits(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resPost?.message || 'Tạo yêu cầu nạp tiền thất bại!',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e) {
+    setIsProcessModalDeposits(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resPost?.message || 'Tạo yêu cầu nạp tiền thất bại!',
+    });
   }
 };
 // UPLOAD BILLS DEPOSITS

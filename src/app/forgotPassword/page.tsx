@@ -26,7 +26,6 @@ const ForgotPasswordPage = () => {
       email,
       setIsProcess,
       setSnackbar,
-      history,
     });
     dispatch(
       setData({

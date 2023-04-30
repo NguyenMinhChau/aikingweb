@@ -125,7 +125,7 @@ export const authLogoutSV = async (props: any) => {
   }
 };
 
-export const requestToken = async ({
+export const refreshToken = async ({
   currentUser,
   handleFunc,
   state,
@@ -140,7 +140,7 @@ export const requestToken = async ({
   dispatch: any;
   setData: any;
   setSnackbar: any;
-  id: any;
+  id?: any;
 }) => {
   try {
     const accessToken = currentUser?.token;

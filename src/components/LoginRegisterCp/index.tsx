@@ -2,6 +2,7 @@ import React from 'react';
 import className from 'classnames/bind';
 import styles from './LoginRegisterCp.module.css';
 import Link from 'next/link';
+import routers from '@/routers/routers';
 
 const cx = className.bind(styles);
 type LoginRegisterCPProps = {
@@ -12,11 +13,11 @@ export default function LoginRegisterCp({ padding }: LoginRegisterCPProps) {
     <div className={`${cx('container')}`} style={{ padding: padding }}>
       <span>
         Bạn cần{' '}
-        <Link href={''} className="fwb warning">
+        <Link href={routers.login} className="fwb warning">
           đăng nhập
         </Link>{' '}
         hoặc{' '}
-        <Link href="src/components/LoginRegisterCp" className="fwb warning">
+        <Link href={routers.signup} className="fwb warning">
           đăng ký
         </Link>{' '}
         để sử dụng tính năng này.
