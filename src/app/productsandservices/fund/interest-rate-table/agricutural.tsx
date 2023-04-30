@@ -4,15 +4,15 @@ import IMAGE from '../../../../../public/images/interestRate/quyphattriennongngh
 import Image from 'next/image';
 
 function InterestRateAgricutural() {
-	return (
-		<div className={`${styles.container}`}>
-			<Image
-				src={IMAGE}
-				alt="Quỹ phát triển nông nghiệp"
-				className={`${styles.image}`}
-			/>
-		</div>
-	);
+  return (
+    <div className={`${styles.container}`}>
+      <Image
+        src={IMAGE}
+        alt="Quỹ phát triển nông nghiệp"
+        className={`${styles.image}`}
+      />
+    </div>
+  );
 }
 
 export default InterestRateAgricutural;

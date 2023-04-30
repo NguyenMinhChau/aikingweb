@@ -1,10 +1,10 @@
 export const metadata = {
-	title: `Báo cáo tài chính • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
+  title: `Báo cáo tài chính • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
 };
 export default function FinanceReportLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return <section>{children}</section>;
+  return <section>{children}</section>;
 }

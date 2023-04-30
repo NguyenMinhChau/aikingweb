@@ -1,10 +1,10 @@
 export const metadata = {
-	title: `Quỹ tiết kiệm • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
+  title: `Quỹ tiết kiệm • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
 };
 export default function FundLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return <section>{children}</section>;
+  return <section>{children}</section>;
 }

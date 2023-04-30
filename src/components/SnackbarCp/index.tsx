@@ -8,37 +8,37 @@ import MuiAlert from '@mui/material/Alert';
 
 const cx = className.bind(styles);
 const Alert = React.forwardRef(function Alert(props: any, ref: any) {
-	return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 type SnackbarCpType = {
-	openSnackbar: boolean;
-	handleCloseSnackbar: any;
-	typeSnackbar: string;
-	messageSnackbar: string;
-	autoHideDuration?: number;
+  openSnackbar: boolean;
+  handleCloseSnackbar: any;
+  typeSnackbar: string;
+  messageSnackbar: string;
+  autoHideDuration?: number;
 };
 export default function SnackbarCp({
-	openSnackbar,
-	handleCloseSnackbar,
-	typeSnackbar,
-	messageSnackbar,
-	autoHideDuration = 6000,
+  openSnackbar,
+  handleCloseSnackbar,
+  typeSnackbar,
+  messageSnackbar,
+  autoHideDuration = 6000,
 }: SnackbarCpType) {
-	return (
-		<>
-			<Snackbar
-				open={openSnackbar}
-				autoHideDuration={autoHideDuration}
-				onClose={handleCloseSnackbar}
-			>
-				<Alert
-					onClose={handleCloseSnackbar}
-					severity={typeSnackbar}
-					sx={{ width: '100%' }}
-				>
-					{messageSnackbar}
-				</Alert>
-			</Snackbar>
-		</>
-	);
+  return (
+    <>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={autoHideDuration}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={typeSnackbar}
+          sx={{ width: '100%' }}
+        >
+          {messageSnackbar}
+        </Alert>
+      </Snackbar>
+    </>
+  );
 }

@@ -1,14 +1,10 @@
-'use client'
-import React from 'react'
-import className from 'classnames/bind'
-import styles from './styles.module.css'
-import {
-  Breadcrumb,
-  CustomercareLine,
-  Divider,
-} from '../../../../components'
+'use client';
+import React from 'react';
+import className from 'classnames/bind';
+import styles from './styles.module.css';
+import { Breadcrumb, CustomercareLine, Divider } from '../../../../components';
 
-const cx = className.bind(styles)
+const cx = className.bind(styles);
 function CustomerCarePage() {
   return (
     <>
@@ -57,7 +53,7 @@ function CustomerCarePage() {
         </div>
       </div>
     </>
-  )
+  );
 }
 
-export default CustomerCarePage
+export default CustomerCarePage;

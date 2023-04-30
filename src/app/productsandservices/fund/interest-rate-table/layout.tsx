@@ -1,10 +1,10 @@
 export const metadata = {
-	title: `Quỹ tham khảo • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
+  title: `Quỹ tham khảo • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
 };
 export default function InterestRateLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return <section>{children}</section>;
+  return <section>{children}</section>;
 }

@@ -1,10 +1,10 @@
 export const metadata = {
-	title: `Liên hệ • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
+  title: `Liên hệ • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
 };
 export default function ContactLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return <section>{children}</section>;
+  return <section>{children}</section>;
 }

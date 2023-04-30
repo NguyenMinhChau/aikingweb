@@ -1,10 +1,10 @@
-import Link from 'next/link'
-import { Breadcrumb } from '../../../../components'
+import Link from 'next/link';
+import { Breadcrumb } from '../../../../components';
 
-import styles from './profile.module.css'
-import sharedStyles from '../fund-shared-styles.module.css'
+import styles from './profile.module.css';
+import sharedStyles from '../fund-shared-styles.module.css';
 
-import routers from '../../../../routers/routers'
+import routers from '../../../../routers/routers';
 
 const ProfilePage = () => {
   return (
@@ -46,7 +46,7 @@ const ProfilePage = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default ProfilePage
+export default ProfilePage;

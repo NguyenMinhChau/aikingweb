@@ -5,22 +5,22 @@ import Link from 'next/link';
 
 const cx = className.bind(styles);
 type LoginRegisterCPProps = {
-  padding?: string
-}
+  padding?: string;
+};
 export default function LoginRegisterCp({ padding }: LoginRegisterCPProps) {
   return (
     <div className={`${cx('container')}`} style={{ padding: padding }}>
-            <span>
-                Bạn cần{' '}
-              <Link href={""} className='fwb warning'>
-                    đăng nhập
-                </Link>{' '}
-              hoặc{' '}
-              <Link href="src/components/LoginRegisterCp" className='fwb warning'>
-                    đăng ký
-                </Link>{' '}
-              để sử dụng tính năng này.
-            </span>
+      <span>
+        Bạn cần{' '}
+        <Link href={''} className="fwb warning">
+          đăng nhập
+        </Link>{' '}
+        hoặc{' '}
+        <Link href="src/components/LoginRegisterCp" className="fwb warning">
+          đăng ký
+        </Link>{' '}
+        để sử dụng tính năng này.
+      </span>
     </div>
   );
 }

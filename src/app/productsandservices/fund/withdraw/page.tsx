@@ -1,26 +1,26 @@
-'use client'
+'use client';
 
-import { Breadcrumb, Button, FormInput } from '../../../../components'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay, Pagination } from 'swiper'
-import { setData } from '../../../../appState/reducer'
-import { autoFormatNumberInputChange } from '../../../../helpers/format/NumberFormat'
-import { useAppContext } from '../../../../helpers'
-import Link from 'next/link'
-import routers from '../../../../routers/routers'
-import styles from './withdraw.module.css'
-import sharedStyles from '../fund-shared-styles.module.css'
+import { Breadcrumb, Button, FormInput } from '../../../../components';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination } from 'swiper';
+import { setData } from '../../../../appState/reducer';
+import { autoFormatNumberInputChange } from '../../../../helpers/format/NumberFormat';
+import { useAppContext } from '../../../../helpers';
+import Link from 'next/link';
+import routers from '../../../../routers/routers';
+import styles from './withdraw.module.css';
+import sharedStyles from '../fund-shared-styles.module.css';
 
 const IMAGE_SLIDERS = [
   {
     id: 1,
     url: 'https://images.unsplash.com/photo-1531973576160-7125cd663d86?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NXx8Y29tcGFueXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=2000&q=2000',
   },
-]
+];
 
 const WithdrawPage = () => {
-  const { state, dispatch } = useAppContext()
-  const { amountWithdraw } = state.set
+  const { state, dispatch } = useAppContext();
+  const { amountWithdraw } = state.set;
   return (
     <>
       <Breadcrumb pageName="Rút tiền" description="Rút tiền" />
@@ -41,14 +41,14 @@ const WithdrawPage = () => {
                   setData({
                     amountWithdraw: autoFormatNumberInputChange(e.target.value),
                   })
-                )
+                );
               }}
               unit={amountWithdraw && 'VND'} // ₫
             />
             <Link href={`${routers.fundHistory}`}>
-            <span className={styles.see_history_data}>
-              Xem lịch sử nạp tiền/rút tiền
-            </span>
+              <span className={styles.see_history_data}>
+                Xem lịch sử nạp tiền/rút tiền
+              </span>
             </Link>
             <Button onClick={() => {}} isProcess={false} disabled={false}>
               Tiếp tục
@@ -77,7 +77,7 @@ const WithdrawPage = () => {
         </div>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default WithdrawPage
+export default WithdrawPage;

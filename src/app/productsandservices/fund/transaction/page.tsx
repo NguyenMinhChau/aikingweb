@@ -1,4 +1,4 @@
-import { Breadcrumb } from '../../../../components'
+import { Breadcrumb } from '../../../../components';
 
 const TransactionPage = () => {
   return (
@@ -10,7 +10,7 @@ const TransactionPage = () => {
         </p>
       </div>
     </>
-  )
-}
+  );
+};
 
-export default TransactionPage
+export default TransactionPage;

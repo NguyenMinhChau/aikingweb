@@ -1,10 +1,10 @@
 export const metadata = {
-	title: `Gửi quỹ • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
+  title: `Gửi quỹ • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
 };
 export default function SendFundLayout({
-	children,
+  children,
 }: {
-	children: React.ReactNode;
+  children: React.ReactNode;
 }) {
-	return <section>{children}</section>;
+  return <section>{children}</section>;
 }

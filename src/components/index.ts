@@ -18,4 +18,3 @@ export { default as SliderHeader } from './SlideHeader';
 export { default as LoginRegisterCp } from './LoginRegisterCp';
 export { default as Breadcrumb } from './Common/Breadcrumb';
 export { default as SectionTitle } from './Common/SectionTitle';
-

@@ -4,13 +4,18 @@ import styles from './SliderHeader.module.css';
 
 const cx = className.bind(styles);
 type SliderHeaderProps = {
-  urlImage?: string,
-  title1?: string,
-  title2?: string,
-  animateName?: string,
-}
+  urlImage?: string;
+  title1?: string;
+  title2?: string;
+  animateName?: string;
+};
 
-export default function SliderHeader({ urlImage, title1, title2, animateName }: SliderHeaderProps) {
+export default function SliderHeader({
+  urlImage,
+  title1,
+  title2,
+  animateName,
+}: SliderHeaderProps) {
   return (
     <div className={`${cx('slider-header')}`}>
       <div
@@ -25,7 +30,7 @@ export default function SliderHeader({ urlImage, title1, title2, animateName }: 
             'slider-title'
           )} mb8 animate__animated ${animateName}`}
         >
-          {title1} <span className='cancel'>{title2}</span>
+          {title1} <span className="cancel">{title2}</span>
         </div>
       </div>
     </div>

@@ -1,37 +1,35 @@
 import moment from 'moment';
 
 export const dateFormat = (date: any, format: string) => {
-	return moment(date).format(format);
+  return moment(date).format(format);
 };
 
 export const dateVn = (date: any) => {
-	return new Date(
-		date.getTime() + new Date().getTimezoneOffset() * -60 * 1000,
-	)
-		.toISOString()
-		.slice(0, 19);
+  return new Date(date.getTime() + new Date().getTimezoneOffset() * -60 * 1000)
+    .toISOString()
+    .slice(0, 19);
 };
 // return date format dd.mm.yyyy
 export const dateVnFormat = (date: any) => {
-	const dateVn = new Date(
-		date.getTime() + new Date().getTimezoneOffset() * -60 * 1000,
-	);
-	const day = dateVn.getDate();
-	const month = dateVn.getMonth() + 1;
-	const year = dateVn.getFullYear();
-	return `${day < 10 ? '0' + day : day}.${
-		month < 10 ? '0' + month : month
-	}.${year}`;
+  const dateVn = new Date(
+    date.getTime() + new Date().getTimezoneOffset() * -60 * 1000
+  );
+  const day = dateVn.getDate();
+  const month = dateVn.getMonth() + 1;
+  const year = dateVn.getFullYear();
+  return `${day < 10 ? '0' + day : day}.${
+    month < 10 ? '0' + month : month
+  }.${year}`;
 };
 // return date format yyyy-mm-dd
 export const dateVnFormat2 = (date: any) => {
-	const dateVn = new Date(
-		date.getTime() + new Date().getTimezoneOffset() * -60 * 1000,
-	);
-	const day = dateVn.getDate();
-	const month = dateVn.getMonth() + 1;
-	const year = dateVn.getFullYear();
-	return `${year}-${month < 10 ? '0' + month : month}-${
-		day < 10 ? '0' + day : day
-	}`;
+  const dateVn = new Date(
+    date.getTime() + new Date().getTimezoneOffset() * -60 * 1000
+  );
+  const day = dateVn.getDate();
+  const month = dateVn.getMonth() + 1;
+  const year = dateVn.getFullYear();
+  return `${year}-${month < 10 ? '0' + month : month}-${
+    day < 10 ? '0' + day : day
+  }`;
 };
