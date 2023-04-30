@@ -39,14 +39,17 @@
 
 .input:focus::-webkit-input-placeholder {
 	color: var(--black-color);
+	opacity: 0;
 }
 
 .input:focus::-moz-placeholder {
 	color: var(--black-color);
+	opacity: 0;
 }
 
 .input:focus::-ms-input-placeholder {
 	color: var(--black-color);
+	opacity: 0;
 }
 
 .icon-eye {

@@ -4,13 +4,14 @@ import { useAppContext } from '@/helpers';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { setData } from '@/appState/reducer';
-import { FormInput } from '@/components';
+import { FormInput, SnackbarCp } from '@/components';
 import { authRegisterSV } from '@/services/authen';
 
 const SignupPage = () => {
   const { state, dispatch } = useAppContext();
   const { email, username, password } = state.set;
   const [isProcess, setIsProcess] = useState(false);
+  const [isAgreeWithPolicy, setAgreeWithPolicy] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     type: '',
@@ -30,15 +31,13 @@ const SignupPage = () => {
     dispatch(setData({ username: e.target.value }));
   };
 
-  const onEnter = () => {
-    setIsProcess(true);
-    authRegisterSV({
-      email,
-      password,
-      username,
-      history: push,
-      setIsProcess,
-      setSnackbar,
+  const handleCloseSnackbar = (event: any, reason: any) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar({
+      ...snackbar,
+      open: false,
     });
   };
 
@@ -76,7 +75,7 @@ const SignupPage = () => {
                       name="username"
                       value={username}
                       onChange={onChangeUserName}
-                      onEnter={onEnter}
+                      onEnter={handleSignUp}
                     />
                   </div>
                   <div className="mb-8">
@@ -87,7 +86,7 @@ const SignupPage = () => {
                       name="email"
                       value={email}
                       onChange={onChangeEmail}
-                      onEnter={onEnter}
+                      onEnter={handleSignUp}
                     />
                   </div>
                   <div className="mb-8">
@@ -98,7 +97,7 @@ const SignupPage = () => {
                       name="password"
                       value={password}
                       onChange={onChangePassword}
-                      onEnter={onEnter}
+                      onEnter={handleSignUp}
                     />
                   </div>
                   <div className="mb-8 flex">
@@ -111,6 +110,8 @@ const SignupPage = () => {
                           type="checkbox"
                           id="checkboxLabel"
                           className="sr-only"
+                          onClick={() => setAgreeWithPolicy(!isAgreeWithPolicy)}
+                          checked={isAgreeWithPolicy}
                         />
                         <div className="box mr-4 mt-1 flex h-5 w-5 items-center justify-center rounded border border-body-color border-opacity-20 dark:border-white dark:border-opacity-10">
                           <span className="opacity-0">
@@ -151,6 +152,7 @@ const SignupPage = () => {
                       <button
                         className="flex w-full items-center justify-center rounded-md bg-primary py-4 px-9 text-base font-medium text-white transition duration-300 ease-in-out hover:bg-opacity-80 hover:shadow-signUp"
                         onClick={handleSignUp}
+                        disabled={!isAgreeWithPolicy}
                       >
                         Đăng ký
                       </button>
@@ -229,6 +231,12 @@ const SignupPage = () => {
             </defs>
           </svg>
         </div>
+        <SnackbarCp
+          openSnackbar={snackbar.open}
+          handleCloseSnackbar={handleCloseSnackbar}
+          messageSnackbar={snackbar.message}
+          typeSnackbar={snackbar.type}
+        />
       </section>
     </>
   );

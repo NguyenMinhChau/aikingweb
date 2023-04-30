@@ -1,4 +1,5 @@
 import axios from 'axios';
+import jwt_decode from 'jwt-decode';
 import routers from '@/routers/routers';
 import { setData } from '@/appState/reducer';
 import {
@@ -16,6 +17,7 @@ export const authPost = async (path: string, options = {}) => {
   const res = await authInstance.post(path, options);
   return res.data;
 };
+
 export const authGet = async (path: string, options = {}) => {
   const res = await authInstance.get(path, options);
   return res.data;
@@ -25,13 +27,14 @@ export const authGet = async (path: string, options = {}) => {
 export const authRegisterSV = async (props: any) => {
   const { email, password, username, history, setIsProcess, setSnackbar } =
     props;
-  const resPost = await authPost('register', {
-    email: email,
-    password: password,
-    username: username,
-  });
-  switch (resPost.status) {
-    case 201:
+  let resPost = null;
+  try {
+    resPost = await authPost('register', {
+      email: email,
+      password: password,
+      username: username,
+    });
+    if (resPost.status === 201) {
       setIsProcess(false);
       setSnackbar({
         open: true,
@@ -39,32 +42,27 @@ export const authRegisterSV = async (props: any) => {
         message: resPost?.message || 'Đăng ký thành công',
       });
       history(routers.login);
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setIsProcess(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resPost?.message || 'Đăng ký thất bại',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e) {
+    setIsProcess(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resPost?.message || 'Đăng ký thất bại',
+    });
   }
 };
 // LOGIN AUTHEN
 export const authLoginSV = async (props: any) => {
   const { username, password, setSnackbar, history, dispatch, setIsProcess } =
     props;
-  const resPost = await authPost('login', {
-    username: username,
-    password: password,
-  });
-  switch (resPost.status) {
-    case 200: {
+  let resPost = null;
+  try {
+    resPost = await authPost('login', {
+      username: username,
+      password: password,
+    });
+    if (resPost.status === 200) {
       await setStore({
         token: resPost.metadata?.token,
         username: resPost.metadata?.user?.payment?.username,
@@ -86,30 +84,29 @@ export const authLoginSV = async (props: any) => {
         message: resPost?.message || 'Đăng nhập thành công',
       });
       history(routers.home);
-      break;
     }
-    case 500:
-      setIsProcess(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resPost?.message || 'Đăng nhập thất bại',
-      });
-      break;
-    default:
-      break;
+  } catch (e: any) {
+    setIsProcess(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resPost?.message || 'Đăng nhập thất bại',
+    });
   }
 };
 // LOGOUT AUTHEN
 export const authLogoutSV = async (props: any) => {
   const { email, history, setSnackbar, dispatch } = props;
-  const resGet = await authPost(`logout/${email}`, {});
-  switch (resGet.status) {
-    case 200:
+  let resGet = null;
+  try {
+    resGet = await authPost(`logout/${email}`, {});
+    if (resGet.status === 200) {
       await removeStore();
       await dispatch(
         setData({
           currentUser: null,
+          username: '',
+          email: '',
         })
       );
       setSnackbar({
@@ -118,18 +115,65 @@ export const authLogoutSV = async (props: any) => {
         message: resGet?.message || 'Đăng xuất thành công',
       });
       history(routers.home);
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resGet?.message || 'Đăng xuất thất bại',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e) {
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resGet?.message || 'Đăng xuất thất bại',
+    });
+  }
+};
+
+export const requestToken = async ({
+  currentUser,
+  handleFunc,
+  state,
+  dispatch,
+  setData,
+  setSnackbar,
+  id,
+}: {
+  currentUser: any;
+  handleFunc: any;
+  state: any;
+  dispatch: any;
+  setData: any;
+  setSnackbar: any;
+  id: any;
+}) => {
+  try {
+    const accessToken = currentUser?.token;
+    if (accessToken) {
+      const decodedToken: any = await jwt_decode(accessToken);
+      const date = new Date();
+      if (decodedToken.exp < date.getTime() / 1000) {
+        const res = await authGet(`refreshToken/${currentUser?.email}`);
+        if (res.status === 200) {
+          const refreshUser = {
+            ...currentUser,
+            token: res.data.toString(),
+          };
+          await setStore(refreshUser);
+          dispatch(
+            setData({
+              currentUser: getStore(),
+            })
+          );
+          currentUser.token = `${res.data}`;
+          handleFunc(refreshUser, id ? id : '');
+          return refreshUser;
+        }
+      }
+      handleFunc(currentUser, id ? id : '');
+      return currentUser;
+    }
+  } catch (err) {
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message:
+        'Refresh token không tìm thấy. Vui lòng đăng xuất và đăng nhập lại, xin cảm ơn!',
+    });
   }
 };

@@ -1,6 +1,9 @@
 const KEY = 'loginDataWebAiking';
 
 export const getStore = () => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
   const store = localStorage.getItem(KEY);
   return store ? JSON.parse(store) : null;
 };

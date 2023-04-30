@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { FormInput } from '@/components';
+import { FormInput, SnackbarCp } from '@/components';
 import { useAppContext } from '@/helpers';
 import { useState } from 'react';
 import { setData } from '@/appState/reducer';
@@ -44,7 +44,15 @@ const SignInPage = () => {
     dispatch(setData({ password: e.target.value }));
   };
 
-  const onEnter = () => {};
+  const handleCloseSnackbar = (event: any, reason: any) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar({
+      ...snackbar,
+      open: false,
+    });
+  };
 
   const renderLoginForm = () => {
     return (
@@ -57,7 +65,7 @@ const SignInPage = () => {
             name="email"
             value={username}
             onChange={onChangeUserName}
-            onEnter={onEnter}
+            onEnter={handleLogin}
           />
         </div>
         <div className="mb-8">
@@ -69,7 +77,7 @@ const SignInPage = () => {
             value={password}
             onChange={onChangePassword}
             showPwd={false}
-            onEnter={onEnter}
+            onEnter={handleLogin}
           />
         </div>
         <div className="mb-8 flex flex-col justify-between sm:flex-row sm:items-center">
@@ -213,6 +221,12 @@ const SignInPage = () => {
           </svg>
         </div>
       </section>
+      <SnackbarCp
+        openSnackbar={snackbar.open}
+        handleCloseSnackbar={handleCloseSnackbar}
+        messageSnackbar={snackbar.message}
+        typeSnackbar={snackbar.type}
+      />
     </>
   );
 };

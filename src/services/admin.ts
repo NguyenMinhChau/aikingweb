@@ -26,26 +26,21 @@ export const adminDelete = async (path: string, options = {}) => {
 // GET USER BY ID
 export const adminGetUserByIdSV = async (props: any) => {
   const { id_user, dispatch, setSnackbar } = props;
-  const resGet = await adminGet(`user/${id_user}`, {});
-  switch (resGet.code) {
-    case 0:
+  let resGet = null;
+  try {
+    resGet = await adminGet(`user/${id_user}`, {});
+    if (resGet.status === 200) {
       dispatch(
         setData({
           userById: resGet?.data,
         })
       );
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resGet?.message || 'Lấy thông tin thất bại',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e) {
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resGet?.message || 'Lấy thông tin thất bại',
+    });
   }
 };

@@ -1,6 +1,49 @@
-import Link from 'next/link'
+'use client';
+import { useState } from 'react';
+import Link from 'next/link';
+import { FormInput, SnackbarCp } from '@/components';
+import { useAppContext } from '@/helpers';
+import { userForgotPwdSV } from '@/services/user';
+import { setData } from '@/appState/reducer';
 
 const ForgotPasswordPage = () => {
+  const { state, dispatch } = useAppContext();
+  const { email } = state.set;
+  const [isProcess, setIsProcess] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    type: '',
+    message: '',
+  });
+
+  const onChangeEmail = (e: any) => {
+    dispatch(setData({ email: e.target.value }));
+  };
+
+  const handleForgotPwd = () => {
+    setIsProcess(true);
+    userForgotPwdSV({
+      email,
+      setIsProcess,
+      setSnackbar,
+      history,
+    });
+    dispatch(
+      setData({
+        email: '',
+      })
+    );
+  };
+  const handleCloseSnackbar = (event: any, reason: any) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar({
+      ...snackbar,
+      open: false,
+    });
+  };
+
   return (
     <>
       <section className="relative z-10 overflow-hidden pt-36 pb-16 md:pb-20 lg:pt-[180px] lg:pb-28">
@@ -11,33 +54,42 @@ const ForgotPasswordPage = () => {
                 <h3 className="mb-3 text-center text-2xl font-bold text-black dark:text-white sm:text-3xl">
                   Quên mật khẩu
                 </h3>
-                <p className="mb-11 text-center text-base font-medium text-body-color">
-                  Nó hoàn toàn miễn phí và siêu dễ dàng
-                </p>
-
+                <SnackbarCp
+                  openSnackbar={snackbar.open}
+                  handleCloseSnackbar={handleCloseSnackbar}
+                  messageSnackbar={snackbar.message}
+                  typeSnackbar={snackbar.type}
+                />
                 <form>
                   <div className="mb-8">
-                    <label
-                      htmlFor="email"
-                      className="mb-3 block text-sm font-medium text-dark dark:text-white"
-                    >
-                      Email
-                    </label>
-                    <input
+                    <FormInput
+                      label="Email"
                       type="email"
-                      name="email"
                       placeholder="Nhập email của bạn"
-                      className="w-full rounded-md border border-transparent py-3 px-6 text-base text-body-color placeholder-body-color shadow-one outline-none focus:border-primary focus-visible:shadow-none dark:bg-[#242B51] dark:shadow-signUp"
+                      name="email"
+                      value={email}
+                      onChange={onChangeEmail}
+                      onEnter={handleForgotPwd}
                     />
                   </div>
-                  <div className="mb-6">
-                    <button className="flex w-full items-center justify-center rounded-md bg-primary py-4 px-9 text-base font-medium text-white transition duration-300 ease-in-out hover:bg-opacity-80 hover:shadow-signUp">
-                      Gửi
-                    </button>
+                  <div className="mb-6 flex justify-center">
+                    {!isProcess ? (
+                      <button
+                        className="flex w-full items-center justify-center rounded-md bg-primary py-4 px-9 text-base font-medium text-white transition duration-300 ease-in-out hover:bg-opacity-80 hover:shadow-signUp"
+                        onClick={handleForgotPwd}
+                      >
+                        Gửi
+                      </button>
+                    ) : (
+                      <i
+                        className="bx bx-loader bx-spin bx-rotate-90"
+                        style={{ color: '#000' }}
+                      ></i>
+                    )}
                   </div>
                 </form>
                 <p className="text-center text-base font-medium text-body-color">
-                  Bnạ chưa có tài khoản?{' '}
+                  Bạn chưa có tài khoản?{' '}
                   <Link href="/signup" className="text-primary hover:underline">
                     Đăng ký
                   </Link>
@@ -111,7 +163,7 @@ const ForgotPasswordPage = () => {
         </div>
       </section>
     </>
-  )
-}
+  );
+};
 
-export default ForgotPasswordPage
+export default ForgotPasswordPage;

@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import menuData from './menuData';
-import {usePathname, useRouter} from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import styles from './Header.module.css';
 import { getStore } from '@/helpers/localStore/localStore';
 import LogoLight from '../../../public/images/logo/logo_light.png';
@@ -250,7 +250,12 @@ const Header = () => {
             </div>
             <div className="flex flex-none items-center justify-end pr-16 lg:pr-0">
               {getStore() ? (
-                <button onClick={handleLogout}>Đăng xuất</button>
+                <button
+                  className="hidden py-3 px-7 text-base font-bold text-dark hover:opacity-70 dark:text-white md:block"
+                  onClick={handleLogout}
+                >
+                  Đăng xuất
+                </button>
               ) : (
                 <>
                   <Link

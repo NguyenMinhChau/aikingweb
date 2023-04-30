@@ -42,18 +42,18 @@ export const userAddPaymentSV = async (props: any) => {
     history,
     token,
   } = props;
-  const resPut = await userPut(`addPayment/${id_user}`, {
-    account,
-    bankName,
-    name,
-    token: token,
-    headers: {
+  let resPut = null;
+  try {
+    resPut = await userPut(`addPayment/${id_user}`, {
+      account,
+      bankName,
+      name,
       token: token,
-    },
-  });
-  // console.log('userAddPaymentSV: ', resPut);
-  switch (resPut.code) {
-    case 0:
+      headers: {
+        token: token,
+      },
+    });
+    if (resPut.status === 200) {
       setisProcessModalReciving(false);
       setModalRecivingAccount(false);
       setSnackbar({
@@ -62,30 +62,24 @@ export const userAddPaymentSV = async (props: any) => {
         message: resPut?.message || 'Thêm phương thức thanh toán thành công',
       });
       history(routers.fundProfile);
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setisProcessModalReciving(false);
-      setModalRecivingAccount(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resPut?.message || 'Thêm phương thức thanh toán thất bại',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e) {
+    setisProcessModalReciving(false);
+    setModalRecivingAccount(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resPut?.message || 'Thêm phương thức thanh toán thất bại',
+    });
   }
 };
 // FORGOT PASSWORD USER
 export const userForgotPwdSV = async (props: any) => {
-  const { email_user, setIsProcess, history, setSnackbar } = props;
-  const resPost = await userPost(`forgotPassword/${email_user}`, {});
-  // console.log('userForgotPwdSV: ', resPost);
-  switch (resPost.code) {
-    case 0:
+  const { email, setIsProcess, history, setSnackbar } = props;
+  let resPost = null;
+  try {
+    resPost = await userGet(`forgot/password/${email}`, {});
+    if (resPost.status === 200) {
       setIsProcess(false);
       setSnackbar({
         open: true,
@@ -93,29 +87,23 @@ export const userForgotPwdSV = async (props: any) => {
         message: 'Gửi mã thành công, vui lòng kiểm tra email!',
       });
       history(routers.resetPwd);
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setIsProcess(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resPost?.message || 'Gửi mã thất bại, vui lòng thử lại!',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e) {
+    setIsProcess(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resPost?.message || 'Gửi mã thất bại, vui lòng thử lại!',
+    });
   }
 };
 // OTP FORGOT PASSWORD USER
 export const userOTPForgotPwdSV = async (props: any) => {
   const { code, setSnackbar, setIsProcess, history } = props;
-  const resGet = await userGet(`otpForGot/${code}`, {});
-  console.log('userOTPForgotPwdSV: ', resGet);
-  switch (resGet.code) {
-    case 0:
+  let resGet = null;
+  try {
+    resGet = await userGet(`otpForGot/${code}`, {});
+    if (resGet.status === 200) {
       setIsProcess(false);
       setSnackbar({
         open: true,
@@ -123,22 +111,14 @@ export const userOTPForgotPwdSV = async (props: any) => {
         message: 'Xác thực thành công!',
       });
       history(routers.login);
-      // toastShow(toast, resGet?.message || 'Xác thực thành công');
-      // navigation.navigate(routersMain.Login);
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setIsProcess(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resGet?.message || 'Xác thực thất bại, vui lòng thử lại!',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e) {
+    setIsProcess(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resGet?.message || 'Xác thực thất bại, vui lòng thử lại!',
+    });
   }
 };
 // CREATE DEPOSITS
@@ -386,7 +366,7 @@ export const userCancelWithdrawSV = async (props: any) => {
       token: token,
     },
   });
-  console.log('userCancelWithdrawSV: ', resDel);
+
   switch (resDel.code) {
     case 0:
       const resGet = await userGet(`withdraws/${id_user}`, {
