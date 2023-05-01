@@ -4,7 +4,7 @@ import className from 'classnames/bind';
 import styles from './styles.module.css';
 
 const cx = className.bind(styles);
-type CustomercareLineType = {
+type CustomcareLineType = {
   nameIcon?: string;
   colorIcon?: string;
   colorStatus?: string;
@@ -23,7 +23,7 @@ type CustomercareLineType = {
   accountNumber?: string;
   marginLeft?: string;
 };
-export default function CustomercareLine({
+export default function CustomcareLine({
   nameIcon,
   colorIcon,
   colorStatus,
@@ -41,7 +41,7 @@ export default function CustomercareLine({
   accountName,
   accountNumber,
   marginLeft,
-}: CustomercareLineType) {
+}: CustomcareLineType) {
   return (
     <div
       className={`${cx(

@@ -9,9 +9,14 @@ import {
   Modal,
   SnackbarCp,
   LoginRegisterCp,
+  CustomcareLine,
+  FileUploadSingle,
+  Image,
 } from '@/components';
 import { DataFundUSD, useAppContext } from '@/helpers';
 import { autoFormatNumberInputChange } from '@/helpers/format/NumberFormat';
+import { dateFormat } from '@/helpers/format/DateVN';
+import { formatVND } from '@/helpers/format/FormatMoney';
 import { setData } from '@/appState/reducer';
 import routers from '@/routers/routers';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -23,6 +28,7 @@ import {
   userCreateDepositsSV,
   userUploadBillsDepositsSV,
 } from '@/services/user';
+import className from 'classnames/bind';
 
 const dataBankAdmin = [
   {
@@ -40,6 +46,8 @@ const IMAGE_SLIDERS = [
   },
 ];
 
+const cx = className.bind(styles);
+
 const DepositsPage = () => {
   const { state, dispatch } = useAppContext();
   const { amountDeposits, bankDeposits, file, currentUser } = state.set;
@@ -47,7 +55,12 @@ const DepositsPage = () => {
   const [isProcessModalDeposits, setIsProcessModalDeposits] = useState(false);
   const [isProcessUploadDeposits, setIsProcessUploadDeposits] = useState(false);
   const [isModalUploadDeposits, setIsModalUploadDeposits] = useState(false);
-  const [dataReturn, setDataReturn] = useState(null);
+  const [dataReturn, setDataReturn] = useState<{
+    id?: string;
+    status?: string;
+    createdAt?: string;
+    amount?: number;
+  } | null>(null);
   const [snackbar, setSnackbar] = useState<{
     open: boolean;
     type: string;
@@ -110,12 +123,12 @@ const DepositsPage = () => {
     });
   };
 
-  const handleModalDepositsTrue = (e) => {
+  const handleModalDepositsTrue = (e: any) => {
     e.stopPropagation();
     setIsModalUploadDeposits(true);
   };
 
-  const handleModalDepositsFalse = (e) => {
+  const handleModalDepositsFalse = (e: any) => {
     e.stopPropagation();
     setIsModalUploadDeposits(false);
     dispatch(
@@ -127,7 +140,7 @@ const DepositsPage = () => {
     );
   };
 
-  const handleSendUpload = (dataToken) => {
+  const handleSendUpload = (dataToken: any) => {
     userUploadBillsDepositsSV({
       id_user: currentUser?.id,
       dispatch,
@@ -152,7 +165,7 @@ const DepositsPage = () => {
       setTimeout(() => {
         refreshToken({
           currentUser,
-          handleSendUpload,
+          handleFunc: handleSendUpload,
           state,
           dispatch,
           setData,
@@ -216,6 +229,7 @@ const DepositsPage = () => {
   };
 
   const renderUploadForm = () => {
+    const urlImageFile = file.length > 0 && URL.createObjectURL(file[0]);
     return (
       <>
         {isModalUploadDeposits && (
@@ -228,46 +242,49 @@ const DepositsPage = () => {
             isProcess={isProcessUploadDeposits}
             onClick={handleUploadBillDeposits}
           >
-            {/*<CustomcareLine*/}
-            {/*  nameIcon="fa-solid fa-rotate-right"*/}
-            {/*  colorIcon="success"*/}
-            {/*  title="Trạng thái:"*/}
-            {/*  textLink={dataReturn?.status}*/}
-            {/*/>*/}
-            {/*<CustomcareLine*/}
-            {/*  nameIcon="fa-regular fa-clock"*/}
-            {/*  colorIcon="info"*/}
-            {/*  title="Ngày rút:"*/}
-            {/*  textLink={dateFormat(*/}
-            {/*    dataReturn?.createdAt,*/}
-            {/*    'DD/MM/YYYY HH:mm:ss'*/}
-            {/*  )}*/}
-            {/*/>*/}
-            {/*<CustomcareLine*/}
-            {/*  nameIcon="fa-solid fa-money-bill"*/}
-            {/*  colorIcon="warning"*/}
-            {/*  title="Số tiền rút:"*/}
-            {/*  textLink={formatVND(dataReturn?.amount || 0)}*/}
-            {/*/>*/}
-            {/*<CustomcareLine*/}
-            {/*  nameIcon="fa fa-bank"*/}
-            {/*  colorIcon="cancel"*/}
-            {/*  title="Ngân hàng thụ hưởng:"*/}
-            {/*  bankMethod*/}
-            {/*  bankName={bankDeposits?.name}*/}
-            {/*  accountName={bankDeposits?.accountName}*/}
-            {/*  accountNumber={bankDeposits?.accountNumber}*/}
-            {/*/>*/}
-            {/*<FileUploadSingle label="Tải hình ảnh" />*/}
-            {/*{urlImageFile && (*/}
-            {/*  <div className={`${cx('view_image')}`}>*/}
-            {/*    <Image*/}
-            {/*      src={urlImageFile}*/}
-            {/*      alt="image_upload"*/}
-            {/*      className={`${cx('image')}`}*/}
-            {/*    />*/}
-            {/*  </div>*/}
-            {/*)}*/}
+            <CustomcareLine
+              nameIcon="fa-solid fa-rotate-right"
+              colorIcon="success"
+              title="Trạng thái:"
+              textLink={dataReturn?.status}
+              key="success-line"
+            />
+            <CustomcareLine
+              nameIcon="fa-regular fa-clock"
+              colorIcon="info"
+              title="Ngày rút:"
+              textLink={dateFormat(
+                dataReturn?.createdAt,
+                'DD/MM/YYYY HH:mm:ss'
+              )}
+              key="withdraw-date-line"
+            />
+            <CustomcareLine
+              nameIcon="fa-solid fa-money-bill"
+              colorIcon="warning"
+              title="Số tiền rút:"
+              textLink={formatVND(dataReturn?.amount || 0)}
+              key="warning-line"
+            />
+            <CustomcareLine
+              nameIcon="fa fa-bank"
+              colorIcon="cancel"
+              title="Ngân hàng thụ hưởng:"
+              bankName={bankDeposits?.name}
+              accountName={bankDeposits?.accountName}
+              accountNumber={bankDeposits?.accountNumber}
+              key="bank-line"
+            />
+            <FileUploadSingle label="Tải hình ảnh" />
+            {urlImageFile && (
+              <div className={`${cx('view_image')}`}>
+                <Image
+                  src={urlImageFile}
+                  alt="image_upload"
+                  className={`${cx('image')}`}
+                />
+              </div>
+            )}
           </Modal>
         )}
       </>

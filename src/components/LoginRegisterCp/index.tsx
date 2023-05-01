@@ -13,11 +13,11 @@ export default function LoginRegisterCp({ padding }: LoginRegisterCPProps) {
     <div className={`${cx('container')}`} style={{ padding: padding }}>
       <span>
         Bạn cần{' '}
-        <Link href={routers.login} className="fwb warning">
+        <Link href={routers.login} className="font-bold">
           đăng nhập
         </Link>{' '}
         hoặc{' '}
-        <Link href={routers.signup} className="fwb warning">
+        <Link href={routers.signup} className="font-bold">
           đăng ký
         </Link>{' '}
         để sử dụng tính năng này.
