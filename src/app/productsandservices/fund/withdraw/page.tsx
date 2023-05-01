@@ -1,15 +1,37 @@
 'use client';
 
-import { Breadcrumb, Button, FormInput } from '../../../../components';
+import { useState, useEffect } from 'react';
+import {
+  Breadcrumb,
+  Button,
+  FormInput,
+  LoginRegisterCp,
+  SnackbarCp,
+  CustomcareLine,
+  Modal,
+} from '@/components';
+import className from 'classnames/bind';
+import { formatVND } from '@/helpers/format/FormatMoney';
+import { dateFormat } from '@/helpers/format/DateVN';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper';
-import { setData } from '../../../../appState/reducer';
-import { autoFormatNumberInputChange } from '../../../../helpers/format/NumberFormat';
-import { useAppContext } from '../../../../helpers';
+import { setData } from '@/appState/reducer';
+import { autoFormatNumberInputChange } from '@/helpers/format/NumberFormat';
+import { useAppContext } from '@/helpers';
 import Link from 'next/link';
-import routers from '../../../../routers/routers';
+import routers from '@/routers/routers';
 import styles from './withdraw.module.css';
 import sharedStyles from '../fund-shared-styles.module.css';
+import { refreshToken } from '@/services/authen';
+import {
+  userCreateWithdrawSV,
+  userResendOtpWithdrawSV,
+  userCancelWithdrawSV,
+  userVerifyWithdrawSV,
+} from '@/services/user';
+import { adminGetUserByIdSV } from '@/services/admin';
+
+const cx = className.bind(styles);
 
 const IMAGE_SLIDERS = [
   {
@@ -20,7 +42,204 @@ const IMAGE_SLIDERS = [
 
 const WithdrawPage = () => {
   const { state, dispatch } = useAppContext();
-  const { amountWithdraw } = state.set;
+  const { amountWithdraw, currentUser, otpCode, userById } = state.set;
+  const [snackbar, setSnackbar] = useState<{
+    open: boolean;
+    type: string;
+    message: any;
+  }>({
+    open: false,
+    type: '',
+    message: '',
+  });
+  const [isProcessModalWithdraw, setIsProcessModalWithdraw] = useState(false);
+  const [isProcessResendOTP, setIsProcessResendOTP] = useState(false);
+  const [modalVerifyWithdraw, setModalVerifyWithdraw] = useState(false);
+  const [itemWithdraw, setItemWithdraw] = useState<{
+    id?: string;
+    status?: string;
+    createdAt?: string;
+    amount?: number;
+  } | null>(null);
+  const [isProcessCancelWithdraw, setIsProcessCancelWithdraw] = useState(false);
+
+  useEffect(() => {
+    document.title = `Rút tiền | ${process.env.REACT_APP_TITLE_WEB}`;
+    if (currentUser) {
+      adminGetUserByIdSV({
+        id_user: currentUser?.id,
+        dispatch,
+        setSnackbar,
+      });
+    }
+  }, []);
+
+  const checkbank =
+    userById?.payment?.bank?.bankName &&
+    userById?.payment?.bank?.name &&
+    userById?.payment?.bank?.account;
+
+  const handleModalWithdrawTrue = (e: any) => {
+    e.stopPropagation();
+    setModalVerifyWithdraw(true);
+  };
+  const handleModalWithdrawFalse = (e: any) => {
+    e.stopPropagation();
+    setModalVerifyWithdraw(false);
+  };
+
+  const handleSendWithdrawSV = (data: any) => {
+    userCreateWithdrawSV({
+      id_user: currentUser?.id,
+      idPayment: userById?.payment?.bank?.idPayment,
+      email_user: currentUser?.email,
+      amountVND: Number(amountWithdraw.replace(/\./g, '')),
+      setSnackbar,
+      token: data?.token,
+      setIsProcessModalWithdraw,
+      setModalVerifyWithdraw,
+      userById: userById,
+      setItemWithdraw,
+    });
+  };
+
+  const handleSendWithdraw = async (e: any) => {
+    if (currentUser) {
+      if (!amountWithdraw) {
+        setSnackbar({
+          open: true,
+          type: 'error',
+          message: 'Bạn chưa nhập số tiền rút',
+        });
+      } else if (!checkbank) {
+        setSnackbar({
+          open: true,
+          type: 'error',
+          message: 'Bạn chưa thêm tài khoản ngân hàng',
+        });
+      } else {
+        setIsProcessModalWithdraw(true);
+        refreshToken({
+          currentUser,
+          handleFunc: handleSendWithdrawSV,
+          state,
+          dispatch,
+          setData,
+          setSnackbar,
+        });
+      }
+    } else {
+      setSnackbar({
+        open: true,
+        type: 'error',
+        message: <LoginRegisterCp />,
+      });
+    }
+  };
+
+  const handleCloseSnackbar = (event: any, reason: any) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar({
+      ...snackbar,
+      open: false,
+    });
+  };
+
+  const handleSendOTP = (dataToken: any) => {
+    userVerifyWithdrawSV({
+      id_user: currentUser?.id,
+      dispatch,
+      code: otpCode,
+      token: dataToken?.token,
+      setSnackbar,
+      setIsProcessModalWithdraw,
+      setModalVerifyWithdraw,
+    });
+  };
+
+  const handleAuthenWithdraw = async () => {
+    if (!otpCode) {
+      setSnackbar({
+        open: true,
+        type: 'error',
+        message: 'Bạn chưa nhập mã xác thực',
+      });
+    } else {
+      setIsProcessModalWithdraw(true);
+      refreshToken({
+        currentUser,
+        handleFunc: handleSendOTP,
+        state,
+        dispatch,
+        setData,
+        setSnackbar,
+      });
+      dispatch(
+        setData({
+          amountWithdraw: '',
+          otpCode: '',
+        })
+      );
+    }
+  };
+
+  const handleCancelWithdrawSV = (dataToken: any, id: any) => {
+    userCancelWithdrawSV({
+      id_user: currentUser?.id,
+      dispatch,
+      id_withdraw: id,
+      token: dataToken?.token,
+      setSnackbar,
+      setIsProcessCancelWithdraw,
+      setModalVerifyWithdraw,
+    });
+  };
+
+  const handleCancelWithdraw = async (id: any) => {
+    setIsProcessCancelWithdraw(true);
+    refreshToken({
+      currentUser,
+      handleFunc: handleCancelWithdrawSV,
+      state,
+      dispatch,
+      setData,
+      setSnackbar,
+      id,
+    });
+    dispatch(
+      setData({
+        amountWithdraw: '',
+        otpCode: '',
+      })
+    );
+  };
+
+  const resendOtpSV = (dataToken: any, id: string) => {
+    userResendOtpWithdrawSV({
+      id_user: currentUser.id,
+      id_withdraw: id,
+      dispatch,
+      token: dataToken?.token,
+      setSnackbar,
+      setIsProcessResendOTP,
+    });
+  };
+
+  const handleResendOTP = async (id: string) => {
+    setIsProcessResendOTP(true);
+    refreshToken({
+      currentUser,
+      handleFunc: resendOtpSV,
+      state,
+      dispatch,
+      setData,
+      setSnackbar,
+      id,
+    });
+  };
+
   return (
     <>
       <Breadcrumb pageName="Rút tiền" description="Rút tiền" />
@@ -50,7 +269,11 @@ const WithdrawPage = () => {
                 Xem lịch sử nạp tiền/rút tiền
               </span>
             </Link>
-            <Button onClick={() => {}} isProcess={false} disabled={false}>
+            <Button
+              onClick={handleSendWithdraw}
+              isProcess={isProcessModalWithdraw}
+              disabled={isProcessModalWithdraw}
+            >
               Tiếp tục
             </Button>
           </div>
@@ -75,6 +298,73 @@ const WithdrawPage = () => {
             </Swiper>
           </div>
         </div>
+        {modalVerifyWithdraw && (
+          <Modal
+            openModal={handleModalWithdrawTrue}
+            closeModal={handleModalWithdrawFalse}
+            titleHeader="Xác thực rút tiền"
+            actionButtonText="Gửi"
+            classNameButton={`infobgc`}
+            isProcess={isProcessModalWithdraw}
+            isProcessCancel={isProcessCancelWithdraw}
+            onClick={handleAuthenWithdraw}
+            onClickCancel={() => handleCancelWithdraw(itemWithdraw?.id)}
+          >
+            <CustomcareLine
+              nameIcon="fa-solid fa-rotate-right"
+              colorIcon="success"
+              title="Trạng thái:"
+              textLink={itemWithdraw?.status}
+            />
+            <CustomcareLine
+              nameIcon="fa-regular fa-clock"
+              colorIcon="info"
+              title="Ngày rút:"
+              textLink={dateFormat(
+                itemWithdraw?.createdAt,
+                'DD/MM/YYYY HH:mm:ss'
+              )}
+            />
+            <CustomcareLine
+              nameIcon="fa-solid fa-money-bill"
+              colorIcon="warning"
+              title="Số tiền rút:"
+              textLink={formatVND(itemWithdraw?.amount || 0)}
+            />
+            <CustomcareLine
+              nameIcon="fa fa-bank"
+              colorIcon="cancel"
+              title="Ngân hàng thụ hưởng:"
+              bankName={userById?.payment?.bank?.bankName}
+              accountName={userById?.payment?.bank?.name}
+              accountNumber={userById?.payment?.bank?.account}
+            />
+            <FormInput
+              label="Mã xác thực"
+              placeholder="---"
+              value={otpCode}
+              name="otpCode"
+              onChange={(e) => dispatch(setData({ otpCode: e.target.value }))}
+              classNameField={`mt8`}
+            />
+            <div
+              className={`${cx('text_resend')} fwb cancel`}
+              onClick={
+                isProcessResendOTP
+                  ? () => {}
+                  : () => handleResendOTP(itemWithdraw?.id || '')
+              }
+            >
+              {isProcessResendOTP ? 'Đang gửi mã...' : 'Gửi lại mã'}
+            </div>
+          </Modal>
+        )}
+        <SnackbarCp
+          openSnackbar={snackbar.open}
+          handleCloseSnackbar={handleCloseSnackbar}
+          messageSnackbar={snackbar.message}
+          typeSnackbar={snackbar.type}
+        />
       </div>
     </>
   );

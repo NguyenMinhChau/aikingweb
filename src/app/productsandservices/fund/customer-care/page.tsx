@@ -2,7 +2,7 @@
 import React from 'react';
 import className from 'classnames/bind';
 import styles from './styles.module.css';
-import { Breadcrumb, CustomercareLine, Divider } from '../../../../components';
+import { Breadcrumb, CustomcareLine, Divider } from '../../../../components';
 
 const cx = className.bind(styles);
 function CustomerCarePage() {
@@ -16,27 +16,27 @@ function CustomerCarePage() {
         <Divider />
         <div className="w-full flex items-center justify-center mb-3">
           <div className={`lg:w-1/2 sm:w-1/2 w-full ${cx('info_container')}`}>
-            <CustomercareLine
+            <CustomcareLine
               nameIcon="bx bx-phone"
               colorIcon="#50b153"
               title="Hotline:"
               textLink="0345 335 422"
               link="tel:0345335422"
             />
-            <CustomercareLine
+            <CustomcareLine
               nameIcon="bx bx-message-rounded"
               colorIcon="#d50000"
               title="Zalo:"
               textLink="0345 335 422 (Thắm Đặng)"
             />
-            <CustomercareLine
+            <CustomcareLine
               nameIcon="bx bxl-facebook"
               colorIcon="#007aff"
               title="Facebook:"
               textLink="Mỹ Thắm"
               link="https://www.facebook.com/thamdanginvestments/"
             />
-            <CustomercareLine
+            <CustomcareLine
               nameIcon="bx bxl-telegram"
               colorIcon="#ffab00"
               title="Telegram:"

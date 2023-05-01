@@ -269,72 +269,56 @@ export const userCreateWithdrawSV = async (props: any) => {
     token,
     setItemWithdraw,
   } = props;
-  const resPost = await userPost(`withdraw/${id_user}`, {
-    idPayment,
-    status: 'Pending',
-    amount: amountVND,
-    note: `pc_${email_user}`,
-    token: token,
-  });
-  // console.log('userCreateWithdrawSV: ', resPost);
-  switch (resPost.code) {
-    case 0:
-      setItemWithdraw(resPost?.data);
-      setIsProcessModalWithdraw(false);
-      setModalVerifyWithdraw(true);
-      setSnackbar({
-        open: true,
-        type: 'success',
-        message: 'Vui lòng nhập mã xác thức rút tiền.',
-      });
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setIsProcessModalWithdraw(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resPost?.message || 'Tạo yêu cầu rút tiền thất bại!',
-      });
-      break;
-    default:
-      break;
+  let resPost = null;
+  try {
+    resPost = await userPost(`withdraw/${id_user}`, {
+      idPayment,
+      status: 'Pending',
+      amount: amountVND,
+      note: `pc_${email_user}`,
+      token: token,
+    });
+    setItemWithdraw(resPost?.data);
+    setIsProcessModalWithdraw(false);
+    setModalVerifyWithdraw(true);
+    setSnackbar({
+      open: true,
+      type: 'success',
+      message: 'Vui lòng nhập mã xác thức rút tiền.',
+    });
+  } catch (e) {
+    setIsProcessModalWithdraw(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resPost?.message || 'Tạo yêu cầu rút tiền thất bại!',
+    });
   }
 };
 // RESEND OTP WITHDRAW
 export const userResendOtpWithdrawSV = async (props: any) => {
   const { id_withdraw, setSnackbar, token, setIsProcessResendOTP } = props;
-  const resPost = await userPost(`withdraw/otp/resend/${id_withdraw}`, {
-    token: token,
-    headers: {
+  let resPost = null;
+  try {
+    resPost = await userPost(`withdraw/otp/resend/${id_withdraw}`, {
       token: token,
-    },
-  });
-  console.log('userResendOtpWithdrawSV: ', resPost);
-  switch (resPost.code) {
-    case 0:
-      setIsProcessResendOTP(false);
-      setSnackbar({
-        open: true,
-        type: 'success',
-        message: 'Gửi lại mã OTP thành công, vui lòng kiểm tra email!',
-      });
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setIsProcessResendOTP(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resPost?.message || 'Gửi mã OTP thất bại!',
-      });
-      break;
-    default:
-      break;
+      headers: {
+        token: token,
+      },
+    });
+    setIsProcessResendOTP(false);
+    setSnackbar({
+      open: true,
+      type: 'success',
+      message: 'Gửi lại mã OTP thành công, vui lòng kiểm tra email!',
+    });
+  } catch (e) {
+    setIsProcessResendOTP(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resPost?.message || 'Gửi mã OTP thất bại!',
+    });
   }
 };
 // CANCEL WITHDRAW
@@ -354,40 +338,32 @@ export const userCancelWithdrawSV = async (props: any) => {
       token: token,
     },
   });
-
-  switch (resDel.code) {
-    case 0:
-      const resGet = await userGet(`withdraws/${id_user}`, {
-        headers: {
-          token: token,
-        },
-      });
-      dispatch(
-        setData({
-          dataWithdrawsHistory: resGet?.data,
-        })
-      );
-      setIsProcessCancelWithdraw(false);
-      setModalVerifyWithdraw(false);
-      setSnackbar({
-        open: true,
-        type: 'success',
-        message: 'Hủy yêu cầu rút tiền thành công!',
-      });
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setIsProcessCancelWithdraw(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resDel?.message || 'Hủy yêu cầu rút tiền thất bại!',
-      });
-      break;
-    default:
-      break;
+  let resGet = null;
+  try {
+    resGet = await userGet(`withdraws/${id_user}`, {
+      headers: {
+        token: token,
+      },
+    });
+    dispatch(
+      setData({
+        dataWithdrawsHistory: resGet?.data,
+      })
+    );
+    setIsProcessCancelWithdraw(false);
+    setModalVerifyWithdraw(false);
+    setSnackbar({
+      open: true,
+      type: 'success',
+      message: 'Hủy yêu cầu rút tiền thành công!',
+    });
+  } catch (e) {
+    setIsProcessCancelWithdraw(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resDel?.message || 'Hủy yêu cầu rút tiền thất bại!',
+    });
   }
 };
 // VERIFY WITHDRAW OTP
@@ -401,19 +377,14 @@ export const userVerifyWithdrawSV = async (props: any) => {
     id_user,
     dispatch,
   } = props;
-  const resGet = await userGet(`enterOtpWithdraw/${code}`, {
-    headers: {
-      token: token,
-    },
-  });
-  // console.log('userVerifyWithdrawSV: ', resGet);
-  switch (resGet.code) {
-    case 0:
-      const resGet = await userGet(`withdraws/${id_user}`, {
-        headers: {
-          token: token,
-        },
-      });
+  let resGet = null;
+  try {
+    resGet = await userGet(`enterOtpWithdraw/${code}`, {
+      headers: {
+        token: token,
+      },
+    });
+    if (resGet.status === 200) {
       dispatch(
         setData({
           dataWithdrawsHistory: resGet?.data,
@@ -426,20 +397,14 @@ export const userVerifyWithdrawSV = async (props: any) => {
         type: 'success',
         message: 'Xác thực rút tiền thành công',
       });
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setIsProcessModalWithdraw(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: 'Xác thực rút tiền thất bại. Mã OTP sai',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e) {
+    setIsProcessModalWithdraw(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: 'Xác thực rút tiền thất bại. Mã OTP sai',
+    });
   }
 };
 // GET ALL WITHDRAWS BY USER

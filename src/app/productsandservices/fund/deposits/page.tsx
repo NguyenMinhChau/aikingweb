@@ -13,7 +13,7 @@ import {
   FileUploadSingle,
   Image,
 } from '@/components';
-import { DataFundUSD, useAppContext } from '@/helpers';
+import { useAppContext } from '@/helpers';
 import { autoFormatNumberInputChange } from '@/helpers/format/NumberFormat';
 import { dateFormat } from '@/helpers/format/DateVN';
 import { formatVND } from '@/helpers/format/FormatMoney';

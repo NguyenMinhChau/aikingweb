@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import menuData from './menuData';
 import { usePathname, useRouter } from 'next/navigation';
 import styles from './Header.module.css';
@@ -9,6 +9,7 @@ import { getStore } from '@/helpers/localStore/localStore';
 import LogoLight from '../../../public/images/logo/logo_light.png';
 import { useAppContext } from '@/helpers';
 import { authLogoutSV } from '@/services/authen';
+import { SnackbarCp } from '@/components';
 
 const Header = () => {
   const { state, dispatch } = useAppContext();
@@ -21,12 +22,14 @@ const Header = () => {
     type: '',
     message: '',
   });
+  const navbarRef = useRef<any>();
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen);
   };
 
   // Sticky Navbar
   const [sticky, setSticky] = useState(false);
+
   const handleStickyNavbar = () => {
     if (window.scrollY >= 80) {
       setSticky(true);
@@ -36,7 +39,22 @@ const Header = () => {
   };
   useEffect(() => {
     window.addEventListener('scroll', handleStickyNavbar);
-  });
+    return () => {
+      document.removeEventListener('scroll', handleStickyNavbar);
+    };
+  }, []);
+
+  useEffect(() => {
+    const outsideNavbarClick = (event: any) => {
+      if (navbarRef.current && !navbarRef.current.contains(event.target)) {
+        setNavbarOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', outsideNavbarClick);
+    return () => {
+      document.removeEventListener('mousedown', outsideNavbarClick);
+    };
+  }, []);
 
   // submenu handler
   const [openIndex, setOpenIndex] = useState(-1);
@@ -48,6 +66,16 @@ const Header = () => {
     } else {
       setOpenIndex(index);
     }
+  };
+
+  const handleCloseSnackbar = (event: any, reason: any) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbar({
+      ...snackbar,
+      open: false,
+    });
   };
 
   const handleLogout = () => {
@@ -93,17 +121,10 @@ const Header = () => {
                   height={30}
                   className="w-full dark:hidden"
                 />
-                {/* <Image
-									src={LogoDark}
-									alt="logo"
-									width={140}
-									height={30}
-									className="hidden w-full dark:block"
-								/> */}
               </Link>
             </div>
             <div className="flex w-full items-center justify-between px-4">
-              <div>
+              <div ref={navbarRef}>
                 <button
                   onClick={navbarToggleHandler}
                   id="navbarToggler"
@@ -228,7 +249,7 @@ const Header = () => {
                                             <Link
                                               href={submenuItemLevel2?.path!}
                                               key={submenuItemLevel2.id}
-                                              className="block rounded py-2.5 text-sm text-dark hover:opacity-70 dark:text-white lg:px-3"
+                                              className="block rounded py-2.5 text-sm text-dark hover:opacity-70 dark:text-white lg:px-3 ml-4"
                                             >
                                               {submenuItemLevel2.title}
                                             </Link>
@@ -248,7 +269,7 @@ const Header = () => {
                 </nav>
               </div>
             </div>
-            <div className="flex flex-none items-center justify-end pr-16 lg:pr-0">
+            <div className="flex flex-none items-center justify-end pr-16 lg:pr-0 mr-3">
               {getStore() ? (
                 <button
                   className="hidden py-3 px-7 text-base font-bold text-dark hover:opacity-70 dark:text-white md:block"
@@ -276,6 +297,12 @@ const Header = () => {
           </div>
         </div>
       </header>
+      <SnackbarCp
+        openSnackbar={snackbar.open}
+        handleCloseSnackbar={handleCloseSnackbar}
+        messageSnackbar={snackbar.message}
+        typeSnackbar={snackbar.type}
+      />
     </>
   );
 };
