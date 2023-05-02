@@ -43,12 +43,12 @@ export const authRegisterSV = async (props: any) => {
       });
       history(routers.login);
     }
-  } catch (e) {
+  } catch (e: any) {
     setIsProcess(false);
     setSnackbar({
       open: true,
       type: 'error',
-      message: resPost?.message || 'Đăng ký thất bại',
+      message: e?.response?.data?.message || 'Đăng ký thất bại',
     });
   }
 };
@@ -90,7 +90,7 @@ export const authLoginSV = async (props: any) => {
     setSnackbar({
       open: true,
       type: 'error',
-      message: resPost?.message || 'Đăng nhập thất bại',
+      message: e?.response?.data?.message || 'Đăng nhập thất bại',
     });
   }
 };
@@ -116,11 +116,11 @@ export const authLogoutSV = async (props: any) => {
       });
       history(routers.home);
     }
-  } catch (e) {
+  } catch (e: any) {
     setSnackbar({
       open: true,
       type: 'error',
-      message: resGet?.message || 'Đăng xuất thất bại',
+      message: e?.response?.data?.message || 'Đăng xuất thất bại',
     });
   }
 };
@@ -128,7 +128,6 @@ export const authLogoutSV = async (props: any) => {
 export const refreshToken = async ({
   currentUser,
   handleFunc,
-  state,
   dispatch,
   setData,
   setSnackbar,
@@ -136,7 +135,6 @@ export const refreshToken = async ({
 }: {
   currentUser: any;
   handleFunc: any;
-  state: any;
   dispatch: any;
   setData: any;
   setSnackbar: any;
@@ -168,11 +166,12 @@ export const refreshToken = async ({
       handleFunc(currentUser, id ? id : '');
       return currentUser;
     }
-  } catch (err) {
+  } catch (e: any) {
     setSnackbar({
       open: true,
       type: 'error',
       message:
+        e?.response?.data?.message ||
         'Refresh token không tìm thấy. Vui lòng đăng xuất và đăng nhập lại, xin cảm ơn!',
     });
   }

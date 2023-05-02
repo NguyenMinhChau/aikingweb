@@ -20,9 +20,9 @@ const ForgotPasswordPage = () => {
     dispatch(setData({ email: e.target.value }));
   };
 
-  const handleForgotPwd = () => {
+  const handleForgotPwd = async () => {
     setIsProcess(true);
-    userForgotPwdSV({
+    await userForgotPwdSV({
       email,
       setIsProcess,
       setSnackbar,

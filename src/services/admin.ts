@@ -32,15 +32,15 @@ export const adminGetUserByIdSV = async (props: any) => {
     if (resGet.status === 200) {
       dispatch(
         setData({
-          userById: resGet?.data,
+          userById: resGet?.metadata,
         })
       );
     }
-  } catch (e) {
+  } catch (e: any) {
     setSnackbar({
       open: true,
       type: 'error',
-      message: resGet?.message || 'Lấy thông tin thất bại',
+      message: e?.response?.data?.message || 'Lấy thông tin thất bại',
     });
   }
 };

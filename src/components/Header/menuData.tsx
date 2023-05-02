@@ -1,5 +1,5 @@
 import routers from '../../routers/routers';
-import { Menu } from '../../types/menu';
+import { Menu } from '@/types/menu';
 
 const menuData: Menu[] = [
   {

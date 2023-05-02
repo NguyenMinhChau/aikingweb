@@ -18,9 +18,9 @@ const SignInPage = () => {
   });
   const { push } = useRouter();
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setIsProcess(true);
-    authLoginSV({
+    await authLoginSV({
       username,
       password,
       setSnackbar,
@@ -28,12 +28,7 @@ const SignInPage = () => {
       history: push,
       setIsProcess,
     });
-    dispatch(
-      setData({
-        email: '',
-        password: '',
-      })
-    );
+    setIsProcess(false);
   };
 
   const onChangeUserName = (e: any) => {

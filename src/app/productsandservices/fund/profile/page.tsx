@@ -5,6 +5,7 @@ import styles from './profile.module.css';
 import sharedStyles from '../fund-shared-styles.module.css';
 
 import routers from '@/routers/routers';
+import React from 'react';
 
 const ProfilePage = () => {
   return (
@@ -17,9 +18,17 @@ const ProfilePage = () => {
               <i className="fa-regular fa-newspaper mr-1"></i>
               <span>Thông tin tài khoản</span>
             </div>
-            <span>
-              Bạn cần đăng nhập hoặc đăng ký để sử dụng tính năng này.
-            </span>
+            <p className="mt-2">
+              Bạn cần{' '}
+              <Link href={routers.login} className="font-bold">
+                đăng nhập
+              </Link>{' '}
+              hoặc{' '}
+              <Link href={routers.signup} className="font-bold">
+                đăng ký
+              </Link>{' '}
+              để sử dụng tính năng này.
+            </p>
           </div>
           <div className={styles.profile_form}>
             <div className={styles.form_row}>

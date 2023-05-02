@@ -11,6 +11,8 @@
 	--primary-color: #ff3f34;
 	--yellow-color: #fbb040;
 	--body-color: #959cb1;
+	--color-white: white;
+	--rgba-modal-bgc: rgba(0, 0, 0, 0.5);
 }
 
 @layer base {

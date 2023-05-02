@@ -25,7 +25,7 @@ export default function FileUploadSingle({ label = 'Upload File', desc = '' }) {
     setFileRejections([]);
   }, [dispatch]);
   return (
-    <div className={`${cx('container')} mt8`}>
+    <div className={`${cx('container')} mt8 mt-2`}>
       <Pane maxWidth={654}>
         <FileUploader
           label={label}

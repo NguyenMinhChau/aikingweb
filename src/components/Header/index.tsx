@@ -22,6 +22,7 @@ const Header = () => {
     type: '',
     message: '',
   });
+  const [isShowSubMenu, setShowSubMenu] = useState({});
   const navbarRef = useRef<any>();
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen);
@@ -59,12 +60,12 @@ const Header = () => {
   // submenu handler
   const [openIndex, setOpenIndex] = useState(-1);
   const [openIndexLevel2, setOpenIndexLevel2] = useState(-2);
-  const handleSubmenu = (index: number) => {
-    if (openIndex === index) {
+  const handleSubmenu = (id: number) => {
+    if (openIndex === id) {
       setOpenIndex(-1);
       setOpenIndexLevel2(-2);
     } else {
-      setOpenIndex(index);
+      setOpenIndex(id);
     }
   };
 

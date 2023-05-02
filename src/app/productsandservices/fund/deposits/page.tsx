@@ -30,7 +30,7 @@ import {
 } from '@/services/user';
 import className from 'classnames/bind';
 
-const dataBankAdmin = [
+const mockBankData = [
   {
     id: 1,
     name: 'Vietcombank',
@@ -73,8 +73,8 @@ const DepositsPage = () => {
 
   const handleSendDeposits = async (dataToken: any) => {
     await userCreateDepositsSV({
-      id_user: currentUser?.id,
-      email_user: currentUser?.email,
+      userId: currentUser?.id,
+      email: currentUser?.email,
       idPayment: 1,
       amountVND: amountDeposits.replace(/\./g, ''),
       token: dataToken?.token,
@@ -98,7 +98,6 @@ const DepositsPage = () => {
         await refreshToken({
           currentUser,
           handleFunc: handleSendDeposits,
-          state,
           dispatch,
           setData,
           setSnackbar,
@@ -135,13 +134,13 @@ const DepositsPage = () => {
       setData({
         file: [],
         amountDeposits: '',
-        bankDeposits: '',
+        bankDeposits: {},
       })
     );
   };
 
-  const handleSendUpload = (dataToken: any) => {
-    userUploadBillsDepositsSV({
+  const handleSendUpload = async (dataToken: any) => {
+    await userUploadBillsDepositsSV({
       id_user: currentUser?.id,
       dispatch,
       id_deposits: dataReturn?.id,
@@ -166,7 +165,6 @@ const DepositsPage = () => {
         refreshToken({
           currentUser,
           handleFunc: handleSendUpload,
-          state,
           dispatch,
           setData,
           setSnackbar,
@@ -174,7 +172,7 @@ const DepositsPage = () => {
         dispatch(
           setData({
             amountDeposits: '',
-            bankDeposits: '',
+            bankDeposits: {},
             file: [],
           })
         );
@@ -193,7 +191,7 @@ const DepositsPage = () => {
           label="Tên ngân hàng thụ hưởng"
           value={bankDeposits?.name}
           placeholder="---"
-          data={dataBankAdmin}
+          data={mockBankData}
           nameSet="bankDeposits"
           stateSelect={showSelect}
           setStateSelect={setShowSelect}
@@ -252,7 +250,7 @@ const DepositsPage = () => {
             <CustomcareLine
               nameIcon="fa-regular fa-clock"
               colorIcon="info"
-              title="Ngày rút:"
+              title="Ngày nạp:"
               textLink={dateFormat(
                 dataReturn?.createdAt,
                 'DD/MM/YYYY HH:mm:ss'
@@ -262,7 +260,7 @@ const DepositsPage = () => {
             <CustomcareLine
               nameIcon="fa-solid fa-money-bill"
               colorIcon="warning"
-              title="Số tiền rút:"
+              title="Số tiền nạp:"
               textLink={formatVND(dataReturn?.amount || 0)}
               key="warning-line"
             />

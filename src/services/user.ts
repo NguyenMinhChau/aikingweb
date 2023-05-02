@@ -58,13 +58,14 @@ export const userAddPaymentSV = async (props: any) => {
       });
       history(routers.fundProfile);
     }
-  } catch (e) {
+  } catch (e: any) {
     setisProcessModalReciving(false);
     setModalRecivingAccount(false);
     setSnackbar({
       open: true,
       type: 'error',
-      message: resPut?.message || 'Thêm phương thức thanh toán thất bại',
+      message:
+        e?.response?.data?.message || 'Thêm phương thức thanh toán thất bại',
     });
   }
 };
@@ -82,12 +83,13 @@ export const userForgotPwdSV = async (props: any) => {
         message: 'Gửi mã thành công, vui lòng kiểm tra email!',
       });
     }
-  } catch (e) {
+  } catch (e: any) {
     setIsProcess(false);
     setSnackbar({
       open: true,
       type: 'error',
-      message: resPost?.message || 'Gửi mã thất bại, vui lòng thử lại!',
+      message:
+        e?.response?.data?.message || 'Gửi mã thất bại, vui lòng thử lại!',
     });
   }
 };
@@ -106,20 +108,21 @@ export const userOTPForgotPwdSV = async (props: any) => {
       });
       history(routers.login);
     }
-  } catch (e) {
+  } catch (e: any) {
     setIsProcess(false);
     setSnackbar({
       open: true,
       type: 'error',
-      message: resGet?.message || 'Xác thực thất bại, vui lòng thử lại!',
+      message:
+        e?.response?.data?.message || 'Xác thực thất bại, vui lòng thử lại!',
     });
   }
 };
 // CREATE DEPOSITS
 export const userCreateDepositsSV = async (props: any) => {
   const {
-    id_user,
-    email_user,
+    userId,
+    email,
     idPayment,
     amountVND,
     token,
@@ -130,14 +133,15 @@ export const userCreateDepositsSV = async (props: any) => {
   } = props;
   let resPost = null;
   try {
-    resPost = await userPut(`deposit/${id_user}`, {
+    resPost = await userPut(`deposit/${userId}`, {
       idPayment,
       status: 'Pending',
       amount: amountVND,
-      note: `pc_${email_user}`,
+      note: `pc_${email}`,
       token: token,
     });
-    if (resPost.status === 200) {
+    // console.log('resPost: ', JSON.stringify(resPost));
+    if (resPost.code === 200) {
       setIsProcessModalDeposits(false);
       setIsModalUploadDeposits(true);
       setDataReturn(resPost?.data);
@@ -147,12 +151,12 @@ export const userCreateDepositsSV = async (props: any) => {
         message: 'Vui lòng tải lên hóa đơn thanh toán!',
       });
     }
-  } catch (e) {
+  } catch (e: any) {
     setIsProcessModalDeposits(false);
     setSnackbar({
       open: true,
       type: 'error',
-      message: resPost?.message || 'Tạo yêu cầu nạp tiền thất bại!',
+      message: e?.response?.data?.message || 'Tạo yêu cầu nạp tiền thất bại!',
     });
   }
 };
@@ -172,7 +176,7 @@ export const userUploadBillsDepositsSV = async (props: any) => {
     statement: image[0],
   };
   const resPut = await userPut(
-    `additionImageDeposit/${id_deposits}`,
+    `deposit/image/${id_deposits}`,
     {
       ...object,
     },
@@ -286,12 +290,12 @@ export const userCreateWithdrawSV = async (props: any) => {
       type: 'success',
       message: 'Vui lòng nhập mã xác thức rút tiền.',
     });
-  } catch (e) {
+  } catch (e: any) {
     setIsProcessModalWithdraw(false);
     setSnackbar({
       open: true,
       type: 'error',
-      message: resPost?.message || 'Tạo yêu cầu rút tiền thất bại!',
+      message: e?.response?.data?.message || 'Tạo yêu cầu rút tiền thất bại!',
     });
   }
 };
@@ -306,18 +310,20 @@ export const userResendOtpWithdrawSV = async (props: any) => {
         token: token,
       },
     });
-    setIsProcessResendOTP(false);
-    setSnackbar({
-      open: true,
-      type: 'success',
-      message: 'Gửi lại mã OTP thành công, vui lòng kiểm tra email!',
-    });
-  } catch (e) {
+    if (resPost.status === 200) {
+      setIsProcessResendOTP(false);
+      setSnackbar({
+        open: true,
+        type: 'success',
+        message: 'Gửi lại mã OTP thành công, vui lòng kiểm tra email!',
+      });
+    }
+  } catch (e: any) {
     setIsProcessResendOTP(false);
     setSnackbar({
       open: true,
       type: 'error',
-      message: resPost?.message || 'Gửi mã OTP thất bại!',
+      message: e?.response?.data?.message || 'Gửi mã OTP thất bại!',
     });
   }
 };
@@ -332,31 +338,33 @@ export const userCancelWithdrawSV = async (props: any) => {
     id_user,
     dispatch,
   } = props;
-  const resDel = await userDelete(`withdraw/cancel/${id_withdraw}`, {
-    token: token,
-    headers: {
-      token: token,
-    },
-  });
-  let resGet = null;
+  let resDel = null;
   try {
-    resGet = await userGet(`withdraws/${id_user}`, {
+    resDel = await userDelete(`withdraw/cancel/${id_withdraw}`, {
+      token: token,
       headers: {
         token: token,
       },
     });
-    dispatch(
-      setData({
-        dataWithdrawsHistory: resGet?.data,
-      })
-    );
-    setIsProcessCancelWithdraw(false);
-    setModalVerifyWithdraw(false);
-    setSnackbar({
-      open: true,
-      type: 'success',
-      message: 'Hủy yêu cầu rút tiền thành công!',
-    });
+    if (resDel.status === 200) {
+      const resGet = await userGet(`withdraws/${id_user}`, {
+        headers: {
+          token: token,
+        },
+      });
+      dispatch(
+        setData({
+          dataWithdrawsHistory: resGet?.data,
+        })
+      );
+      setIsProcessCancelWithdraw(false);
+      setModalVerifyWithdraw(false);
+      setSnackbar({
+        open: true,
+        type: 'success',
+        message: 'Hủy yêu cầu rút tiền thành công!',
+      });
+    }
   } catch (e) {
     setIsProcessCancelWithdraw(false);
     setSnackbar({
@@ -374,7 +382,6 @@ export const userVerifyWithdrawSV = async (props: any) => {
     token,
     setIsProcessModalWithdraw,
     setModalVerifyWithdraw,
-    id_user,
     dispatch,
   } = props;
   let resGet = null;
@@ -398,12 +405,13 @@ export const userVerifyWithdrawSV = async (props: any) => {
         message: 'Xác thực rút tiền thành công',
       });
     }
-  } catch (e) {
+  } catch (e: any) {
     setIsProcessModalWithdraw(false);
     setSnackbar({
       open: true,
       type: 'error',
-      message: 'Xác thực rút tiền thất bại. Mã OTP sai',
+      message:
+        e?.response?.data?.message || 'Xác thực rút tiền thất bại. Mã OTP sai',
     });
   }
 };
