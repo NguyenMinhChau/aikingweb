@@ -141,9 +141,9 @@ const DepositsPage = () => {
 
   const handleSendUpload = async (dataToken: any) => {
     await userUploadBillsDepositsSV({
+      id_deposits: dataReturn?.id,
       id_user: currentUser?.id,
       dispatch,
-      id_deposits: dataReturn?.id,
       image: file,
       token: dataToken?.token,
       setSnackbar,

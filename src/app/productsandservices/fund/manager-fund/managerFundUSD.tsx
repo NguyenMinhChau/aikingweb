@@ -5,7 +5,7 @@ import styles from './styles.module.css';
 import { General } from '../../../../components';
 import { dateFormat, moneyFormat, useAppContext } from '../../../../helpers';
 import DataManagerFundUsdHeader from '../../../../helpers/fakeData/dataManagerFundUsdHeader';
-import { indexTable } from '../../../../helpers/tableIndex';
+import { indexTable } from '@/helpers/tableIndex';
 
 const cx = className.bind(styles);
 

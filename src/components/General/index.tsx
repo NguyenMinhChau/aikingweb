@@ -4,11 +4,11 @@ import PropTypes from 'prop-types';
 import className from 'classnames/bind';
 import styles from './styles.module.css';
 import { useAppContext } from '../../helpers';
-import { setData } from '../../appState/reducer';
+import { setData } from '@/appState/reducer';
 import Search from '../Search';
 import Button from '../Button';
 import { RefreshPageIcon } from '../../../public/svgs';
-import { refreshPage } from '../../helpers/refreshPage';
+import { refreshPage } from '@/helpers/refreshPage';
 import TableData from '../TableData';
 
 const cx = className.bind(styles);

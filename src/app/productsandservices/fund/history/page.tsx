@@ -1,166 +1,92 @@
 'use client';
-import React, { useState } from 'react';
-import { Breadcrumb } from '../../../../components';
-import { dateFormat, useAppContext } from '../../../../helpers';
+import React, { useEffect, useState } from 'react';
 import className from 'classnames/bind';
-
 import styles from './History.module.css';
-import sharedStyles from '../fund-shared-styles.module.css';
-import { formatVND } from '@/helpers/format/FormatMoney';
+import { LoginRegisterCp, Breadcrumb, SnackbarCp } from '@/components';
+import DepositsHistory from '../deposits-history/page';
+import WithdrawsHistory from '../widthdraw-history/page';
+import { useAppContext } from '@/helpers';
+
 const cx = className.bind(styles);
-
-const historyByTab: any = {
-  deposit: {
-    header: [
-      {
-        id: 1,
-        title: 'STT',
-      },
-      {
-        id: 2,
-        title: 'SỐ TIỀN NẠP',
-      },
-      {
-        id: 3,
-        title: 'NGÀY NẠP',
-      },
-      {
-        id: 4,
-        title: 'NGÂN HÀNG',
-      },
-      {
-        id: 5,
-        title: 'NGƯỜI TẠO',
-      },
-      {
-        id: 6,
-        title: 'TRẠNG THÁI',
-      },
-    ],
+const LIST_TABS = [
+  {
+    id: 1,
+    title: 'Nạp tiền',
+    component: DepositsHistory,
   },
-  withdraw: {
-    header: [
-      {
-        id: 7,
-        title: 'STT',
-      },
-      {
-        id: 8,
-        title: 'SỐ TIỀN RÚT',
-      },
-      {
-        id: 9,
-        title: 'NGÀY RÚT',
-      },
-      {
-        id: 10,
-        title: 'NGÂN HÀNG',
-      },
-      {
-        id: 11,
-        title: 'NGƯỜI TẠO',
-      },
-      {
-        id: 12,
-        title: 'TRẠNG THÁI',
-      },
-    ],
+  {
+    id: 2,
+    title: 'Rút tiền',
+    component: WithdrawsHistory,
   },
-};
-
-type HistoryInterface = {};
-const HistoryPage = ({}: HistoryInterface) => {
-  const {
-    state: { data = [] },
-  } = useAppContext();
-  const [tabId, setTabId] = useState('deposit');
-  const renderHeader = () => {
-    return (
-      <tr className={styles.table_header}>
-        {historyByTab[tabId].header.map((item: any) => {
-          return (
-            <th className={styles.column_name} key={item.id}>
-              {item.title}
-            </th>
-          );
-        })}
-      </tr>
-    );
-  };
-
-  const renderTableRow = ({
-    stt,
-    amount,
-    date,
-    bankName,
-    userName,
-    state,
-  }: any) => {
-    return (
-      <tr className={styles.table_row}>
-        <td className={styles.cell_value}>{stt}</td>
-        <td className={styles.cell_value}>{formatVND(amount)}</td>
-        <td className={styles.cell_value}>
-          {dateFormat.dateFormat(date, 'DD/MM/YYYY')}
-        </td>
-        <td className={styles.cell_value}>{bankName}</td>
-        <td className={styles.cell_value}>{userName}</td>
-        <td className={styles.cell_value}>{state}</td>
-      </tr>
-    );
-  };
-
-  const renderDataTable = () => {
-    if (!data || data.length == 0) {
+];
+export default function History() {
+  const { state } = useAppContext();
+  const { currentUser } = state.set;
+  const [idTab, setIdTab] = useState(1);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    type: '',
+    message: '',
+  });
+  useEffect(() => {
+    document.title = `Lịch sử | ${process.env.REACT_APP_TITLE_WEB}`;
+    if (!currentUser) {
+      setSnackbar({
+        open: true,
+        type: 'error',
+        message: <LoginRegisterCp />,
+      });
+    }
+  }, []);
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
       return;
     }
-
-    return data.map((row: any) => {
-      return renderTableRow(row);
+    setSnackbar({
+      ...snackbar,
+      open: false,
     });
   };
-
   return (
     <>
       <Breadcrumb pageName="Lịch sử" description="Lịch sử" />
       <div className="container mb-5">
-        <div className={sharedStyles.container}>
-          <div className={styles.history_wrapper}>
-            <div className={styles.history_tab}>
-              <div
-                className={cx(
-                  'deposit_tab',
-                  `${tabId === 'deposit' && 'active'}`
-                )}
-                onClick={() => setTabId('deposit')}
-              >
-                <p className="m-auto">Nạp tiền</p>
-              </div>
-              <div
-                className={cx(
-                  'withdraw_tab',
-                  `${tabId === 'withdraw' && 'active'}`
-                )}
-                onClick={() => setTabId('withdraw')}
-              >
-                <p className="m-auto">Rút tiền</p>
-              </div>
+        <SnackbarCp
+          openSnackbar={snackbar.open}
+          handleCloseSnackbar={handleCloseSnackbar}
+          messageSnackbar={snackbar.message}
+          typeSnackbar={snackbar.type}
+        />
+        <div className={`${cx('body')}`}>
+          <div className={`${cx('history_container')}`}>
+            <div className={`${cx('history_list')}`}>
+              {LIST_TABS.map((item, index) => (
+                <div
+                  className={`${cx(
+                    'history_item',
+                    idTab === item?.id ? 'active' : ''
+                  )}`}
+                  key={index}
+                  onClick={() => setIdTab(item?.id)}
+                >
+                  <div className={`${cx('history_item_title')}`}>
+                    {item.title}
+                  </div>
+                </div>
+              ))}
             </div>
-            <div className={styles.table_wrapper}>
-              <input className={styles.history_search} placeholder="Search" />
-              <table className={styles.history_table}>
-                {renderHeader()}
-                {renderDataTable()}
-              </table>
-              {(!data || !data.length) && (
-                <p className={styles.table_empty}>No data</p>
-              )}
+            <div className={`${cx('body_components')}`}>
+              {LIST_TABS.map((item, index) => {
+                if (item?.id === idTab) {
+                  const Component = item?.component;
+                  return <Component key={index} />;
+                }
+              })}
             </div>
           </div>
         </div>
       </div>
     </>
   );
-};
-
-export default HistoryPage;
+}

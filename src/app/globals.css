@@ -13,6 +13,9 @@
 	--body-color: #959cb1;
 	--color-white: white;
 	--rgba-modal-bgc: rgba(0, 0, 0, 0.5);
+	--bgc-info: #e6f5ff;
+	--color-info: #007aff;
+	--color-success: #4CAF50;
 }
 
 @layer base {

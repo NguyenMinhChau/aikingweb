@@ -133,15 +133,19 @@ export const userCreateDepositsSV = async (props: any) => {
   } = props;
   let resPost = null;
   try {
-    resPost = await userPut(`deposit/${userId}`, {
-      idPayment,
-      status: 'Pending',
-      amount: amountVND,
-      note: `pc_${email}`,
-      token: token,
+    resPost = await userGet(`deposit/${userId}`, {
+      params: {
+        idPayment,
+        status: 'Pending',
+        amount: amountVND,
+        note: `pc_${email}`,
+      },
+      headers: {
+        token: token,
+      },
     });
-    // console.log('resPost: ', JSON.stringify(resPost));
-    if (resPost.code === 200) {
+
+    if (resPost.status === 200) {
       setIsProcessModalDeposits(false);
       setIsModalUploadDeposits(true);
       setDataReturn(resPost?.data);
@@ -168,60 +172,57 @@ export const userUploadBillsDepositsSV = async (props: any) => {
     token,
     setSnackbar,
     setIsProcessUploadDeposits,
-    setisModalUploadDeposits,
+    setIsModalUploadDeposits,
     id_user,
     dispatch,
   } = props;
   const object = {
     statement: image[0],
   };
-  const resPut = await userPut(
-    `deposit/image/${id_deposits}`,
-    {
-      ...object,
-    },
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        token: token,
+
+  let resPut = null;
+  let resGet = null;
+  try {
+    resPut = await userPut(
+      `deposit/image/${id_deposits}`,
+      {
+        ...object,
       },
-    }
-  );
-  // console.log('userUploadBillsDepositsSV: ', resPut);
-  switch (resPut.code) {
-    case 0:
-      const resGet = await userGet(`deposits/${id_user}`, {
+      {
         headers: {
+          'Content-Type': 'multipart/form-data',
           token: token,
         },
-      });
+      }
+    );
+
+    resGet = await userGet(`deposits/${id_user}`, {
+      headers: {
+        token: token,
+      },
+    });
+    if (resGet.status === 200) {
       dispatch(
         setData({
           dataDepositsHistory: resGet?.data,
         })
       );
       setIsProcessUploadDeposits(false);
-      setisModalUploadDeposits(false);
+      setIsModalUploadDeposits(false);
       setSnackbar({
         open: true,
         type: 'success',
         message:
           'Tải hóa đơn nạp tiền thành công, vui lòng chờ người quản trị xác nhận!',
       });
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setIsProcessUploadDeposits(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resPut?.message || 'Tải hóa đơn nạp tiền thất bại!',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e: any) {
+    setIsProcessUploadDeposits(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: e?.response?.data?.message || 'Tải hóa đơn nạp tiền thất bại!',
+    });
   }
 };
 // GET ALL DEPOSITS BY USER
@@ -275,13 +276,20 @@ export const userCreateWithdrawSV = async (props: any) => {
   } = props;
   let resPost = null;
   try {
-    resPost = await userPost(`withdraw/${id_user}`, {
-      idPayment,
-      status: 'Pending',
-      amount: amountVND,
-      note: `pc_${email_user}`,
-      token: token,
-    });
+    resPost = await userPost(
+      `withdraw/${id_user}`,
+      {
+        idPayment,
+        status: 'Pending',
+        amount: amountVND,
+        note: `pc_${email_user}`,
+      },
+      {
+        headers: {
+          token,
+        },
+      }
+    );
     setItemWithdraw(resPost?.data);
     setIsProcessModalWithdraw(false);
     setModalVerifyWithdraw(true);

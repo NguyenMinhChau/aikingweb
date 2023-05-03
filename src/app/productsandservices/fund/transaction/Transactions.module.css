@@ -1,7 +1,6 @@
 .body {
     padding: 24px;
 }
-
 .history_container {
     border: 1px solid #ccc;
     border-radius: 12px;
@@ -26,9 +25,10 @@
     font-weight: bold;
     text-align: center;
     cursor: pointer;
-    transition: all .3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
+    transition: all 0.3s cubic-bezier(0.445, 0.05, 0.55, 0.95);
     border-bottom: 1.5px solid transparent;
 }
+
 
 .history_item:hover {
     background-color: var(--primary-color);
@@ -43,4 +43,15 @@
 
 .body_components {
     padding: 10px 12px;
+}
+
+.developer {
+    padding: 12px;
+    font-size: 18px;
+    letter-spacing: 1px;
+    line-height: 1.5;
+    border: 1px solid var(--color-success);
+    border-radius: 12px;
+    text-align: center;
+    font-weight: bold;
 }
