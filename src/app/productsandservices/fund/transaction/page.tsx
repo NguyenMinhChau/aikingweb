@@ -35,7 +35,7 @@ export default function Transactions() {
     message: '',
   });
   useEffect(() => {
-    document.title = `Giao dịch | ${process.env.REACT_APP_TITLE_WEB}`;
+    document.title = `Giao dịch | ${process.env.NEXT_PUBLIC_TITLE_WEB}`;
     if (!currentUser) {
       setSnackbar({
         open: true,
@@ -44,7 +44,7 @@ export default function Transactions() {
       });
     }
   }, [currentUser]);
-  const handleCloseSnackbar = (event, reason) => {
+  const handleCloseSnackbar = (event: any, reason: any) => {
     if (reason === 'clickaway') {
       return;
     }

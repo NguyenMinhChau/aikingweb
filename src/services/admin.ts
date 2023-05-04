@@ -25,10 +25,10 @@ export const adminDelete = async (path: string, options = {}) => {
 
 // GET USER BY ID
 export const adminGetUserByIdSV = async (props: any) => {
-  const { id_user, dispatch, setSnackbar } = props;
+  const { userId, dispatch, setSnackbar } = props;
   let resGet = null;
   try {
-    resGet = await adminGet(`user/${id_user}`, {});
+    resGet = await adminGet(`user/${userId}`, {});
     if (resGet.status === 200) {
       dispatch(
         setData({

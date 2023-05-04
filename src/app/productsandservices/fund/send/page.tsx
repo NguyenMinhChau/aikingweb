@@ -69,9 +69,9 @@ function SendFundPage() {
         ? 'Mùa'
         : '';
     } else {
-      return item?.type === process.env.REACT_APP_TYPE_USD
+      return item?.type === process.env.NEXT_PUBLIC_TYPE_USD
         ? 'Tháng'
-        : item?.type === process.env.REACT_APP_TYPE_AGRICUTURAL
+        : item?.type === process.env.NEXT_PUBLIC_TYPE_AGRICUTURAL
         ? 'Mùa'
         : '';
     }
@@ -82,7 +82,7 @@ function SendFundPage() {
     } else if (item?.capital) {
       return (
         `Bạn chọn gói ${
-          item?.type === process.env.REACT_APP_TYPE_AGRICUTURAL
+          item?.type === process.env.NEXT_PUBLIC_TYPE_AGRICUTURAL
             ? 'hạn mức '
             : ''
         }` +

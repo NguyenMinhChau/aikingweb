@@ -39,15 +39,19 @@ export const userAddPaymentSV = async (props: any) => {
   } = props;
   let resPut = null;
   try {
-    resPut = await userPut(`addPayment/${id_user}`, {
-      account,
-      bankName,
-      name,
-      token: token,
-      headers: {
-        token: token,
+    resPut = await userPut(
+      `payment/${id_user}`,
+      {
+        account,
+        bankName,
+        name,
       },
-    });
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
     if (resPut.status === 200) {
       setisProcessModalReciving(false);
       setModalRecivingAccount(false);
@@ -122,7 +126,6 @@ export const userOTPForgotPwdSV = async (props: any) => {
 export const userCreateDepositsSV = async (props: any) => {
   const {
     userId,
-    email,
     idPayment,
     amountVND,
     token,
@@ -133,22 +136,23 @@ export const userCreateDepositsSV = async (props: any) => {
   } = props;
   let resPost = null;
   try {
-    resPost = await userGet(`deposit/${userId}`, {
-      params: {
+    resPost = await userPost(
+      `deposit/${userId}`,
+      {
         idPayment,
-        status: 'Pending',
         amount: amountVND,
-        note: `pc_${email}`,
       },
-      headers: {
-        token: token,
-      },
-    });
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
 
-    if (resPost.status === 200) {
+    if (resPost.status === 201) {
       setIsProcessModalDeposits(false);
       setIsModalUploadDeposits(true);
-      setDataReturn(resPost?.data);
+      setDataReturn(resPost?.metadata);
       setSnackbar({
         open: true,
         type: 'success',
@@ -195,18 +199,7 @@ export const userUploadBillsDepositsSV = async (props: any) => {
         },
       }
     );
-
-    resGet = await userGet(`deposits/${id_user}`, {
-      headers: {
-        token: token,
-      },
-    });
-    if (resGet.status === 200) {
-      dispatch(
-        setData({
-          dataDepositsHistory: resGet?.data,
-        })
-      );
+    if (resPut.status === 200) {
       setIsProcessUploadDeposits(false);
       setIsModalUploadDeposits(false);
       setSnackbar({
@@ -215,6 +208,18 @@ export const userUploadBillsDepositsSV = async (props: any) => {
         message:
           'Tải hóa đơn nạp tiền thành công, vui lòng chờ người quản trị xác nhận!',
       });
+      resGet = await userGet(`deposit/${id_user}`, {
+        headers: {
+          token: token,
+        },
+      });
+      if (resGet.status === 200) {
+        dispatch(
+          setData({
+            dataDepositsHistory: resGet?.metadata,
+          })
+        );
+      }
     }
   } catch (e: any) {
     setIsProcessUploadDeposits(false);
@@ -228,46 +233,33 @@ export const userUploadBillsDepositsSV = async (props: any) => {
 // GET ALL DEPOSITS BY USER
 export const userGetDepositsByUserSV = async (props: any) => {
   const { id_user, setSnackbar, token, dispatch } = props;
-  const resGet = await userGet(`deposits/${id_user}`, {
-    headers: {
-      token: token,
-    },
-  });
-  // console.log('userGetDepositsByUserSV: ', resGet);
-  switch (resGet.code) {
-    case 0:
+  let resGet = null;
+  try {
+    resGet = await userGet(`deposit/${id_user}`, {
+      headers: {
+        token: token,
+      },
+    });
+    if (resGet.status === 200) {
       dispatch(
         setData({
-          dataDepositsHistory: resGet?.data,
+          dataDepositsHistory: resGet?.metadata,
         })
       );
-      // setSnackbar({
-      //     open: true,
-      //     type: 'success',
-      //     message: 'Tải dữ liệu thành công',
-      // });
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resGet?.message || 'Tải dữ liệu thất bại',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e) {
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: resGet?.message || 'Tải dữ liệu thất bại',
+    });
   }
 };
 // CREATE WITHDRAW
 export const userCreateWithdrawSV = async (props: any) => {
   const {
-    id_user,
-    email_user,
+    userId,
     amountVND,
-    idPayment,
     setSnackbar,
     setIsProcessModalWithdraw,
     setModalVerifyWithdraw,
@@ -277,12 +269,9 @@ export const userCreateWithdrawSV = async (props: any) => {
   let resPost = null;
   try {
     resPost = await userPost(
-      `withdraw/${id_user}`,
+      `withdraw/${userId}`,
       {
-        idPayment,
-        status: 'Pending',
         amount: amountVND,
-        note: `pc_${email_user}`,
       },
       {
         headers: {
@@ -290,14 +279,16 @@ export const userCreateWithdrawSV = async (props: any) => {
         },
       }
     );
-    setItemWithdraw(resPost?.data);
-    setIsProcessModalWithdraw(false);
-    setModalVerifyWithdraw(true);
-    setSnackbar({
-      open: true,
-      type: 'success',
-      message: 'Vui lòng nhập mã xác thức rút tiền.',
-    });
+    if (resPost.status === 201) {
+      setItemWithdraw(resPost?.metadata?.withdraw);
+      setIsProcessModalWithdraw(false);
+      setModalVerifyWithdraw(true);
+      setSnackbar({
+        open: true,
+        type: 'success',
+        message: 'Vui lòng nhập mã xác thức rút tiền.',
+      });
+    }
   } catch (e: any) {
     setIsProcessModalWithdraw(false);
     setSnackbar({
@@ -309,10 +300,11 @@ export const userCreateWithdrawSV = async (props: any) => {
 };
 // RESEND OTP WITHDRAW
 export const userResendOtpWithdrawSV = async (props: any) => {
-  const { id_withdraw, setSnackbar, token, setIsProcessResendOTP } = props;
+  const { withdrawId, userId, setSnackbar, token, setIsProcessResendOTP } =
+    props;
   let resPost = null;
   try {
-    resPost = await userPost(`withdraw/otp/resend/${id_withdraw}`, {
+    resPost = await userPost(`withdraw/otp/resend/${userId}/${withdrawId}`, {
       token: token,
       headers: {
         token: token,
@@ -385,16 +377,17 @@ export const userCancelWithdrawSV = async (props: any) => {
 // VERIFY WITHDRAW OTP
 export const userVerifyWithdrawSV = async (props: any) => {
   const {
-    code,
-    setSnackbar,
+    withdrawCode,
+    userId,
+    dispatch,
     token,
+    setSnackbar,
     setIsProcessModalWithdraw,
     setModalVerifyWithdraw,
-    dispatch,
   } = props;
   let resGet = null;
   try {
-    resGet = await userGet(`enterOtpWithdraw/${code}`, {
+    resGet = await userGet(`withdraw/otp/resend/${userId}/${withdrawCode}`, {
       headers: {
         token: token,
       },
@@ -425,38 +418,27 @@ export const userVerifyWithdrawSV = async (props: any) => {
 };
 // GET ALL WITHDRAWS BY USER
 export const userGetWithdrawByUserSV = async (props: any) => {
-  const { id_user, setSnackbar, token, dispatch } = props;
-  const resGet = await userGet(`withdraws/${id_user}`, {
-    headers: {
-      token: token,
-    },
-  });
-  // console.log('userGetWithdrawByUserSV: ', resGet);
-  switch (resGet.code) {
-    case 0:
+  const { userId, setSnackbar, token, dispatch } = props;
+  let resGet = null;
+  try {
+    resGet = await userGet(`withdraw/${userId}`, {
+      headers: {
+        token: token,
+      },
+    });
+    if (resGet.status === 200) {
       dispatch(
         setData({
-          dataWithdrawsHistory: resGet?.data,
+          dataWithdrawsHistory: resGet?.metadata,
         })
       );
-      // setSnackbar({
-      //     open: true,
-      //     type: 'success',
-      //     message: 'Tải dữ liệu thành công',
-      // });
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resGet?.message || 'Tải dữ liệu thất bại',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e) {
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: e?.response?.data?.message || 'Tải dữ liệu thất bại',
+    });
   }
 };
 // CHANGE PASSWORD USER
@@ -470,16 +452,21 @@ export const userChangePasswordSV = async (props: any) => {
     setisProcessModalPwd,
     setmodalChangePwd,
   } = props;
-  const resPut = await userPut(`password/${id_user}`, {
-    password: oldPassword,
-    new_password: newPassword,
-    headers: {
-      token: token,
-    },
-  });
-  console.log('userChangePasswordSV: ', resPut);
-  switch (resPut.code) {
-    case 0:
+  let resPut = null;
+  try {
+    resPut = await userPut(
+      `password/${id_user}`,
+      {
+        password: oldPassword,
+        new_password: newPassword,
+      },
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
+    if (resPut.status === 200) {
       setisProcessModalPwd(false);
       setmodalChangePwd(false);
       setSnackbar({
@@ -487,20 +474,14 @@ export const userChangePasswordSV = async (props: any) => {
         type: 'success',
         message: 'Đổi mật khẩu thành công',
       });
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setisProcessModalPwd(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message: resPut?.message || 'Đổi mật khẩu thất bại',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e: any) {
+    setisProcessModalPwd(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message: e?.response?.data?.message || 'Đổi mật khẩu thất bại',
+    });
   }
 };
 // LẤY TỔNG TIỀN GIẢI NGÂN
@@ -723,28 +704,25 @@ export const userUploadLicenseSV = async (props: any) => {
     setUploadLicenseFont,
     setUploadLicenseBeside,
   } = props;
-  const resPut = await userPut(
-    `image/${id_user}`,
-    {
-      cccdFont: imagePersonNationalityFont,
-      cccdBeside: imagePersonNationalityBeside,
-      licenseFont: imageLicenseFont,
-      licenseBeside: imageLicenseBeside,
-      token: token,
-      headers: {
+  let resPut = null;
+  try {
+    resPut = await userPut(
+      `image/${id_user}`,
+      {
+        cccdFont: imagePersonNationalityFont,
+        cccdBeside: imagePersonNationalityBeside,
+        licenseFont: imageLicenseFont,
+        licenseBeside: imageLicenseBeside,
         token: token,
       },
-    },
-    {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        token: token,
-      },
-    }
-  );
-  // console.log('userUploadLicenseSV: ', resPut);
-  switch (resPut.code) {
-    case 0:
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          token: token,
+        },
+      }
+    );
+    if (resPut.status === 200) {
       setisProcessModalUpload(false);
       setModalUpload(false);
       setSnackbar({
@@ -756,21 +734,15 @@ export const userUploadLicenseSV = async (props: any) => {
       setUploadCCCDBeside(null);
       setUploadLicenseFont(null);
       setUploadLicenseBeside(null);
-      break;
-    case 1:
-    case 2:
-    case 304:
-    case 500:
-      setisProcessModalUpload(false);
-      setSnackbar({
-        open: true,
-        type: 'error',
-        message:
-          'Cập nhật giấy tờ thất bại. Vui lòng chọn lại tất cả 4 ảnh để cập nhật, xin cảm ơn!',
-      });
-      break;
-    default:
-      break;
+    }
+  } catch (e) {
+    setisProcessModalUpload(false);
+    setSnackbar({
+      open: true,
+      type: 'error',
+      message:
+        'Cập nhật giấy tờ thất bại. Vui lòng chọn lại tất cả 4 ảnh để cập nhật, xin cảm ơn!',
+    });
   }
 };
 // LẤY TÀI SẢN

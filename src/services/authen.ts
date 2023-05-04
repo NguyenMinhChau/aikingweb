@@ -97,10 +97,10 @@ export const authLoginSV = async (props: any) => {
 // LOGOUT AUTHEN
 export const authLogoutSV = async (props: any) => {
   const { email, history, setSnackbar, dispatch } = props;
-  let resGet = null;
+  let resPost = null;
   try {
-    resGet = await authPost(`logout/${email}`, {});
-    if (resGet.status === 200) {
+    resPost = await authPost(`logout/${email}`, {});
+    if (resPost.status === 200) {
       await removeStore();
       await dispatch(
         setData({
@@ -112,7 +112,7 @@ export const authLogoutSV = async (props: any) => {
       setSnackbar({
         open: true,
         type: 'success',
-        message: resGet?.message || 'Đăng xuất thành công',
+        message: resPost?.message || 'Đăng xuất thành công',
       });
       history(routers.home);
     }

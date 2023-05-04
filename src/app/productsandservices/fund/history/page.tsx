@@ -30,7 +30,7 @@ export default function History() {
     message: '',
   });
   useEffect(() => {
-    document.title = `Lịch sử | ${process.env.REACT_APP_TITLE_WEB}`;
+    document.title = `Lịch sử | ${process.env.NEXT_PUBLIC_TITLE_WEB}`;
     if (!currentUser) {
       setSnackbar({
         open: true,

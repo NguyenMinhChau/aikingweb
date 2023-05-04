@@ -75,7 +75,7 @@ const DepositsPage = () => {
     await userCreateDepositsSV({
       userId: currentUser?.id,
       email: currentUser?.email,
-      idPayment: 1,
+      idPayment: 2,
       amountVND: amountDeposits.replace(/\./g, ''),
       token: dataToken?.token,
       setIsProcessModalDeposits,

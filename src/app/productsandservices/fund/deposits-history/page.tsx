@@ -32,7 +32,7 @@ const dataFilterHistory = (data: any, search: any, start: any, end: any) => {
 
 const DataDepositsHistory = {
   headers: {
-    name: process.env.REACT_APP_DEPOSITS_HISTORY,
+    name: process.env.NEXT_PUBLIC_DEPOSITS_HISTORY,
     index: {
       title: 'STT',
     },
@@ -308,7 +308,6 @@ export default function DepositsHistory() {
             nameIcon="fa fa-bank"
             colorIcon="cancel"
             title="Ngân hàng thụ hưởng:"
-            bankMethod
             bankName={itemDeposits?.bankName}
             accountName={itemDeposits?.accountName}
             accountNumber={itemDeposits?.accountNumber}
@@ -320,7 +319,7 @@ export default function DepositsHistory() {
                 src={
                   urlImageFile
                     ? urlImageFile
-                    : `${process.env.REACT_APP_URL_SERVER}${itemDeposits?.statement}`
+                    : `${process.env.NEXT_PUBLIC_URL_SERVER}${itemDeposits?.statement}`
                 }
                 alt="image_upload"
                 className={`${cx('image')}`}

@@ -30,7 +30,7 @@ const cx = className.bind(styles);
 const DataWithdrawsHistory = () => {
   return {
     headers: {
-      name: process.env.REACT_APP_WITHDRAWS_HISTORY,
+      name: process.env.NEXT_PUBLIC_WITHDRAWS_HISTORY,
       index: {
         title: 'STT',
       },
@@ -54,8 +54,8 @@ const DataWithdrawsHistory = () => {
   };
 };
 
-const dataFilterHistory = (data, search, start, end) => {
-  return data?.filter((row, index) => {
+const dataFilterHistory = (data: any, search: any, start: any, end: any) => {
+  return data?.filter((row: any, index: number) => {
     if (index + 1 >= start && index + 1 <= end) return true;
   });
 };
@@ -70,6 +70,7 @@ export default function WithdrawsHistory() {
     pagination: { page, show },
     searchValues: { withdraws_history },
   } = state.set;
+
   let showPage = 10;
   const start = (page - 1) * showPage + 1;
   const end = start + showPage - 1;
@@ -115,24 +116,24 @@ export default function WithdrawsHistory() {
       );
     });
   }
-  const handleSendWithdrawsHistory = (dataToken: any) => {
-    userGetWithdrawByUserSV({
-      id_user: currentUser?.id,
+  const handleSendWithdrawsHistory = async (dataToken: any) => {
+    await userGetWithdrawByUserSV({
+      userId: currentUser?.id,
       dispatch,
       setSnackbar,
       token: dataToken?.token,
     });
   };
-  const handleModalWithdrawTrue = (e, item) => {
+  const handleModalWithdrawTrue = (e: any, item: any) => {
     e.stopPropagation();
     setModalVerifyWithdraw(true);
     setItemWithdraw(item);
   };
-  const handleModalWithdrawFalse = (e) => {
+  const handleModalWithdrawFalse = (e: any) => {
     e.stopPropagation();
     setModalVerifyWithdraw(false);
   };
-  const handleCloseSnackbar = (event, reason) => {
+  const handleCloseSnackbar = (event: any, reason: any) => {
     if (reason === 'clickaway') {
       return;
     }
@@ -151,7 +152,7 @@ export default function WithdrawsHistory() {
         setSnackbar,
       });
       adminGetUserByIdSV({
-        id_user: currentUser?.id,
+        userId: currentUser?.id,
         dispatch,
         setSnackbar,
       });
@@ -159,38 +160,38 @@ export default function WithdrawsHistory() {
   }, []);
   const handleSendOTP = async (dataToken: any) => {
     await userVerifyWithdrawSV({
-      id_user: currentUser?.id,
+      userId: currentUser?.id,
+      withdrawCode: otpCode,
       dispatch,
-      code: otpCode,
       token: dataToken?.token,
       setSnackbar,
       setIsProcessModalWithdraw,
       setModalVerifyWithdraw,
     });
   };
-  const handleAuthenWithdraw = async (e) => {
+  const handleAuthenWithdraw = async () => {
     if (!otpCode) {
       setSnackbar({
         open: true,
         type: 'error',
         message: 'Bạn chưa nhập mã xác thực',
       });
-    } else {
-      setIsProcessModalWithdraw(true);
-      refreshToken({
-        currentUser,
-        handleFunc: handleSendOTP,
-        dispatch,
-        setData,
-        setSnackbar,
-      });
-      dispatch(
-        setData({
-          amountWithdraw: '',
-          otpCode: '',
-        })
-      );
+      return;
     }
+    setIsProcessModalWithdraw(true);
+    await refreshToken({
+      currentUser,
+      handleFunc: handleSendOTP,
+      dispatch,
+      setData,
+      setSnackbar,
+    });
+    dispatch(
+      setData({
+        amountWithdraw: '',
+        otpCode: '',
+      })
+    );
   };
   const handleCancelWithdrawSV = async (dataToken: any, id: any) => {
     await userCancelWithdrawSV({
@@ -203,9 +204,9 @@ export default function WithdrawsHistory() {
       setModalVerifyWithdraw,
     });
   };
-  const handleCancelWithdraw = async (id) => {
+  const handleCancelWithdraw = async (id: string) => {
     setIsProcessCancelWithdraw(true);
-    refreshToken({
+    await refreshToken({
       currentUser,
       handleFunc: handleCancelWithdrawSV,
       dispatch,
@@ -214,20 +215,19 @@ export default function WithdrawsHistory() {
       id,
     });
   };
-  const resendOtpSV = (dataToken, id) => {
-    userResendOtpWithdrawSV({
-      id_user: currentUser.id,
-      id_withdraw: id,
+  const resendOtpSV = async (dataToken: any, id: string) => {
+    await userResendOtpWithdrawSV({
+      userId: currentUser.id,
+      withdrawId: id,
       dispatch,
       token: dataToken?.token,
       setSnackbar,
       setIsProcessResendOTP,
     });
   };
-  const handleResendOTP = async (id) => {
-    await 1;
+  const handleResendOTP = async (id: any) => {
     setIsProcessResendOTP(true);
-    refreshToken({
+    await refreshToken({
       currentUser,
       handleFunc: resendOtpSV,
       dispatch,
@@ -236,13 +236,9 @@ export default function WithdrawsHistory() {
       id,
     });
   };
-  const bank =
-    userById?.payment?.bank?.name +
-    ' - ' +
-    userById?.payment?.bank?.bankName +
-    ' - ' +
-    userById?.payment?.bank?.account;
-  const colorStatus = (item) => {
+  const bank = userById?.payment?.bank;
+
+  const colorStatus = (item: any) => {
     switch (item?.status) {
       case 'Completed':
         return 'success';
@@ -258,7 +254,7 @@ export default function WithdrawsHistory() {
   function RenderBodyTable({ data }) {
     return (
       <>
-        {data.map((item, index) => {
+        {data.map((item: any, index: number) => {
           return (
             <tr
               key={index}

@@ -79,8 +79,8 @@ const Header = () => {
     });
   };
 
-  const handleLogout = () => {
-    authLogoutSV({
+  const handleLogout = async () => {
+    await authLogoutSV({
       email: currentUser?.email,
       history: push,
       setSnackbar,

@@ -16,6 +16,8 @@
 	--bgc-info: #e6f5ff;
 	--color-info: #007aff;
 	--color-success: #4CAF50;
+	--color-black: black;
+	--color-primary: red;
 }
 
 @layer base {

@@ -19,6 +19,8 @@ export { default as FileUploadSingle } from './FileUploadSingle';
 export { default as SliderHeader } from './SlideHeader';
 export { default as LoginRegisterCp } from './LoginRegisterCp';
 export { default as Modal } from './modal';
+export { default as CreditCard } from './CreditCard';
 export { default as Breadcrumb } from './Common/Breadcrumb';
 export { default as SectionTitle } from './Common/SectionTitle';
 export * as IconModal from './Icons/Modal';
+export * as IconForm from './Icons/Form';

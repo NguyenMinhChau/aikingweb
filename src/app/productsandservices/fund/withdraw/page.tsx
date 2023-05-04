@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import {
   Breadcrumb,
   Button,
@@ -41,15 +41,6 @@ const IMAGE_SLIDERS = [
   },
 ];
 
-const mockBankData = [
-  {
-    id: 1,
-    name: 'Vietcombank',
-    accountName: 'AIKING GROUP',
-    accountNumber: '0071000000001',
-  },
-];
-
 const WithdrawPage = () => {
   const { state, dispatch } = useAppContext();
   const { amountWithdraw, bandWithdraw, currentUser, otpCode, userById } =
@@ -66,29 +57,30 @@ const WithdrawPage = () => {
   const [isProcessModalWithdraw, setIsProcessModalWithdraw] = useState(false);
   const [isProcessResendOTP, setIsProcessResendOTP] = useState(false);
   const [modalVerifyWithdraw, setModalVerifyWithdraw] = useState(false);
-  const [showSelect, setShowSelect] = useState(false);
   const [itemWithdraw, setItemWithdraw] = useState<{
     id?: string;
     status?: string;
     createdAt?: string;
     amount?: number;
+    userId?: string;
+    paymentId?: number;
+    updatedAt?: string;
   } | null>(null);
   const [isProcessCancelWithdraw, setIsProcessCancelWithdraw] = useState(false);
 
   useEffect(() => {
     if (currentUser) {
       adminGetUserByIdSV({
-        id_user: currentUser?.id,
+        userId: currentUser?.id,
         dispatch,
         setSnackbar,
       });
     }
-  }, [currentUser, dispatch]);
+  }, []);
 
-  const checkBank: any =
-    userById?.payment?.bank?.bankName &&
-    userById?.payment?.bank?.name &&
-    userById?.payment?.bank?.account;
+  const checkBank = useMemo(() => {
+    return userById?.payment?.bank;
+  }, [userById]);
 
   const handleModalWithdrawTrue = (e: any) => {
     e.stopPropagation();
@@ -101,15 +93,12 @@ const WithdrawPage = () => {
 
   const handleSendWithdrawSV = async (data: any) => {
     await userCreateWithdrawSV({
-      id_user: currentUser?.id,
-      idPayment: userById?.payment?.bank?.idPayment,
-      email_user: currentUser?.email,
+      userId: currentUser?.id,
       amountVND: Number(amountWithdraw.replace(/\./g, '')),
       setSnackbar,
       token: data?.token,
       setIsProcessModalWithdraw,
       setModalVerifyWithdraw,
-      userById: userById,
       setItemWithdraw,
     });
   };
@@ -159,9 +148,9 @@ const WithdrawPage = () => {
 
   const handleSendOTP = async (dataToken: any) => {
     await userVerifyWithdrawSV({
-      id_user: currentUser?.id,
+      userId: currentUser?.id,
+      withdrawCode: otpCode,
       dispatch,
-      code: otpCode,
       token: dataToken?.token,
       setSnackbar,
       setIsProcessModalWithdraw,
@@ -178,7 +167,7 @@ const WithdrawPage = () => {
       });
     } else {
       setIsProcessModalWithdraw(true);
-      refreshToken({
+      await refreshToken({
         currentUser,
         handleFunc: handleSendOTP,
         dispatch,
@@ -226,8 +215,8 @@ const WithdrawPage = () => {
 
   const resendOtpSV = async (dataToken: any, id: string) => {
     await userResendOtpWithdrawSV({
-      id_user: currentUser.id,
-      id_withdraw: id,
+      userId: currentUser.id,
+      withdrawId: id,
       dispatch,
       token: dataToken?.token,
       setSnackbar,
@@ -257,15 +246,6 @@ const WithdrawPage = () => {
               <i className="fa fa-wallet mr-1"></i>
               <span>Thông tin thanh toán</span>
             </div>
-            <SelectValueCp
-              label="Tên ngân hàng thụ hưởng"
-              value={bandWithdraw?.name}
-              placeholder="---"
-              data={mockBankData}
-              nameSet="bandWithdraw"
-              stateSelect={showSelect}
-              setStateSelect={setShowSelect}
-            />
             <FormInput
               label="Số tiền rút"
               placeholder="---"
