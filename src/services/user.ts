@@ -392,12 +392,7 @@ export const userVerifyWithdrawSV = async (props: any) => {
         token: token,
       },
     });
-    if (resGet.status === 200) {
-      dispatch(
-        setData({
-          dataWithdrawsHistory: resGet?.data,
-        })
-      );
+    if (resGet.status === 201) {
       setIsProcessModalWithdraw(false);
       setModalVerifyWithdraw(false);
       setSnackbar({

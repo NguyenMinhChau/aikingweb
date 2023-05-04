@@ -9,7 +9,6 @@ import {
   SnackbarCp,
   CustomcareLine,
   Modal,
-  SelectValueCp,
 } from '@/components';
 import className from 'classnames/bind';
 import { formatVND } from '@/helpers/format/FormatMoney';

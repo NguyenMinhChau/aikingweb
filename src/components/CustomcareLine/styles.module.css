@@ -42,3 +42,19 @@
 	text-align: end;
 	margin-left: 5px;
 }
+
+.success {
+	color: #4caf50;
+}
+
+.warning {
+	color: #ffab00;
+}
+
+.cancel {
+	color: #d50000;
+}
+
+.info{
+	color: #007aff;
+}
