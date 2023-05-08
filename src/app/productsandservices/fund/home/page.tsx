@@ -6,19 +6,31 @@ import {
 	Divider,
 	SliderFund,
 	SnackbarCp,
+	TotalAssetsAndFund,
+	TotalItem,
 } from '../../../../../components';
 import ServicesLinkItem from './servicesLinkItem';
 import routers from '../../../../../routers/routers';
-import { DataFundAgricutural, DataFundUSD } from '../../../../../helpers';
+import {
+	DataFundAgricutural,
+	DataFundUSD,
+	useAppContext,
+} from '../../../../../helpers';
 import 'swiper/css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { userGetAssetSV } from '../../../../../services/user';
+import requestRefreshToken from '../../../../../helpers/axios/refreshToken';
+import { actions } from '../../../../../appState/';
 
 const WebPage = () => {
+	const { state, dispatch } = useAppContext();
+	const { dataAssets, currentUser } = state.set;
 	const [snackbar, setSnackbar] = useState({
 		open: false,
 		type: '',
 		message: '',
 	});
+	const [isShow, setIsShow] = useState(false);
 	const handleCloseSnackbar = (event: any, reason: any) => {
 		if (reason === 'clickaway') {
 			return;
@@ -28,6 +40,9 @@ const WebPage = () => {
 			open: false,
 		});
 	};
+	const toogleIsShow = () => {
+		setIsShow(!isShow);
+	};
 	const development = () => {
 		setSnackbar({
 			open: true,
@@ -35,6 +50,25 @@ const WebPage = () => {
 			message: 'Giao diện đang phát triển',
 		});
 	};
+	const handleSendAssets = (dataToken: any) => {
+		userGetAssetSV({
+			id_user: currentUser?.id,
+			token: dataToken?.token,
+			dispatch,
+			setSnackbar,
+		});
+	};
+	useEffect(() => {
+		requestRefreshToken(
+			currentUser,
+			handleSendAssets,
+			state,
+			dispatch,
+			actions,
+			setSnackbar,
+		);
+	}, []);
+	const totalAssets = dataAssets?.fundWallet + 0 + dataAssets?.surplus;
 	return (
 		<>
 			<Breadcrumb pageName="Quỹ tiết kiệm" description="Quỹ tiết kiệm" />
@@ -46,6 +80,43 @@ const WebPage = () => {
 			/>
 			<div className="container mb-5">
 				<div className="w-full">
+					{currentUser && (
+						<>
+							<h1 className="font-bold mb-3">
+								Tài sản{' '}
+								<span onClick={toogleIsShow}>
+									<i
+										className={`fa ${
+											isShow ? 'fa-eye' : 'fa-eye-slash'
+										} cancel`}
+									></i>
+								</span>
+							</h1>
+							<TotalAssetsAndFund>
+								<TotalItem
+									title="Tổng tài sản"
+									price={totalAssets}
+									isShow={isShow}
+								/>
+								<TotalItem
+									title="Ví quỹ"
+									price={dataAssets?.fundWallet || 0}
+									isShow={isShow}
+								/>
+								<TotalItem
+									title="Ví đầu tư"
+									price={0}
+									isShow={isShow}
+								/>
+								<TotalItem
+									title="Số dư"
+									price={dataAssets?.surplus || 0}
+									isShow={isShow}
+								/>
+							</TotalAssetsAndFund>
+							<Divider />
+						</>
+					)}
 					<h1 className="font-bold mb-3">Các dịch vụ</h1>
 					<div className="flex flex-wrap">
 						<ServicesLinkItem

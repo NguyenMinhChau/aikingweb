@@ -193,7 +193,7 @@ const Footer = () => {
 						<p className="text-center text-base text-body-color dark:text-white">
 							© {new Date().getFullYear()} all rights reserved •{' '}
 							<a href="/" rel="nofollow noopener">
-								Aiking Investment
+								AIKING INVESTMENT
 							</a>
 						</p>
 					</div>

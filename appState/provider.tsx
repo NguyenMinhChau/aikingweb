@@ -1,3 +1,4 @@
+'use client';
 import { useReducer, useMemo } from 'react';
 import Context from './context';
 import reducer, { initialState } from './reducer';

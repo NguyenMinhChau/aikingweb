@@ -1,0 +1,123 @@
+.status {
+	display: inline-block !important;
+	padding: 10px 12px !important;
+	border-radius: 0.25em !important;
+	font-size: 0.75em !important;
+	font-weight: 600 !important;
+	line-height: 1 !important;
+	text-align: center !important;
+	white-space: nowrap !important;
+	vertical-align: baseline !important;
+}
+
+.cancel {
+	color: var(--color-cancel) !important;
+}
+
+.cancelbgc {
+	background-color: var(--bgc-cancel) !important;
+	color: var(--color-cancel) !important;
+	border-color: var(--color-cancel) !important;
+}
+
+.cancelbgc:hover {
+	background-color: var(--color-cancel) !important;
+	color: var(--color-white) !important;
+	border-color: var(--color-cancel) !important;
+}
+
+.cancelbgcbold {
+	background-color: var(--color-cancel) !important;
+	color: var(--color-white) !important;
+	border-color: var(--color-cancel) !important;
+}
+
+.cancelbgcbold:hover {
+	background-color: var(--bgc-cancel) !important;
+	color: var(--color-cancel) !important;
+	border-color: var(--color-cancel) !important;
+}
+
+.success {
+	color: var(--color-success) !important;
+}
+
+.successbgc {
+	background-color: var(--bgc-success) !important;
+	color: var(--color-success) !important;
+	border-color: var(--color-success) !important;
+}
+
+.successbgc:hover {
+	background-color: var(--color-success) !important;
+	color: var(--color-white) !important;
+	border-color: var(--color-success) !important;
+}
+
+.successbgcbold {
+	background-color: var(--color-success) !important;
+	color: var(--color-white) !important;
+	border-color: var(--color-success) !important;
+}
+
+.successbgcbold:hover {
+	background-color: var(--bgc-success) !important;
+	color: var(--color-success) !important;
+	border-color: var(--color-success) !important;
+}
+
+.info {
+	color: var(--color-info) !important;
+}
+
+.infobgc {
+	background-color: var(--bgc-info) !important;
+	color: var(--color-info) !important;
+	border-color: var(--color-info) !important;
+}
+
+.infobgc:hover {
+	background-color: var(--color-info) !important;
+	color: var(--color-white) !important;
+	border-color: var(--color-info) !important;
+}
+
+.infobgcbold {
+	background-color: var(--color-info) !important;
+	color: var(--color-white) !important;
+	border-color: var(--color-info) !important;
+}
+
+.infobgcbold:hover {
+	background-color: var(--bgc-info) !important;
+	color: var(--color-info) !important;
+	border-color: var(--color-info) !important;
+}
+
+.warning {
+	color: var(--color-warning) !important;
+}
+
+.warningbgc {
+	background-color: var(--bgc-warning) !important;
+	color: var(--color-warning) !important;
+	border-color: var(--color-warning) !important;
+}
+
+.warningbgc:hover {
+	background-color: var(--color-warning) !important;
+	color: var(--color-white) !important;
+	border-color: var(--color-warning) !important;
+}
+
+.warningbgcbold {
+	background-color: var(--color-warning) !important;
+	color: var(--color-white) !important;
+	border-color: var(--color-warning) !important;
+}
+
+.warningbgcbold:hover {
+	background-color: var(--bgc-warning) !important;
+	color: var(--color-warning) !important;
+	border-color: var(--color-warning) !important;
+}

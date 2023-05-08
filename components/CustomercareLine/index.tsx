@@ -13,15 +13,15 @@ type CustomercareLineType = {
 	title?: string;
 	price?: string;
 	noneBorderBottom?: boolean;
-	onClick?: () => void;
+	onClick?: any;
 	eye?: boolean;
 	showEye?: boolean;
 	handleShowEye?: () => void;
-	bankMethod?: string;
+	bankMethod?: boolean;
 	bankName?: string;
 	accountName?: string;
 	accountNumber?: string;
-	marginLeft?: string;
+	marginLeft?: number | string;
 };
 export default function CustomercareLine({
 	nameIcon,
@@ -95,7 +95,9 @@ export default function CustomercareLine({
 				) : (
 					<div
 						onClick={onClick}
-						className={`${cx('item_desc_text')}`}
+						className={`${cx(
+							'item_desc_text',
+						)} cursor-pointer text-primary`}
 					>
 						{textLink}
 					</div>

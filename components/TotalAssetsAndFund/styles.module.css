@@ -1,0 +1,28 @@
+.total_assets_item {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid var(--primary-color);
+	border-radius: 8px;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	margin: 4px;
+}
+.total_assets_item:first-child {
+	margin-left: 0;
+}
+.total_assets_item:last-child {
+	margin-right: 0;
+}
+.total_assets_item:nth-child(1) {
+	background-image: url('../../public/images/fundHome/background01.png');
+}
+.total_assets_item:nth-child(2) {
+	background-image: url('../../public/images/fundHome/background02.png');
+}
+.total_assets_item:nth-child(3) {
+	background-image: url('../../public/images/fundHome/background03.png');
+}
+.total_assets_item:nth-child(4) {
+	background-image: url('../../public/images/fundHome/background07.png');
+}

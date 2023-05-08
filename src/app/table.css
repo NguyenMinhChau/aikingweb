@@ -1,0 +1,10 @@
+.tbody {
+	font-family: 'Times New Roman', Times, serif;
+	text-align: center;
+}
+.tbody tr td {
+	padding: 10px;
+}
+.tbody tr:nth-child(even):hover {
+	background-color: #f2f2f2;
+}

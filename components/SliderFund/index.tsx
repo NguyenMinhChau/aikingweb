@@ -1,8 +1,22 @@
+'use client';
 import React from 'react';
 import styles from './styles.module.css';
+import { useRouter } from 'next/navigation';
+import { useAppContext } from '../../helpers';
+import { actions } from '../../appState/';
+import routers from '../../routers/routers';
 
 function SliderFund({ item }: { item: any }) {
-	const handleSetItem = (item: any) => {};
+	const { dispatch } = useAppContext();
+	const router = useRouter();
+	const handleSetItem = (item: any) => {
+		dispatch(
+			actions.setData({
+				item: item,
+			}),
+		);
+		router.push(routers.fundSend);
+	};
 	return (
 		<div
 			className={`${styles.item}`}

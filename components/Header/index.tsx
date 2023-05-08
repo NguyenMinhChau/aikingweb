@@ -3,13 +3,33 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import menuData from './menuData';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import styles from './Header.module.css';
 import LogoLight from '../../public/images/logo/logo_light.png';
+import { useAppContext } from '../../helpers';
+import { authLogoutSV } from '../../services/authen';
 
 const Header = () => {
+	const { state, dispatch } = useAppContext();
+	const { currentUser } = state.set;
+	const router = useRouter();
 	// Navbar toggle
 	const [navbarOpen, setNavbarOpen] = useState(false);
+	const [isProcess, setIsProcess] = useState(false);
+	const [snackbar, setSnackbar] = useState({
+		open: false,
+		type: '',
+		message: '',
+	});
+	const handleCloseSnackbar = (event: any, reason: any) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setSnackbar({
+			...snackbar,
+			open: false,
+		});
+	};
 	const navbarToggleHandler = () => {
 		setNavbarOpen(!navbarOpen);
 	};
@@ -46,7 +66,17 @@ const Header = () => {
 		}
 	};
 	const pathname = usePathname();
-
+	const handleLogout = (e: any) => {
+		e.preventDefault();
+		setIsProcess(true);
+		authLogoutSV({
+			email_user: currentUser?.email,
+			router,
+			setSnackbar,
+			setIsProcess,
+			dispatch,
+		});
+	};
 	return (
 		<>
 			<header
@@ -271,18 +301,36 @@ const Header = () => {
 							</div>
 						</div>
 						<div className="flex flex-none items-center justify-end pr-16 lg:pr-0">
-							<Link
-								href="/signin"
-								className="hidden py-3 px-7 text-base font-bold text-dark hover:opacity-70 dark:text-white md:block"
-							>
-								Đăng nhập
-							</Link>
-							<Link
-								href="/signup"
-								className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
-							>
-								Đăng ký
-							</Link>
+							{!currentUser ? (
+								<>
+									<Link
+										href="/signin"
+										className="hidden py-3 px-7 text-base font-bold text-dark hover:opacity-70 dark:text-white md:block"
+									>
+										Đăng nhập
+									</Link>
+									<Link
+										href="/signup"
+										className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
+									>
+										Đăng ký
+									</Link>
+								</>
+							) : (
+								<div
+									onClick={handleLogout}
+									className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 cursor-pointer hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
+								>
+									{!isProcess ? (
+										'Đăng xuất'
+									) : (
+										<i
+											className="bx bx-loader bx-spin bx-rotate-90"
+											style={{ color: '#000' }}
+										></i>
+									)}
+								</div>
+							)}
 						</div>
 					</div>
 				</div>

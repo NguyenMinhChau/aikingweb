@@ -42,6 +42,7 @@
 
 .select_list_item:hover {
 	background-color: var(--primary-color);
+	color: var(--white-color);
 }
 
 .select_form_icon i {

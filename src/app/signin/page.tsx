@@ -1,8 +1,67 @@
+'use client';
+import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAppContext } from '../../../helpers';
+import { actions } from '../../../appState/';
+import { SnackbarCp } from '../../../components';
+import { authLoginSV } from '../../../services/authen';
 
 const SigninPage = () => {
+	const { state, dispatch } = useAppContext();
+	const { email, password } = state.set;
+	const [isProcess, setIsProcess] = useState(false);
+	const router = useRouter();
+	const [snackbar, setSnackbar] = useState({
+		open: false,
+		type: '',
+		message: '',
+	});
+	const handleCloseSnackbar = (event: any, reason: any) => {
+		if (reason === 'clickaway') {
+			return;
+		}
+		setSnackbar({
+			...snackbar,
+			open: false,
+		});
+	};
+	const handleChange = (e: any) => {
+		const { name, value } = e.target;
+		dispatch(
+			actions.setData({
+				[name]: value,
+			}),
+		);
+	};
+	const handleSingin = (e: any) => {
+		e.preventDefault();
+		if (!email || !password) {
+			setSnackbar({
+				open: true,
+				type: 'error',
+				message: 'Vui lòng nhập đầy đủ thông tin!',
+			});
+		} else {
+			setIsProcess(true);
+			authLoginSV({
+				email,
+				password,
+				setIsProcess,
+				setSnackbar,
+				router,
+				dispatch,
+			});
+		}
+	};
 	return (
 		<>
+			<SnackbarCp
+				openSnackbar={snackbar.open}
+				handleCloseSnackbar={handleCloseSnackbar}
+				messageSnackbar={snackbar.message}
+				typeSnackbar={snackbar.type}
+			/>
 			<section className="relative z-10 overflow-hidden pt-36 pb-16 md:pb-20 lg:pt-[180px] lg:pb-28">
 				<div className="container">
 					<div className="-mx-4 flex flex-wrap">
@@ -27,6 +86,7 @@ const SigninPage = () => {
 										<input
 											type="email"
 											name="email"
+											onChange={handleChange}
 											placeholder="Nhập email của bạn"
 											className="w-full rounded-md border border-transparent py-3 px-6 text-base text-body-color placeholder-body-color shadow-one outline-none focus:border-primary focus-visible:shadow-none dark:bg-[#242B51] dark:shadow-signUp"
 										/>
@@ -41,6 +101,7 @@ const SigninPage = () => {
 										<input
 											type="password"
 											name="password"
+											onChange={handleChange}
 											placeholder="Nhập mật khẩu"
 											className="w-full rounded-md border border-transparent py-3 px-6 text-base text-body-color placeholder-body-color shadow-one outline-none focus:border-primary focus-visible:shadow-none dark:bg-[#242B51] dark:shadow-signUp"
 										/>
@@ -89,8 +150,18 @@ const SigninPage = () => {
 										</div>
 									</div>
 									<div className="mb-6">
-										<button className="flex w-full items-center justify-center rounded-md bg-primary py-4 px-9 text-base font-medium text-white transition duration-300 ease-in-out hover:bg-opacity-80 hover:shadow-signUp">
-											Đăng nhập
+										<button
+											onClick={handleSingin}
+											className="flex w-full items-center justify-center rounded-md bg-primary py-4 px-9 text-base font-medium text-white transition duration-300 ease-in-out hover:bg-opacity-80 hover:shadow-signUp"
+										>
+											{!isProcess ? (
+												'Đăng nhập'
+											) : (
+												<i
+													className="bx bx-loader bx-spin bx-rotate-90"
+													style={{ color: '#000' }}
+												></i>
+											)}
 										</button>
 									</div>
 								</form>

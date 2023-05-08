@@ -8,7 +8,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import styles from './styles.module.css';
 import { useAppContext } from '../../helpers';
-import { setData } from '../../appState/reducer';
+import { actions } from '../../appState/';
 
 const cx = className.bind(styles);
 
@@ -42,7 +42,7 @@ function TableData({
 	const lengthHeader = Object.keys(headers).length;
 	const handleChangeLimitPage = (e: any) => {
 		dispatch(
-			setData({
+			actions.setData({
 				pagination: {
 					...state.set.pagination,
 					show: parseInt(e.target.value),
@@ -50,10 +50,9 @@ function TableData({
 			}),
 		);
 	};
-	const handleChangePage = (e: any, value: string) => {
+	const handleChangePage = (e: any, value: any) => {
 		dispatch(
-			setData({
-				...state.set,
+			actions.setData({
 				pagination: {
 					...state.set.pagination,
 					page: parseInt(value),
@@ -126,7 +125,16 @@ function TableData({
 							className={`${cx('pagination-container')}`}
 						>
 							<Pagination
-								onChange={(e) => handleChangePage}
+								onChange={(e, value: any) => {
+									dispatch(
+										actions.setData({
+											pagination: {
+												...state.set.pagination,
+												page: parseInt(value),
+											},
+										}),
+									);
+								}}
 								page={page}
 								showFirstButton
 								showLastButton

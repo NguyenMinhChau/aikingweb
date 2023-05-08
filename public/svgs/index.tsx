@@ -3,7 +3,11 @@ type SvgType = {
 	width?: string;
 	height?: string;
 };
-export const EyeIcon = ({ className, width, height }: SvgType) => {
+export const EyeIcon = ({
+	className,
+	width = '20px',
+	height = '20px',
+}: SvgType) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -16,7 +20,11 @@ export const EyeIcon = ({ className, width, height }: SvgType) => {
 		</svg>
 	);
 };
-export const EyeShowIcon = ({ className, width, height }: SvgType) => {
+export const EyeShowIcon = ({
+	className,
+	width = '20px',
+	height = '20px',
+}: SvgType) => {
 	return (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
@@ -52,6 +60,57 @@ export const RefreshPageIcon = ({ className, width, height }: SvgType) => {
 			height={height}
 		>
 			<path d="M463.5 224H472c13.3 0 24-10.7 24-24V72c0-9.7-5.8-18.5-14.8-22.2s-19.3-1.7-26.2 5.2L413.4 96.6c-87.6-86.5-228.7-86.2-315.8 1c-87.5 87.5-87.5 229.3 0 316.8s229.3 87.5 316.8 0c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0c-62.5 62.5-163.8 62.5-226.3 0s-62.5-163.8 0-226.3c62.2-62.2 162.7-62.5 225.3-1L327 183c-6.9 6.9-8.9 17.2-5.2 26.2s12.5 14.8 22.2 14.8H463.5z" />
+		</svg>
+	);
+};
+export const CloseIcon = ({
+	className,
+	width = '24px',
+	height = '24px',
+}: SvgType) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width={width}
+			height={height}
+			className={className}
+			viewBox="0 0 24 24"
+			fill="none"
+		>
+			<path
+				d="M18.75 5.25L5.25 18.75"
+				stroke="currentColor"
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+			<path
+				d="M18.75 18.75L5.25 5.25"
+				stroke="currentColor"
+				strokeWidth="2"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+			/>
+		</svg>
+	);
+};
+export const UploadIcon = ({
+	className,
+	width = '24px',
+	height = '24px',
+}: SvgType) => {
+	return (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 640 512"
+			width={width}
+			height={height}
+			className={className}
+			fill="currentColor"
+			stroke="currentColor"
+			color="currentColor"
+		>
+			<path d="M144 480C64.5 480 0 415.5 0 336c0-62.8 40.2-116.2 96.2-135.9c-.1-2.7-.2-5.4-.2-8.1c0-88.4 71.6-160 160-160c59.3 0 111 32.2 138.7 80.2C409.9 102 428.3 96 448 96c53 0 96 43 96 96c0 12.2-2.3 23.8-6.4 34.6C596 238.4 640 290.1 640 352c0 70.7-57.3 128-128 128H144zm79-217c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l39-39V392c0 13.3 10.7 24 24 24s24-10.7 24-24V257.9l39 39c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0l-80 80z" />
 		</svg>
 	);
 };

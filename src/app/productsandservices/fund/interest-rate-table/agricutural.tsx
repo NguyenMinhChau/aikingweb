@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 function InterestRateAgricutural() {
 	return (
-		<div className={`${styles.container}`}>
+		<div className={`${styles.image_container}`}>
 			<Image
 				src={IMAGE}
 				alt="Quỹ phát triển nông nghiệp"

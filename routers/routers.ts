@@ -1,5 +1,9 @@
 const routers = {
 	home: '/',
+	signin: '/signin',
+	singup: '/signup',
+	forgorpwd: '/forgotPassword',
+	verifyOtp: '/verifyOTP',
 	introduce: '/aboutus/introduce',
 	financeReport: '/aboutus/financereport',
 	training: '/training',
@@ -9,6 +13,8 @@ const routers = {
 	fundDeposits: '/productsandservices/fund/deposits',
 	fundWithdraw: '/productsandservices/fund/withdraw',
 	fundTransaction: '/productsandservices/fund/transaction',
+	historyDepositWithdraw:
+		'/productsandservices/fund/manager-deposits-withdraw',
 	fundProfile: '/productsandservices/fund/profile',
 	fund: '/productsandservices/fund',
 	fundInterestRateTable: '/productsandservices/fund/interest-rate-table',

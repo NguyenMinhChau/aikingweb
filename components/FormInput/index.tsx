@@ -70,7 +70,7 @@ function FormInput(
 				/>
 				{showPwd && (
 					<span className={cx('icon-eye')} onClick={handleTypePwd}>
-						{typePwd ? (
+						{!typePwd ? (
 							<EyeIcon className={cx('icon')} />
 						) : (
 							<EyeShowIcon className={cx('icon')} />
