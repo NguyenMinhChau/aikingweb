@@ -153,7 +153,6 @@ const UploadDocument = ({navigation}) => {
       toastShow(toast, 'Vui lòng chọn đầy đủ ảnh');
     }
   };
-  console.log(userById);
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -210,6 +209,12 @@ const UploadDocument = ({navigation}) => {
       <ButtonSubmitCp
         isProcess={isProcess}
         handleSubmit={handleSubmit}
+        disabled={
+          !fileCCCDFront ||
+          !fileCCCDBack ||
+          !fileLicenseFront ||
+          !fileLicenseBack
+        }
         bgcButton={stylesStatus.confirmbgcbold}
         buttonText="Gửi"
         marginTop={15}

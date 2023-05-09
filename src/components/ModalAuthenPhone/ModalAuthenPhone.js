@@ -27,7 +27,7 @@ const ModalAuthenPhone = ({
             nameInput="otpCode"
             value={valueInput}
             handleChange={handleChange}
-            typeInput="number-pad"
+            // typeInput="number-pad"
           />
         </Modal.Body>
         <Modal.Footer>

@@ -20,9 +20,8 @@ import {adminGetUserByIdSV} from '../../services/admin';
 const WithdrawHistory = ({navigation}) => {
   const toast = useToast();
   const {state, dispatch} = useAppContext();
-  const {currentUser, dataWithdrawsHistory, userById} = state;
+  const {currentUser, dataWithdrawsHistory} = state;
   const [refreshing, setRefreshing] = useState(false);
-  // const [data, setData] = useState([]);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
@@ -34,6 +33,14 @@ const WithdrawHistory = ({navigation}) => {
         toast,
       });
     }
+    requestRefreshToken(
+      currentUser,
+      handleSendWithdraw,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
   }, [currentUser]);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
@@ -55,16 +62,6 @@ const WithdrawHistory = ({navigation}) => {
       dispatch,
     });
   };
-  useEffect(() => {
-    requestRefreshToken(
-      currentUser,
-      handleSendWithdraw,
-      state,
-      dispatch,
-      setCurrentUserPL,
-      toast,
-    );
-  }, []);
   const sortDateASC = x => {
     return x.sort((a, b) => {
       return new Date(b.createdAt) - new Date(a.createdAt);
@@ -102,12 +99,8 @@ const WithdrawHistory = ({navigation}) => {
                     navigation.navigate({
                       name: routersMain.VerifyWithdraw,
                       params: {
-                        data: {
-                          data: item,
-                          accountNumber: userById?.payment?.bank?.account,
-                          accountName: userById?.payment?.bank?.name,
-                          bankName: userById?.payment?.bank?.bankName,
-                        },
+                        data: item,
+                        idPayment: item?.paymentId,
                       },
                     });
                   }}>

@@ -42,6 +42,7 @@ import {setCurrentUserPL} from '../../app/payloads/user';
 import {BLACK_COLOR} from '../../styles/colors';
 import {dateFormat} from '../../utils/format/Date';
 import useDebounce from '../../utils/hooks/useDebounce';
+import {TYPE_USD, TYPE_AGRICUTURAL} from '@env';
 
 const DATA_FUNDS = [
   {
@@ -53,22 +54,15 @@ const DATA_FUNDS = [
     name: 'Quỹ phát triển nông nghiệp',
   },
 ];
-const SendFunds = ({navigation}) => {
+const SendFunds = ({navigation, route}) => {
+  const params = route?.params;
   const toast = useToast();
   const {state, dispatch} = useAppContext();
   const {
     currentUser,
     dataContracts,
     dataAssets,
-    send_funds: {
-      fund,
-      send_time,
-      period,
-      deposits,
-      interest_rate,
-      interest_payment_period,
-      principal_payment_time,
-    },
+    send_funds: {fund, period, deposits},
   } = state;
   const [refreshing, setRefreshing] = useState(false);
   const [isProcess, setIsProcess] = useState(false);
@@ -78,22 +72,27 @@ const SendFunds = ({navigation}) => {
   const [showEye, setShowEye] = useState(false);
   const [isModalSubmit, setIsModalSubmit] = useState(false);
   const [disbursement, setDisbursement] = useState(null);
-  // const [dataContract, setDataContract] = useState(null);
+
   const handleSendContract = dataToken => {
     userGetContractSV({
       id_user: currentUser?.id,
       toast,
-      // setDataContract,
       token: dataToken?.token,
       dispatch,
     });
   };
+  const handleTypeContract = () => {
+    if (setItem) {
+      return setItem?.id === 1 ? 'USD' : 'AGRICULTURE';
+    } else {
+      return params?.type === TYPE_USD ? 'USD' : 'AGRICULTURE';
+    }
+  };
   const handleGetMoneySV = dataToken => {
     userGetTotalMoneySV({
       toast,
-      typeContract:
-        setItem?.id === 1 ? 'USD' : setItem?.id === 2 ? 'AGRICULTURE' : '',
-      cycleContract: useDebouncePeriod,
+      typeContract: handleTypeContract(),
+      cycleContract: parseInt(useDebouncePeriod || params?.period),
       principalContract: useDebounceDeposits.replace(/\./g, ''),
       setDisbursement,
       token: dataToken?.token,
@@ -140,7 +139,11 @@ const SendFunds = ({navigation}) => {
   const useDebounceDeposits = useDebounce(deposits, 3000);
   useEffect(() => {
     setDisbursement(null);
-    if (setItem && useDebouncePeriod && useDebounceDeposits) {
+    if (
+      (setItem || params?.type) &&
+      (useDebouncePeriod || params?.period) &&
+      useDebounceDeposits
+    ) {
       requestRefreshToken(
         currentUser,
         handleGetMoneySV,
@@ -158,16 +161,22 @@ const SendFunds = ({navigation}) => {
       setCurrentUserPL,
       toast,
     );
-  }, [setItem, useDebouncePeriod, useDebounceDeposits]);
+  }, [
+    setItem || params?.type,
+    useDebouncePeriod || params?.period,
+    useDebounceDeposits,
+  ]);
   const DATA_MERGE =
     dataContracts &&
-    dataContracts?.usd &&
-    dataContracts?.agriculture &&
-    [...dataContracts?.usd, ...dataContracts?.agriculture]?.sort((a, b) => {
+    dataContracts?.contractsUSD &&
+    dataContracts?.contractsAGRICULTURE &&
+    [
+      ...dataContracts?.contractsUSD,
+      ...dataContracts?.contractsAGRICULTURE,
+    ]?.sort((a, b) => {
       return a?.id - b?.id;
     });
   const ID_FINAL = DATA_MERGE && DATA_MERGE[DATA_MERGE.length - 1]?.id;
-  // console.log('ID_FINAL', ID_FINAL);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
@@ -187,6 +196,9 @@ const SendFunds = ({navigation}) => {
     setShowEye(!showEye);
   };
   const handleChange = (name, value) => {
+    if (params?.period && name === 'period') {
+      params.period = '';
+    }
     dispatch(
       setFundsPL({
         [name]: value,
@@ -208,9 +220,10 @@ const SendFunds = ({navigation}) => {
       token: dataToken?.token,
     });
   };
+
   const handleContinue = async () => {
     await 1;
-    if (!fund || !period || !deposits) {
+    if ((!fund && !params?.type) || (!period && !params?.period) || !deposits) {
       toastShow(toast, 'Vui lòng nhập đầy đủ thông tin!');
     } else if (moment(time).isBefore(new Date())) {
       toastShow(
@@ -219,7 +232,10 @@ const SendFunds = ({navigation}) => {
         'error',
         5000,
       );
-    } else if (setItem?.id === 2 && parseInt(period) === 1) {
+    } else if (
+      (setItem?.id === 2 || params?.type === TYPE_AGRICUTURAL) &&
+      parseInt(period || params?.period) === 1
+    ) {
       toastShow(
         toast,
         'Quỹ phát triển nông nghiệp phải gửi từ 2 mùa trở lên.',
@@ -252,7 +268,65 @@ const SendFunds = ({navigation}) => {
     setSetItem(item);
   };
   const totalAssets =
-    parseFloat(dataAssets?.fund_wallet) + 0 + parseFloat(dataAssets?.surplus);
+    parseFloat(dataAssets?.fundWallet) + 0 + parseFloat(dataAssets?.surplus);
+  const valueSelectTypeFund = fund
+    ? fund
+    : params?.type === TYPE_USD
+    ? 'Quỹ đầu tư USD'
+    : params?.type === TYPE_AGRICUTURAL
+    ? 'Quỹ phát triển nông nghiệp'
+    : '';
+  const periodFund = () => {
+    if (period) {
+      return period;
+    } else {
+      return params?.period?.toString();
+    }
+  };
+  const unitFund = () => {
+    if (setItem) {
+      return setItem?.id === 1 ? 'Tháng' : setItem?.id === 2 ? 'Mùa' : '';
+    } else {
+      return params?.type === TYPE_USD
+        ? 'Tháng'
+        : params?.type === TYPE_AGRICUTURAL
+        ? 'Mùa'
+        : '';
+    }
+  };
+  const codeHD = () => {
+    if (setItem) {
+      return setItem?.id === 1 ? 'HDQDTUSD' : 'HDQPTNN';
+    } else {
+      return params?.type === TYPE_USD ? 'HDQDTUSD' : 'HDQPTNN';
+    }
+  };
+  const packageHD = () => {
+    if (setItem) {
+      return setItem?.id === 1
+        ? 'QUỸ ĐẦU TƯ USD'
+        : 'QUỸ PHÁT TRIỂN NÔNG NGHIỆP';
+    } else {
+      return params?.type === TYPE_USD
+        ? 'QUỸ ĐẦU TƯ USD'
+        : 'QUỸ PHÁT TRIỂN NÔNG NGHIỆP';
+    }
+  };
+  const depositsFund = () => {
+    if (setItem) {
+      return 'Nhập số tiền gửi';
+    } else if (params?.capital) {
+      return (
+        `Bạn chọn gói ${params?.type === TYPE_AGRICUTURAL ? 'hạn mức ' : ''}` +
+        params?.capital?.toString()?.replace('M', '') +
+        ' triệu đồng'
+      );
+    } else {
+      return 'Nhập số tiền gửi';
+    }
+  };
+  // console.log(disbursement);
+
   return (
     <>
       <ImageBackground
@@ -271,7 +345,7 @@ const SendFunds = ({navigation}) => {
           />
           <WelcomeHD
             showEye={showEye}
-            walletFund={parseFloat(dataAssets?.fund_wallet) || 0}
+            walletFund={parseFloat(dataAssets?.fundWallet) || 0}
             walletInvestment={0}
             surplus={parseFloat(dataAssets?.surplus) || 0}
           />
@@ -289,7 +363,7 @@ const SendFunds = ({navigation}) => {
             <SelectValueCp
               label="Chọn quỹ đầu tư"
               placeholder="Chọn quỹ đầu tư"
-              valueSelect={fund}
+              valueSelect={valueSelectTypeFund}
               data={DATA_FUNDS}
               handleChange={handleChange}
               nameSelect="fund"
@@ -308,15 +382,13 @@ const SendFunds = ({navigation}) => {
               label="Kỳ hạn"
               placeholder="Nhập kỳ hạn"
               nameInput="period"
-              value={period}
+              value={periodFund()}
               handleChange={handleChange}
-              unit={
-                setItem?.id === 1 ? 'Tháng' : setItem?.id === 2 ? 'Mùa' : ''
-              }
+              unit={unitFund()}
             />
             <InputItem
               label="Số tiền gửi"
-              placeholder="Nhập số tiền gửi"
+              placeholder={depositsFund()}
               nameInput="deposits"
               value={deposits && autoFormatNumberInputChange(deposits)}
               handleChange={handleChange}
@@ -327,7 +399,7 @@ const SendFunds = ({navigation}) => {
           <View style={[styles.fragment_input_container, stylesGeneral.mt10]}>
             <InputItem
               label="Tổng tiền giải ngân"
-              value={formatVNDCurency(disbursement?.disbursement || 0)}
+              value={formatVNDCurency(disbursement || 0)}
               handleChange={handleChange}
               disabled
             />
@@ -339,6 +411,7 @@ const SendFunds = ({navigation}) => {
           </Text>
           <ButtonSubmitCp
             isProcess={isProcess}
+            disabled={!disbursement}
             handleSubmit={handleContinue}
             bgcButton={stylesStatus.confirmbgcbold}
             buttonText="Tiếp tục"
@@ -356,9 +429,9 @@ const SendFunds = ({navigation}) => {
         btnText="Xác nhận">
         <RowDetail
           title="MÃ HD"
-          text={`${ID_FINAL ? ID_FINAL + 1 : 1}/${new Date().getFullYear()}/${
-            setItem?.id === 1 ? 'HDQDTUSD' : 'HDQPTNN'
-          } `}
+          text={`${
+            ID_FINAL ? ID_FINAL + 1 : 1
+          }/${new Date().getFullYear()}/${codeHD()} `}
           marginLeft={0}
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
         />
@@ -371,9 +444,7 @@ const SendFunds = ({navigation}) => {
         />
         <RowDetail
           title="Gói"
-          text={
-            setItem?.id === 1 ? 'QUỸ ĐẦU TƯ USD' : 'QUỸ PHÁT TRIỂN NÔNG NGHIỆP'
-          }
+          text={packageHD()}
           marginLeft={0}
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           marginTop={8}
@@ -387,7 +458,7 @@ const SendFunds = ({navigation}) => {
         />
         <RowDetail
           title="Kỳ hạn"
-          text={`${period} ${setItem?.id === 1 ? 'Tháng' : 'Mùa'}`}
+          text={`${period || params?.period} ${unitFund()}`}
           marginLeft={0}
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           marginTop={8}
@@ -401,7 +472,7 @@ const SendFunds = ({navigation}) => {
         />
         <RowDetail
           title="Giải ngân"
-          text={formatVNDCurency(disbursement?.disbursement || 0)}
+          text={formatVNDCurency(disbursement || 0)}
           marginLeft={0}
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           marginTop={8}

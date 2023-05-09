@@ -83,6 +83,10 @@ const styles = StyleSheet.create({
     textShadowRadius: 8,
     marginBottom: 5,
   },
+  text_size: {
+    fontSize: 20,
+    marginBottom: 5,
+  },
   interest_rate_desc_text: {
     fontSize: 16,
     fontWeight: '450',

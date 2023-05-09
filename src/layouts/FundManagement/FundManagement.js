@@ -98,7 +98,7 @@ const FundManagement = ({navigation}) => {
     setShowEye(!showEye);
   };
   const totalAssets =
-    parseFloat(dataAssets?.fund_wallet) + 0 + parseFloat(dataAssets?.surplus);
+    parseFloat(dataAssets?.fundWallet) + 0 + parseFloat(dataAssets?.surplus);
   return (
     <>
       <ImageBackground
@@ -117,7 +117,7 @@ const FundManagement = ({navigation}) => {
           />
           <WelcomeHD
             showEye={showEye}
-            walletFund={parseFloat(dataAssets?.fund_wallet) || 0}
+            walletFund={parseFloat(dataAssets?.fundWallet) || 0}
             walletInvestment={0}
             surplus={parseFloat(dataAssets?.surplus) || 0}
           />

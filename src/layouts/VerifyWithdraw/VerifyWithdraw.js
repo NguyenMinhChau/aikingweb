@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import Clipboard from '@react-native-community/clipboard';
 import styles from './VerifyWithdrawCss';
 import {ScrollView, useToast} from 'native-base';
@@ -29,10 +29,11 @@ import {
 } from '../../services/user';
 import requestRefreshToken from '../../utils/axios/refreshToken';
 import {setCurrentUserPL} from '../../app/payloads/user';
+import {adminGetPaymentByIdSV} from '../../services/admin';
 
 const VerifyWithdraw = ({navigation, route}) => {
   const toast = useToast();
-  const {data} = route.params;
+  const {data, idPayment} = route.params;
   const {state, dispatch} = useAppContext();
   const {
     currentUser,
@@ -42,9 +43,19 @@ const VerifyWithdraw = ({navigation, route}) => {
   const [isProcess, setIsProcess] = useState(false);
   const [isProcessCancel, setIsProcessCancel] = useState(false);
   const [isProcessResendOTP, setIsProcessResendOTP] = useState(false);
+  const [dataBank, setDataBank] = useState(null);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
+  useEffect(() => {
+    if (idPayment) {
+      adminGetPaymentByIdSV({
+        id_payment: idPayment,
+        toast,
+        setDataBank,
+      });
+    }
+  }, [idPayment, toast]);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setIsProcess(false);
@@ -157,7 +168,7 @@ const VerifyWithdraw = ({navigation, route}) => {
       <View style={[styles.fragment_input_container]}>
         <RowDetail
           title="Trạng thái"
-          text={data?.data?.status}
+          text={data?.data?.withdraw?.status || data?.status}
           marginLeft={0}
           marginRight={8}
           colorIconFront={PRIMARY_COLOR}
@@ -165,7 +176,10 @@ const VerifyWithdraw = ({navigation, route}) => {
         />
         <RowDetail
           title="Ngày tạo"
-          text={dateFormat(data?.data?.createdAt, 'DD/MM/YYYY HH:mm:ss')}
+          text={dateFormat(
+            data?.data?.withdraw?.createdAt || data?.createdAt,
+            'DD/MM/YYYY HH:mm:ss',
+          )}
           marginLeft={0}
           marginRight={8}
           colorIconFront={PRIMARY_COLOR}
@@ -174,7 +188,7 @@ const VerifyWithdraw = ({navigation, route}) => {
         />
         <RowDetail
           title="Số tiền rút"
-          text={formatVND(data?.data?.amount)}
+          text={formatVND(data?.data?.withdraw?.amount || data?.amount)}
           marginLeft={0}
           marginRight={8}
           colorIconFront={PRIMARY_COLOR}
@@ -189,9 +203,9 @@ const VerifyWithdraw = ({navigation, route}) => {
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           marginTop={10}
           bankMethod
-          nameBank={data?.bankName}
-          accountNumber={data?.accountNumber}
-          accountName={data?.accountName}
+          nameBank={data?.bankName || dataBank?.bank_name}
+          accountNumber={data?.accountNumber || dataBank?.account_number}
+          accountName={data?.accountName || dataBank?.account_name}
           maxWidth={100}
           copy
           funcCopy={copyToClipboard}
@@ -209,7 +223,7 @@ const VerifyWithdraw = ({navigation, route}) => {
           onPress={
             isProcessResendOTP
               ? () => {}
-              : () => handleResendOTP(data?.data?.id)
+              : () => handleResendOTP(data?.data?.withdraw?.id)
           }>
           {isProcessResendOTP ? 'Đang gửi mã...' : 'Gửi lại mã'}
         </Text>
@@ -217,7 +231,7 @@ const VerifyWithdraw = ({navigation, route}) => {
       <View style={[styles.btn_actions_container]}>
         <TouchableOpacity
           activeOpacity={0.8}
-          onPress={() => handleCancel(data?.data?.id)}
+          onPress={() => handleCancel(data?.data?.withdraw?.id)}
           disabled={isProcessCancel}
           style={[
             styles.btn_submit,

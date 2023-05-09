@@ -14,7 +14,6 @@ import {userGetDepositsByUserSV} from '../../services/user';
 import requestRefreshToken from '../../utils/axios/refreshToken';
 import {setCurrentUserPL} from '../../app/payloads/user';
 import {routersMain} from '../../routers/Main';
-import {dataBankAdmin} from '../../utils/dataBankAdmin';
 import stylesGeneral from '../../styles/General';
 
 const DepositsHistory = ({navigation}) => {
@@ -54,7 +53,7 @@ const DepositsHistory = ({navigation}) => {
       setCurrentUserPL,
       toast,
     );
-  }, []);
+  }, [currentUser]);
   const sortDateASC = x => {
     return x.sort((a, b) => {
       return new Date(b.createdAt) - new Date(a.createdAt);
@@ -93,7 +92,7 @@ const DepositsHistory = ({navigation}) => {
                       name: routersMain.UploadDeposits,
                       params: {
                         data: item,
-                        itemBank: dataBankAdmin[0],
+                        idPayment: item?.idPayment,
                       },
                     });
                   }}>
@@ -139,7 +138,7 @@ const DepositsHistory = ({navigation}) => {
       ) : (
         <View style={[styles.fragment_input_container]}>
           <View style={[stylesGeneral.text_center]}>
-            <Text style={[styles.text_nodata]}>Không có lịch sử rút</Text>
+            <Text style={[styles.text_nodata]}>Không có lịch sử nạp</Text>
           </View>
         </View>
       )}

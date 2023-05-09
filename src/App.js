@@ -49,7 +49,7 @@ const App = () => {
           const data = JSON.parse(res);
           setModalLoadApp(data.modalLoadApp);
         });
-      }, 2000);
+      }, 1000);
     };
     init();
   }, []);

@@ -58,8 +58,8 @@ const Fund = ({navigation}) => {
     setShowEye(!showEye);
   };
   const totalFund =
-    parseFloat(dataAssets?.sum_usd_contract) +
-    parseFloat(dataAssets?.sum_agriculture_contract);
+    parseFloat(dataAssets?.contractsUSD) +
+    parseFloat(dataAssets?.contractsAGRICULTURE);
   return (
     <>
       <ImageBackground
@@ -80,9 +80,9 @@ const Fund = ({navigation}) => {
           <WelcomeHD
             showEye={showEye}
             fund
-            totalFundInvestment={parseFloat(dataAssets?.sum_usd_contract) || 0}
+            totalFundInvestment={parseFloat(dataAssets?.contractsUSD) || 0}
             totalFundAgricultural={
-              parseFloat(dataAssets?.sum_agriculture_contract) || 0
+              parseFloat(dataAssets?.contractsAGRICULTURE) || 0
             }
           />
           {!currentUser && <LoginRegisterHD navigation={navigation} />}

@@ -12,18 +12,19 @@ const ButtonSubmitCp = ({
   bgcButton,
   marginTop,
   marginBottom,
+  disabled,
 }) => {
   return (
     <View style={[styles.container]}>
       <TouchableOpacity
         activeOpacity={0.8}
         onPress={handleSubmit}
-        disabled={isProcess}
+        disabled={isProcess || disabled}
         style={[
           styles.btn_submit,
           stylesStatus.status,
           bgcButton ? bgcButton : stylesStatus.confirmbgcbold,
-          isProcess && stylesGeneral.op6,
+          (isProcess || disabled) && stylesGeneral.op6,
           {
             marginTop: marginTop,
             marginBottom: marginBottom,

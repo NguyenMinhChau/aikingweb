@@ -70,7 +70,7 @@ const InterestRateTable = ({navigation}) => {
     setShowEye(!showEye);
   };
   const totalAssets =
-    parseFloat(dataAssets?.fund_wallet) +
+    parseFloat(dataAssets?.fundWallet) +
     parseFloat(0) +
     parseFloat(dataAssets?.surplus);
   return (
@@ -91,7 +91,7 @@ const InterestRateTable = ({navigation}) => {
           />
           <WelcomeHD
             showEye={showEye}
-            walletFund={parseFloat(dataAssets?.fund_wallet) || 0}
+            walletFund={parseFloat(dataAssets?.fundWallet) || 0}
             walletInvestment={0}
             surplus={parseFloat(dataAssets?.surplus) || 0}
           />

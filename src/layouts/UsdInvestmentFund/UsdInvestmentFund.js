@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable radix */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, ScrollView, RefreshControl} from 'react-native';
@@ -29,7 +31,7 @@ const UsdInvestmentFund = ({data}) => {
   const [isProcessModal, setIsProcessModal] = useState(false);
   const [itemFund, setItemFund] = useState(null);
   const [disbursement, setDisbursement] = useState([]);
-  let data_usd = data?.usd?.sort((a, b) => b?.id - a?.id);
+  let data_usd = data?.contractsUSD?.sort((a, b) => b?.id - a?.id);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
@@ -80,12 +82,12 @@ const UsdInvestmentFund = ({data}) => {
     });
   }
   const uniqueDisbursement = disbursement.filter(
-    (v, i, a) => a.findIndex(t => t.disbursement === v.disbursement) === i,
+    (v, i, a) => a.findIndex(t => t.id === v.id) === i,
   );
   for (let i = 0; i < data_usd?.length; i++) {
     for (let j = 0; j < uniqueDisbursement?.length; j++) {
-      if (data_usd[i].principal === uniqueDisbursement[j].principal) {
-        data_usd[i].disbursement = uniqueDisbursement[j].disbursement;
+      if (parseInt(data_usd[i].id) === parseInt(uniqueDisbursement[j].id)) {
+        data_usd[i].disbursement = uniqueDisbursement[j].total;
       }
     }
   }

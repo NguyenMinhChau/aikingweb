@@ -39,12 +39,15 @@ const SelectValueCp = ({
               <Select.Item
                 shadow={2}
                 label={
-                  item.name +
-                  (item?.accountName
-                    ? ` - ${item.accountName} - ${item?.accountNumber}`
-                    : '')
+                  item.name ||
+                  item?.bank_name +
+                    (item?.accountName || item?.account_name
+                      ? ` - ${item.accountName || item?.account_name} - ${
+                          item?.accountNumber || item?.account_number
+                        }`
+                      : '')
                 }
-                value={item.name}
+                value={item.name || item?.bank_name}
                 key={index}
                 onTouchStart={
                   handleSetItem ? () => handleSetItem(item) : () => {}

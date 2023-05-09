@@ -35,6 +35,7 @@ const Withdraw = ({navigation}) => {
   } = state;
   const [refreshing, setRefreshing] = useState(false);
   const [isProcess, setIsProcess] = useState(false);
+  const [paymentUser, setPaymentUser] = useState(null);
   useEffect(() => {
     dispatch(
       setWithdrawsPL({
@@ -48,6 +49,7 @@ const Withdraw = ({navigation}) => {
         id_user: currentUser?.id,
         dispatch,
         toast,
+        setPaymentUser,
       });
     }
   }, [currentUser]);
@@ -77,7 +79,7 @@ const Withdraw = ({navigation}) => {
   const handleSendWithdraw = data => {
     userCreateWithdrawSV({
       id_user: currentUser?.id,
-      idPayment: userById?.payment?.bank?.idPayment,
+      idPayment: userById?.payment?.bank,
       email_user: currentUser?.email,
       amountVND: Number(amount.replace(/\./g, '')),
       toast,
@@ -104,9 +106,9 @@ const Withdraw = ({navigation}) => {
     }
   };
   const checkBank =
-    userById?.payment?.bank?.account &&
-    userById?.payment?.bank?.name &&
-    userById?.payment?.bank?.bankName
+    paymentUser?.account_number &&
+    paymentUser?.account_name &&
+    paymentUser?.bank_name
       ? true
       : false;
   return (
@@ -123,9 +125,9 @@ const Withdraw = ({navigation}) => {
           {checkBank ? (
             <>
               <CreditCard
-                bankName={userById?.payment?.bank?.bankName || '___'}
-                cardNumber={userById?.payment?.bank?.account || '___'}
-                accountName={userById?.payment?.bank?.name || '___'}
+                bankName={paymentUser?.bank_name || '___'}
+                cardNumber={paymentUser?.account_number || '___'}
+                accountName={paymentUser?.account_name || '___'}
               />
               <View style={[styles.fragment_input_container]}>
                 <InputItem

@@ -20,6 +20,7 @@ const InputItem = ({
   typeInput,
   disabled,
   unit,
+  refInput,
 }) => {
   return (
     <View style={[styles.input_container, {marginTop: marginTop}]}>
@@ -39,6 +40,7 @@ const InputItem = ({
           onChangeText={itemValue => handleChange(nameInput, itemValue)}
           value={value}
           editable={!disabled}
+          ref={refInput}
         />
         {isPassword && (
           <View style={[styles.icon]} onTouchStart={handleShowPwd}>

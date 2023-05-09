@@ -19,11 +19,12 @@ const requestRefreshToken = async (
       const decodedToken = await jwt_decode(accessToken);
       const date = new Date();
       if (decodedToken.exp < date.getTime() / 1000) {
-        const res = await refreshToken(`refreshToken/${currentUser?.id}`);
-        if (res.code === 0) {
+        const res = await refreshToken(`refreshToken/${currentUser?.email}`);
+        // console.log('Refresh Token: ', res);
+        if (res?.status === 200) {
           const refreshUser = {
             ...currentUser,
-            token: res.data.toString(),
+            token: res?.metadata?.toString(),
           };
           await setAsyncStore(refreshUser);
           dispatch(
@@ -31,11 +32,14 @@ const requestRefreshToken = async (
               currentUser: getAsyncStore(dispatch),
             }),
           );
-          currentUser.token = `${res.data}`;
+          currentUser.token = `${res?.metadata}`;
           handleFunc(refreshUser, id ? id : '');
           return refreshUser;
         } else {
-          toastShow(toast, 'RefreshToken not found- Please login again');
+          toastShow(
+            toast,
+            'Refresh token không tìm thấy - Vui lòng đăng nhập lại!',
+          );
         }
       } else {
         handleFunc(currentUser, id ? id : '');
@@ -44,6 +48,12 @@ const requestRefreshToken = async (
     }
   } catch (err) {
     console.log(err);
+
+    toastShow(
+      toast,
+      `Lỗi: ${err?.response?.data?.message || 'Không tìm thấy url'}.`,
+      'error',
+    );
   }
 };
 export default requestRefreshToken;

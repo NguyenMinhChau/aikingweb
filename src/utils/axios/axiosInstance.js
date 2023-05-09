@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
 import axios from 'axios';
 import {URL_SERVER} from '@env';
+console.log(URL_SERVER);
 
 // AUTHENTICATION
 export const authInstance = axios.create({
-  baseURL: `${URL_SERVER}authentication/`,
+  baseURL: `${URL_SERVER}auth/`,
   withCredentials: true,
 });
 export const authPost = async (path, options = {}) => {
@@ -17,13 +18,12 @@ export const authGet = async (path, options = {}) => {
 };
 // REFRESH TOKEN
 export const refreshToken = async (path, options = {}) => {
-  const res = await authInstance.get(path, options);
+  const res = await authInstance.post(path, options);
   return res.data;
 };
 // ADMIN
 export const adminInstance = axios.create({
   baseURL: `${URL_SERVER}admin/`,
-  // baseURL: 'http://localhost:8000/admin/',
   withCredentials: true,
 });
 export const adminGet = async (path, options = {}) => {

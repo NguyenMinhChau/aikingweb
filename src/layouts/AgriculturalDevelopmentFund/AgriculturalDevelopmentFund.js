@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable no-unused-vars */
+/* eslint-disable radix */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import {View, Text, ScrollView, RefreshControl} from 'react-native';
@@ -29,7 +31,9 @@ const AgriculturalDevelopmentFund = ({data}) => {
   const [isProcessModal, setIsProcessModal] = useState(false);
   const [itemFund, setItemFund] = useState(null);
   const [disbursement, setDisbursement] = useState([]);
-  let data_agriculture = data?.agriculture?.sort((a, b) => b?.id - a?.id);
+  let data_agriculture = data?.contractsAGRICULTURE?.sort(
+    (a, b) => b?.id - a?.id,
+  );
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
@@ -56,12 +60,14 @@ const AgriculturalDevelopmentFund = ({data}) => {
     });
   }
   const uniqueDisbursement = disbursement.filter(
-    (v, i, a) => a.findIndex(t => t.disbursement === v.disbursement) === i,
+    (v, i, a) => a.findIndex(t => t.id === v.id) === i,
   );
   for (let i = 0; i < data_agriculture?.length; i++) {
     for (let j = 0; j < uniqueDisbursement?.length; j++) {
-      if (data_agriculture[i].principal === uniqueDisbursement[j].principal) {
-        data_agriculture[i].disbursement = uniqueDisbursement[j].disbursement;
+      if (
+        parseInt(data_agriculture[i].id) === parseInt(uniqueDisbursement[j].id)
+      ) {
+        data_agriculture[i].disbursement = uniqueDisbursement[j].total;
       }
     }
   }

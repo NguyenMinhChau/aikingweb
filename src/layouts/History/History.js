@@ -1,12 +1,16 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable react-hooks/exhaustive-deps */
 import {RefreshControl, Text, View} from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './HistoryCss';
-import {ScrollView} from 'native-base';
+import {ScrollView, useToast} from 'native-base';
 import DepositsHistory from '../DepositsHistory/DepositsHistory';
 import WithdrawHistory from '../WithdrawHistory/WithdrawHistory';
 import {Footer, LoginRegisterAction} from '../../components';
 import {useAppContext} from '../../utils';
+import requestRefreshToken from '../../utils/axios/refreshToken';
+import {userGetWithdrawDepositsByUserSV} from '../../services/user';
+import {setCurrentUserPL} from '../../app/payloads/user';
 
 const LIST_TABS = [
   {
@@ -22,7 +26,8 @@ const LIST_TABS = [
 ];
 
 const History = ({navigation}) => {
-  const {state} = useAppContext();
+  const toast = useToast();
+  const {state, dispatch} = useAppContext();
   const {currentUser} = state;
   const [refreshing, setRefreshing] = useState(false);
   const [isTab, setIsTab] = useState(1);
@@ -32,6 +37,24 @@ const History = ({navigation}) => {
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     wait(2000).then(() => setRefreshing(false));
+  }, []);
+  const handleSendGetAllWithdrawDeposits = dataToken => {
+    userGetWithdrawDepositsByUserSV({
+      id_user: currentUser?.id,
+      toast,
+      token: dataToken?.token,
+      dispatch,
+    });
+  };
+  useEffect(() => {
+    requestRefreshToken(
+      currentUser,
+      handleSendGetAllWithdrawDeposits,
+      state,
+      dispatch,
+      setCurrentUserPL,
+      toast,
+    );
   }, []);
   return (
     <ScrollView

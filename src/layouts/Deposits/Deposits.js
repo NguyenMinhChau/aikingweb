@@ -27,6 +27,7 @@ import {userCreateDepositsSV} from '../../services/user';
 import requestRefreshToken from '../../utils/axios/refreshToken';
 import {setCurrentUserPL} from '../../app/payloads/user';
 import stylesGeneral from '../../styles/General';
+import {getAllPaymentAdmins} from '../../services/admin';
 
 const Deposits = ({navigation}) => {
   const toast = useToast();
@@ -38,6 +39,7 @@ const Deposits = ({navigation}) => {
   const [refreshing, setRefreshing] = useState(false);
   const [isProcess, setIsProcess] = useState(false);
   const [itemBank, setItemBank] = useState(null);
+  const [bankAdmins, setBankAdmins] = useState([]);
   useEffect(() => {
     dispatch(
       setDepositsPL({
@@ -45,7 +47,13 @@ const Deposits = ({navigation}) => {
         bankId: '',
       }),
     );
+    setItemBank(null);
+    getAllPaymentAdmins({
+      toast,
+      setBankAdmins,
+    });
   }, []);
+
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
@@ -70,7 +78,7 @@ const Deposits = ({navigation}) => {
     userCreateDepositsSV({
       id_user: currentUser?.id,
       email_user: currentUser?.email,
-      idPayment: 1,
+      idPayment: itemBank?.id,
       amountVND: Number(amount.replace(/\./g, '')),
       token: data?.token,
       toast,
@@ -111,7 +119,7 @@ const Deposits = ({navigation}) => {
               label="Ngân hàng thụ hưởng"
               placeholder="Chọn ngân hàng thụ hưởng"
               valueSelect={bankId}
-              data={dataBankAdmin}
+              data={bankAdmins}
               handleChange={handleChange}
               nameSelect="bankId"
               marginTop={10}

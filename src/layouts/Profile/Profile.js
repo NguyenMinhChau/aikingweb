@@ -89,10 +89,12 @@ const Profile = ({navigation}) => {
       }),
     );
   };
+  // console.log(currentUser);
+
   const handleLogout = async () => {
     await 1;
     authLogoutSV({
-      id_user: currentUser?.id,
+      email_user: currentUser?.email,
       navigation,
       toast,
       dispatch,
@@ -115,7 +117,6 @@ const Profile = ({navigation}) => {
               otpCode: '',
             }),
           );
-          // toastShow(toast, 'Thay đổi email thành công');
           toastShow(toast, 'Chức năng đang đuược phát triển!');
           navigation.navigate(routers.Profile);
         }, 3000);
@@ -126,24 +127,15 @@ const Profile = ({navigation}) => {
   };
   const showToast = () => {
     toast.show({
-      render: () => {
-        return (
-          <ToastCp
-            colorIcon={TOAST_COLOR_SUCCESS}
-            bgc={WHITE_COLOR}
-            title="Thông báo"
-            desc="Màn hình đang được phát triển, quý khách vui lòng quay lại sau. Xin cám ơn!"
-          />
-        );
-      },
-      placement: 'top',
+      title:
+        'Màn hình đang được phát triển, quý khách vui lòng quay lại sau. Xin cám ơn!',
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
     });
   };
   const uriImage = require('../../assets/images/ProvidentFundLogo.png');
-  const totalAssets =
-    parseFloat(dataAssets?.fund_wallet) +
-    parseFloat(0) +
-    parseFloat(dataAssets?.surplus);
+  const totalAssets = parseFloat(0) + parseFloat(0) + parseFloat(0);
   return (
     <ScrollView
       style={[styles.container]}

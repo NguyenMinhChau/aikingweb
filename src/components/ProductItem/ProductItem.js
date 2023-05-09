@@ -12,6 +12,8 @@ const ProductItem = ({
   interest_rate,
   resetMargin,
   onTouchStart,
+  agicutural,
+  index,
 }) => {
   return (
     <View
@@ -19,7 +21,8 @@ const ProductItem = ({
       style={[
         styles.product_item,
         resetMargin && styles.product_item_margin_reset,
-      ]}>
+      ]}
+      key={index}>
       <ImageBackground
         source={
           url
@@ -45,8 +48,16 @@ const ProductItem = ({
           </View>
           <View>
             <View style={[styles.interest_rate]}>
-              <Text style={[styles.interest_rate_number]}>{interest_rate}</Text>
-              <Text style={[styles.interest_rate_percent]}>%/năm</Text>
+              <Text
+                style={[
+                  styles.interest_rate_number,
+                  agicutural && styles.text_size,
+                ]}>
+                {agicutural && 'Giải ngân'} {interest_rate}
+              </Text>
+              <Text style={[styles.interest_rate_percent]}>
+                {agicutural ? ' triệu' : '%/kỳ hạn'}
+              </Text>
             </View>
             <View style={[styles.interest_rate_desc]}>
               <Text style={[styles.interest_rate_desc_text]}>

@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import {View, RefreshControl} from 'react-native';
 import React, {useCallback, useEffect, useState} from 'react';
@@ -31,6 +32,7 @@ const ReceivingAccount = ({navigation}) => {
   } = state;
   const [refreshing, setRefreshing] = useState(false);
   const [isProcess, setIsProcess] = useState(false);
+  const [paymentUser, setPaymentUser] = useState(null);
   useEffect(() => {
     dispatch(
       setReceivingAccountPL({
@@ -43,8 +45,10 @@ const ReceivingAccount = ({navigation}) => {
       id_user: currentUser?.id,
       dispatch,
       toast,
+      setPaymentUser,
     });
   }, []);
+
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
@@ -95,10 +99,11 @@ const ReceivingAccount = ({navigation}) => {
       );
     }
   };
+
   const checkBank =
-    userById?.payment?.bank?.account &&
-    userById?.payment?.bank?.name &&
-    userById?.payment?.bank?.bankName;
+    paymentUser?.account_number &&
+    paymentUser?.account_name &&
+    paymentUser?.bank_name;
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -108,9 +113,9 @@ const ReceivingAccount = ({navigation}) => {
       style={[styles.container]}>
       {checkBank ? (
         <CreditCard
-          bankName={userById?.payment?.bank?.bankName || '___'}
-          cardNumber={userById?.payment?.bank?.account || '___'}
-          accountName={userById?.payment?.bank?.name || '___'}
+          bankName={paymentUser?.bank_name || '___'}
+          cardNumber={paymentUser?.account_number || '___'}
+          accountName={paymentUser?.account_name || '___'}
         />
       ) : (
         <>

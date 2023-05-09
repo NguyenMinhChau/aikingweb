@@ -32,6 +32,8 @@ import LoginRegisterHD from '../../HeaderStyles/LoginRegisterHD';
 import {userGetAssetSV} from '../../services/user';
 import requestRefreshToken from '../../utils/axios/refreshToken';
 import {setCurrentUserPL} from '../../app/payloads/user';
+import {DataFundUSD} from '../../utils/dataFund/usd';
+import {DataFundAgritural} from '../../utils/dataFund/agricutural';
 
 const images = [
   {
@@ -75,7 +77,8 @@ const Home = ({navigation}) => {
       setCurrentUserPL,
       toast,
     );
-  }, []);
+  }, [currentUser]);
+
   const handleShowAssest = () => {
     setIsShowAssets(!isShowAssets);
   };
@@ -95,22 +98,17 @@ const Home = ({navigation}) => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
   const showToast = () => {
-    Toast.show({
-      render: () => {
-        return (
-          <ToastCp
-            colorIcon={TOAST_COLOR_SUCCESS}
-            bgc={WHITE_COLOR}
-            title="Thông báo"
-            desc="Màn hình đang được phát triển, quý khách vui lòng quay lại sau. Xin cám ơn!"
-          />
-        );
-      },
-      placement: 'top',
+    toast.show({
+      title:
+        'Màn hình đang được phát triển, quý khách vui lòng quay lại sau. Xin cám ơn!',
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
     });
   };
+
   const totalAssets =
-    parseFloat(dataAssets?.fund_wallet) +
+    parseFloat(dataAssets?.fundWallet) +
     parseFloat(0) +
     parseFloat(dataAssets?.surplus);
   return (
@@ -129,7 +127,7 @@ const Home = ({navigation}) => {
           />
           <WelcomeHD
             showEye={showEye}
-            walletFund={parseFloat(dataAssets?.fund_wallet) || 0}
+            walletFund={parseFloat(dataAssets?.fundWallet) || 0}
             walletInvestment={0}
             surplus={parseFloat(dataAssets?.surplus) || 0}
           />
@@ -186,50 +184,6 @@ const Home = ({navigation}) => {
         ) : (
           <>
             <SliderHome images={images} />
-            {/* <View style={[styles.total_assets]}>
-              <View style={[styles.total_assets_header]}>
-                <View style={[styles.total_assets_header_image_container]}>
-                  <Image
-                    source={require('../../assets/images/ProvidentFundLogo.png')}
-                    style={[styles.total_assets_header_image]}
-                    resizeMode="contain"
-                  />
-                </View>
-                <View style={[styles.total_assets_header_text_container]}>
-                  <Text style={[styles.total_assets_header_text]}>Chào bạn,</Text>
-                </View>
-              </View>
-              <View style={[stylesGeneral.flexSpaceBetween]}>
-                <View>
-                  <View style={[styles.total_assets_body]}>
-                    <Text style={[styles.total_assets_body_text]}>
-                      Tổng tài sản:{' '}
-                    </Text>
-                    <View style={[styles.icon]} onTouchStart={handleShowAssest}>
-                      <FontAwesome5
-                        name={isShowAssets ? 'eye' : 'eye-slash'}
-                        color={'#000'}
-                        size={20}
-                      />
-                    </View>
-                  </View>
-                  <View style={[styles.total_assets_footer]}>
-                    <Text style={[styles.total_assets_footer_text]}>
-                      {isShowAssets
-                        ? formatUSDT(currentUser?.balance)
-                        : '********USD'}
-                    </Text>
-                  </View>
-                </View>
-                <View>
-                  <Image
-                    source={require('../../assets/images/ProvidentFundLogo.png')}
-                    style={[styles.total_assets_footer_image]}
-                    resizeMode="contain"
-                  />
-                </View>
-              </View>
-            </View> */}
             <View style={[styles.actions_container, stylesGeneral.mt10]}>
               <Text style={[styles.actions_title]}>Menu</Text>
               <ScrollView
@@ -271,57 +225,99 @@ const Home = ({navigation}) => {
                 </View>
               </ScrollView>
             </View>
-            <View style={[styles.product_container]}>
-              <Text style={[styles.product_title]}>Sản phẩm</Text>
-              <ScrollView
-                showsVerticalScrollIndicator={false}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}>
-                <View style={[styles.product_list]}>
-                  <ProductItem
-                    uri={require('../../assets/images/mockup.png')}
-                    titleHeader="Lợi nhuận tốt nhất"
-                    timer="18 tháng"
-                    timer_desc="Hạn mức 10 tỷ đồng"
-                    interest_rate="8.5"
-                    onTouchStart={() => {}}
-                  />
-                  <ProductItem
-                    uri={require('../../assets/images/mockup.png')}
-                    titleHeader="Khuyên dùng"
-                    timer="12 tháng"
-                    timer_desc="Hạn mức 8.5 tỷ đồng"
-                    interest_rate="7.0"
-                    onTouchStart={() => {}}
-                  />
-                  <ProductItem
-                    uri={require('../../assets/images/mockup.png')}
-                    titleHeader="Lợi nhuận tốt nhất"
-                    timer="6 tháng"
-                    timer_desc="Hạn mức 7.6 tỷ đồng"
-                    interest_rate="6.3"
-                    onTouchStart={() => {}}
-                  />
-                  <ProductItem
-                    uri={require('../../assets/images/mockup.png')}
-                    titleHeader="Lợi nhuận tốt nhất"
-                    timer="3 tháng"
-                    timer_desc="Hạn mức 5.4 tỷ đồng"
-                    interest_rate="5.4"
-                    onTouchStart={() => {}}
-                  />
-                  <ProductItem
-                    uri={require('../../assets/images/mockup.png')}
-                    titleHeader="Lợi nhuận tốt nhất"
-                    timer="1 tháng"
-                    timer_desc="Hạn mức 4.2 tỷ đồng"
-                    interest_rate="4.2"
-                    resetMargin={true}
-                    onTouchStart={() => {}}
-                  />
+            {DataFundUSD.map((item, index) => {
+              return (
+                <View
+                  style={[styles.product_container]}
+                  key={`${item.id}_${index}`}>
+                  <Text style={[styles.product_title]}>
+                    Quỹ đầu tư USD (Vốn {item.capital})
+                  </Text>
+                  <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+                    <View style={[styles.product_list]}>
+                      {item.timer.list.map((time, indexTime) => {
+                        return (
+                          <ProductItem
+                            index={`${item.id}_${time.id}_${indexTime}`}
+                            key={`${item.id}_${time.id}_${indexTime}`}
+                            uri={
+                              item?.timer?.urlImage
+                                ? item?.timer?.urlImage
+                                : require('../../assets/images/background01.png')
+                            }
+                            titleHeader={item.timer.desc}
+                            timer={`${time.period} tháng`}
+                            timer_desc={`Vốn ${item.capital} VNĐ`}
+                            interest_rate={time.interestRate}
+                            onTouchStart={() => {
+                              navigation.navigate({
+                                name: routersMain.SendFunds,
+                                params: {
+                                  interestRate: time.interestRate,
+                                  period: time.period,
+                                  type: time.type,
+                                  capital: item.capital,
+                                },
+                              });
+                            }}
+                          />
+                        );
+                      })}
+                    </View>
+                  </ScrollView>
                 </View>
-              </ScrollView>
-            </View>
+              );
+            })}
+            {DataFundAgritural.map((item, index) => {
+              return (
+                <View
+                  style={[styles.product_container]}
+                  key={`${item.id}_${index}`}>
+                  <Text style={[styles.product_title]}>
+                    Quỹ đầu tư Nông nghiệp (Hạn mức {item.capital} triệu)
+                  </Text>
+                  <ScrollView
+                    showsVerticalScrollIndicator={false}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}>
+                    <View style={[styles.product_list]}>
+                      {item.timer.list.map((time, indexTime) => {
+                        return (
+                          <ProductItem
+                            index={`${item.id}_${time.id}_${indexTime}`}
+                            key={`${item.id}_${time.id}_${indexTime}`}
+                            uri={
+                              item?.timer?.urlImage
+                                ? item?.timer?.urlImage
+                                : require('../../assets/images/background01.png')
+                            }
+                            titleHeader={item.timer.desc}
+                            timer={`${time.period} mùa`}
+                            timer_desc={`Hạn mức ${item.capital} triệu VNĐ`}
+                            interest_rate={time.interestRate}
+                            onTouchStart={() => {
+                              navigation.navigate({
+                                name: routersMain.SendFunds,
+                                params: {
+                                  interestRate: time.interestRate,
+                                  period: time.period,
+                                  type: time.type,
+                                  capital: item.capital,
+                                },
+                              });
+                            }}
+                            agicutural
+                          />
+                        );
+                      })}
+                    </View>
+                  </ScrollView>
+                </View>
+              );
+            })}
           </>
         )}
         <Footer marginTop={0} marginBottom={20} />

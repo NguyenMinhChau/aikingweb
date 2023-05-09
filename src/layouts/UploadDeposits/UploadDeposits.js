@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 import {View, RefreshControl, Text, Image} from 'react-native';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import styles from './UploadDepositsCss';
 import {ScrollView, useToast} from 'native-base';
 import {ButtonSubmitCp, Footer, RowDetail} from '../../components';
@@ -24,19 +24,30 @@ import requestRefreshToken from '../../utils/axios/refreshToken';
 import {setCurrentUserPL} from '../../app/payloads/user';
 import {URL_SERVER} from '@env';
 import Clipboard from '@react-native-community/clipboard';
+import {adminGetPaymentByIdSV} from '../../services/admin';
 
 const UploadDeposits = ({navigation, route}) => {
   const toast = useToast();
   const {state, dispatch} = useAppContext();
   const {currentUser} = state;
-  const {data, itemBank} = route.params;
+  const {data, itemBank, idPayment} = route.params;
   const [refreshing, setRefreshing] = useState(false);
   const [isProcess, setIsProcess] = useState(false);
   const [fileResponseDeposits, setFileResponseDeposits] = useState(null);
+  const [dataBank, setDataBank] = useState(null);
   const [dataImageForm, setDataImageForm] = useState([]);
   const wait = timeout => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   };
+  useEffect(() => {
+    if (idPayment) {
+      adminGetPaymentByIdSV({
+        id_payment: idPayment,
+        toast,
+        setDataBank,
+      });
+    }
+  }, [idPayment, toast]);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     setIsProcess(false);
@@ -158,9 +169,9 @@ const UploadDeposits = ({navigation, route}) => {
           styleDesc={{flex: 1, textAlign: 'right', color: BLACK_COLOR}}
           marginTop={10}
           bankMethod
-          nameBank={itemBank?.name}
-          accountNumber={itemBank?.accountNumber}
-          accountName={itemBank?.accountName}
+          nameBank={itemBank?.bank_name || dataBank?.bank_name}
+          accountNumber={itemBank?.account_number || dataBank?.account_number}
+          accountName={itemBank?.account_name || dataBank?.account_name}
           maxWidth={100}
           copy
           funcCopy={copyToClipboard}
