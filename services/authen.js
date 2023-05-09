@@ -87,7 +87,7 @@ export const authLogoutSV = async (props = {}) => {
 				currentUser: getStore(),
 			}),
 		);
-		setIsProcess(false);
+		setIsProcess && setIsProcess(false);
 		setSnackbar({
 			open: true,
 			type: 'success',
@@ -95,7 +95,7 @@ export const authLogoutSV = async (props = {}) => {
 		});
 		router.push(routers.home);
 	} catch (err) {
-		setIsProcess(false);
+		setIsProcess && setIsProcess(false);
 		setSnackbar({
 			open: true,
 			type: 'error',

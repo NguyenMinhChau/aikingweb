@@ -30,9 +30,17 @@ export default function RootLayout({
 					src="https://kit.fontawesome.com/cc3041f69f.js"
 					crossOrigin="anonymous"
 				></script>
+				<script
+					async
+					defer
+					crossOrigin="anonymous"
+					src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v15.0&appId=468033418602915&autoLogAppEvents=1"
+					nonce="VhgtQZyB"
+				></script>
 			</head>
 			<body className="dark:bg-white">
 				<UseProvider>
+					<div id="fb-root"></div>
 					<Header />
 					{children}
 					<Footer />

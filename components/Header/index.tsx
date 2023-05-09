@@ -8,6 +8,7 @@ import styles from './Header.module.css';
 import LogoLight from '../../public/images/logo/logo_light.png';
 import { useAppContext } from '../../helpers';
 import { authLogoutSV } from '../../services/authen';
+import ButtonAuthenMobile from './buttonAuthenMobile';
 
 const Header = () => {
 	const { state, dispatch } = useAppContext();
@@ -100,6 +101,7 @@ const Header = () => {
 									alt="logo"
 									width={140}
 									height={30}
+									style={{ minWidth: '120px' }}
 									className="w-full dark:hidden"
 								/>
 								{/* <Image
@@ -311,7 +313,7 @@ const Header = () => {
 									</Link>
 									<Link
 										href="/signup"
-										className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
+										className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9 md:mr-3"
 									>
 										Đăng ký
 									</Link>
@@ -319,7 +321,7 @@ const Header = () => {
 							) : (
 								<div
 									onClick={handleLogout}
-									className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 cursor-pointer hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9"
+									className="ease-in-up hidden rounded-md bg-primary py-3 px-8 text-base font-bold text-white transition duration-300 cursor-pointer hover:bg-opacity-90 hover:shadow-signUp md:block md:px-9 lg:px-6 xl:px-9 md:mr-3"
 								>
 									{!isProcess ? (
 										'Đăng xuất'
@@ -331,6 +333,9 @@ const Header = () => {
 									)}
 								</div>
 							)}
+							<div>
+								<ButtonAuthenMobile />
+							</div>
 						</div>
 					</div>
 				</div>

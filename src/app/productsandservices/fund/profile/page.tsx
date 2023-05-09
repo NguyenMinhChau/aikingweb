@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 import React, { useState, useCallback, useEffect } from 'react';
 import {
@@ -416,7 +417,7 @@ const ProfilePage = () => {
 					<div
 						className={`${cx(
 							'item_container',
-						)} lg:w-1/2 sm:w-1/2 w-full lg:mr-1 md:mr-1 p-3`}
+						)} lg:w-1/2 sm:w-1/2 w-full lg:mr-1 md:mr-1 p-3 mb-2`}
 					>
 						{currentUser ? (
 							<>
@@ -501,7 +502,7 @@ const ProfilePage = () => {
 					<div
 						className={`${cx(
 							'item_container',
-						)} lg:w-1/2 sm:w-1/2 w-full lg:ml-1 md:ml-1 p-3`}
+						)} lg:w-1/2 sm:w-1/2 w-full lg:ml-1 md:ml-1 p-3 mb-2`}
 					>
 						<CustomercareLine
 							nameIcon="fa-regular fa-newspaper"
@@ -536,7 +537,7 @@ const ProfilePage = () => {
 							colorIcon="success"
 							link={`${routers.fundCustomerCare}`}
 							textLink="CSKH"
-							noneBorderBottom={!currentUser}
+							noneBorderBottom
 						/>
 					</div>
 				</div>
