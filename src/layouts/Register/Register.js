@@ -12,6 +12,7 @@ import {useState} from 'react';
 import {useToast} from 'native-base';
 import {toastShow} from '../../utils/toast';
 import {authRegisterSV} from '../../services/authen';
+import {checkPwd, checkEmail} from '../../utils/validate';
 
 const Register = ({navigation}) => {
   const toast = useToast();
@@ -24,6 +25,13 @@ const Register = ({navigation}) => {
     await 1;
     if (!username || !email || !password) {
       toastShow(toast, 'Vui lòng nhập đầy đủ thông tin');
+    } else if (!checkPwd(password)) {
+      toastShow(
+        toast,
+        'Mật khẩu ít nhất 8 kí tự và bao gồm ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một kí tự đặc biệt!',
+      );
+    } else if (!checkEmail(email)) {
+      toastShow(toast, 'Email không hợp lệ');
     } else {
       setIsProcess(true);
       authRegisterSV({
