@@ -8,10 +8,10 @@ const inter = Inter({ subsets: ['latin'] });
 export default function Home() {
 	return (
 		<>
-			<MessengerCustomerChat
+			{/* <MessengerCustomerChat
 				pageId="104145032476041"
 				appId="468033418602915"
-			/>
+			/> */}
 			<Hero />
 			<div className="m-3">
 				<SkeletonCP />

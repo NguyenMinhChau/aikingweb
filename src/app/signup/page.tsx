@@ -1,11 +1,12 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation';
 import { authRegisterSV } from '../../../services/authen';
 import { useAppContext } from '../../../helpers';
 import { actions } from '../../../appState/';
 import { SnackbarCp } from '../../../components';
+import { checkEmail, checkPwd } from '../../../helpers/validate';
 
 const SignupPage = () => {
 	const { state, dispatch } = useAppContext();
@@ -16,7 +17,7 @@ const SignupPage = () => {
 		type: '',
 		message: '',
 	});
-	const router = useRouter()
+	const router = useRouter();
 	const handleCloseSnackbar = (event: any, reason: any) => {
 		if (reason === 'clickaway') {
 			return;
@@ -42,6 +43,19 @@ const SignupPage = () => {
 				type: 'error',
 				message: 'Vui lòng nhập đầy đủ thông tin!',
 			});
+		} else if (!checkPwd(password)) {
+			setSnackbar({
+				open: true,
+				type: 'error',
+				message:
+					'Mật khẩu ít nhất 8 kí tự và bao gồm ít nhất một chữ cái viết hoa, một chữ cái viết thường, một số và một kí tự đặc biệt!',
+			});
+		} else if (!checkEmail(email)) {
+			setSnackbar({
+				open: true,
+				type: 'error',
+				message: 'Email không hợp lệ!',
+			});
 		} else {
 			setIsProcess(true);
 			authRegisterSV({
@@ -50,7 +64,7 @@ const SignupPage = () => {
 				password,
 				setSnackbar,
 				setIsProcess,
-				router
+				router,
 			});
 		}
 	};
