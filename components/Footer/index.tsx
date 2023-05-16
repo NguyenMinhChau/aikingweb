@@ -31,7 +31,8 @@ const Footer = () => {
 								</Link>
 								<p className="mb-9 text-justify text-base font-medium leading-relaxed text-body-color">
 									The River Thủ Thiêm, 23 Đ. Trần Bạch Đằng,
-									An Khánh, Quận 2, Thành phố Hồ Chí Minh
+									An Khánh, Quận 2, Thành phố Hồ Chí Minh,
+									Việt Nam
 								</p>
 								<div className="flex items-center">
 									<a
