@@ -74,7 +74,7 @@ function FundPage() {
 									<i
 										className={`fa ${
 											isShow ? 'fa-eye' : 'fa-eye-slash'
-										} cancel`}
+										} info`}
 									></i>
 								</span>
 							</h1>
