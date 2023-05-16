@@ -1,6 +1,6 @@
 .button {
-	background: var(--primary-color);
-	color: var(--white-color);
+	background: var(--color-primary);
+	color: var(--color-white);
 	border: 1px solid transparent;
 	border-radius: 8px;
 	min-height: 46px;
@@ -27,9 +27,9 @@
 }
 
 .button:hover {
-	background: var(--white-color);
-	color: var(--primary-color);
-	border-color: var(--primary-color);
+	background: var(--color-white);
+	color: var(--color-primary);
+	border-color: var(--color-primary);
 	cursor: pointer;
 	text-decoration: none;
 }

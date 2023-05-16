@@ -11,7 +11,7 @@
 
 .input {
 	align-items: center;
-	background: var(--white-color);
+	background: var(--color-white);
 	outline: none !important;
 	border: 1.5px solid #ccc;
 	border-radius: 8px;
@@ -34,19 +34,19 @@
 }
 
 .input:hover {
-	border-color: var(--primary-color);
+	border-color: var(--color-primary);
 }
 
 .input:focus::-webkit-input-placeholder {
-	color: var(--black-color);
+	color: var(--color-black);
 }
 
 .input:focus::-moz-placeholder {
-	color: var(--black-color);
+	color: var(--color-black);
 }
 
 .input:focus::-ms-input-placeholder {
-	color: var(--black-color);
+	color: var(--color-black);
 }
 
 .icon-eye {

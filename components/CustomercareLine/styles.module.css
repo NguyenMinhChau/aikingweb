@@ -15,7 +15,7 @@
 }
 
 .item_desc_container a {
-	color: var(--primary-color);
+	color: var(--color-primary);
 	text-decoration: none;
 }
 

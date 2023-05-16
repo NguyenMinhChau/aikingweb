@@ -12,7 +12,7 @@
 }
 
 .select_form_container:hover {
-	border-color: var(--primary-color);
+	border-color: var(--color-primary);
 	cursor: pointer;
 }
 
@@ -21,7 +21,7 @@
 	top: 100%;
 	left: 0;
 	width: 100%;
-	background-color: var(--white-color);
+	background-color: var(--color-white);
 	border: 1.5px solid #ccc;
 	border-radius: 7px;
 	z-index: 20;
@@ -41,8 +41,8 @@
 }
 
 .select_list_item:hover {
-	background-color: var(--primary-color);
-	color: var(--white-color);
+	background-color: var(--color-primary);
+	color: var(--color-white);
 }
 
 .select_form_icon i {

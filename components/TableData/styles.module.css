@@ -12,7 +12,7 @@
 
 .table .thead tr th {
 	padding: 16px 40px 16px 14px;
-	color: var(--black-color);
+	color: var(--color-black);
 	font-size: 12px;
 	text-transform: uppercase;
 	font-weight: 600;
@@ -48,7 +48,7 @@
 
 .icon-sort i {
 	font-size: 8px;
-	color: var(--black-color);
+	color: var(--color-black);
 }
 
 .hovered:hover {
@@ -96,7 +96,7 @@
 
 .link-user {
 	padding: 8px 12px;
-	color: var(--primary-color);
+	color: var(--color-primary);
 	display: flex;
 	align-items: center;
 	font-size: 12px;
@@ -105,12 +105,12 @@
 }
 
 .link-user:hover {
-	color: var(--primary-color);
+	color: var(--color-primary);
 	text-decoration: none;
 }
 
 .link-user-icon {
-	color: var(--primary-color);
+	color: var(--color-primary);
 }
 
 .image {

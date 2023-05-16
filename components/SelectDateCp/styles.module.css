@@ -6,7 +6,7 @@
 	margin: 3px 0 8px 0;
 }
 .select:hover {
-	border-color: var(--primary-color);
+	border-color: var(--color-primary);
 }
 .date {
 	width: 100%;
