@@ -98,10 +98,10 @@ const ForgotPasswordPage = () => {
 								y2="453.581"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" />
 								<stop
 									offset="1"
-									stopColor="#ff5e57"
+									stopColor="#157bfb"
 									stopOpacity="0"
 								/>
 							</linearGradient>
@@ -113,10 +113,10 @@ const ForgotPasswordPage = () => {
 								y2="1192.04"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" />
 								<stop
 									offset="1"
-									stopColor="#ff5e57"
+									stopColor="#157bfb"
 									stopOpacity="0"
 								/>
 							</linearGradient>

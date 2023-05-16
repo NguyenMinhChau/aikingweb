@@ -113,10 +113,10 @@ const Hero = () => {
 								y2="288"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" />
 								<stop
 									offset="1"
-									stopColor="#ff5e57"
+									stopColor="#157bfb"
 									stopOpacity="0"
 								/>
 							</linearGradient>
@@ -130,12 +130,12 @@ const Hero = () => {
 							>
 								<stop
 									offset="0.145833"
-									stopColor="#ff5e57"
+									stopColor="#157bfb"
 									stopOpacity="0"
 								/>
 								<stop
 									offset="1"
-									stopColor="#ff5e57"
+									stopColor="#157bfb"
 									stopOpacity="0.08"
 								/>
 							</radialGradient>
@@ -149,12 +149,12 @@ const Hero = () => {
 							>
 								<stop
 									offset="0.145833"
-									stopColor="#ff5e57"
+									stopColor="#157bfb"
 									stopOpacity="0"
 								/>
 								<stop
 									offset="1"
-									stopColor="#ff5e57"
+									stopColor="#157bfb"
 									stopOpacity="0.08"
 								/>
 							</radialGradient>
@@ -166,10 +166,10 @@ const Hero = () => {
 								y2="351.421"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" />
 								<stop
 									offset="1"
-									stopColor="#ff5e57"
+									stopColor="#157bfb"
 									stopOpacity="0"
 								/>
 							</linearGradient>
@@ -181,7 +181,7 @@ const Hero = () => {
 								y2="448.882"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" />
 								<stop
 									offset="1"
 									stopColor="white"
@@ -196,7 +196,7 @@ const Hero = () => {
 								y2="470"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" />
 								<stop
 									offset="1"
 									stopColor="white"
@@ -211,10 +211,10 @@ const Hero = () => {
 								y2="338.63"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" />
 								<stop
 									offset="1"
-									stopColor="#ff5e57"
+									stopColor="#157bfb"
 									stopOpacity="0"
 								/>
 							</linearGradient>
@@ -268,8 +268,8 @@ const Hero = () => {
 								y2="212.24"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" stopOpacity="0" />
-								<stop offset="1" stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" stopOpacity="0" />
+								<stop offset="1" stopColor="#157bfb" />
 							</linearGradient>
 							<linearGradient
 								id="paint1_linear_25:218"
@@ -279,8 +279,8 @@ const Hero = () => {
 								y2="212.24"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" stopOpacity="0" />
-								<stop offset="1" stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" stopOpacity="0" />
+								<stop offset="1" stopColor="#157bfb" />
 							</linearGradient>
 							<linearGradient
 								id="paint2_linear_25:218"
@@ -290,8 +290,8 @@ const Hero = () => {
 								y2="212.24"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" stopOpacity="0" />
-								<stop offset="1" stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" stopOpacity="0" />
+								<stop offset="1" stopColor="#157bfb" />
 							</linearGradient>
 							<linearGradient
 								id="paint3_linear_25:218"
@@ -301,8 +301,8 @@ const Hero = () => {
 								y2="210.214"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" stopOpacity="0" />
-								<stop offset="1" stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" stopOpacity="0" />
+								<stop offset="1" stopColor="#157bfb" />
 							</linearGradient>
 							<linearGradient
 								id="paint4_linear_25:218"
@@ -312,10 +312,10 @@ const Hero = () => {
 								y2="99.5816"
 								gradientUnits="userSpaceOnUse"
 							>
-								<stop stopColor="#ff5e57" />
+								<stop stopColor="#157bfb" />
 								<stop
 									offset="1"
-									stopColor="#ff5e57"
+									stopColor="#157bfb"
 									stopOpacity="0"
 								/>
 							</linearGradient>
