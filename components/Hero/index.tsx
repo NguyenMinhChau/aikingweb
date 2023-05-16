@@ -24,8 +24,9 @@ const Hero = () => {
 								</Flash>
 								<Bounce>
 									<p className="mb-12 text-base font-medium !leading-relaxed text-body-color dark:text-white dark:opacity-90 sm:text-lg md:text-xl">
-										BLOCK A, TÒA NHÀ RIVERGATE, 151-155 BẾN
-										VÂN ĐỒN, PHƯỜNG 6, QUẬN 4,TP.HCM
+										The River Thủ Thiêm, 23 Đ. Trần Bạch
+										Đằng, An Khánh, Quận 2, Thành phố Hồ Chí
+										Minh
 									</p>
 								</Bounce>
 								<div className="flex flex-col items-center justify-center space-y-4 sm:flex-row sm:space-x-4 sm:space-y-0">

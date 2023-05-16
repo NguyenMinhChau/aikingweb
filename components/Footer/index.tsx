@@ -30,8 +30,8 @@ const Footer = () => {
 									/> */}
 								</Link>
 								<p className="mb-9 text-justify text-base font-medium leading-relaxed text-body-color">
-									BLOCK A, TÒA NHÀ RIVERGATE, 151-155 BẾN VÂN
-									ĐỒN, PHƯỜNG 6, QUẬN 4,TP.HCM
+									The River Thủ Thiêm, 23 Đ. Trần Bạch Đằng,
+									An Khánh, Quận 2, Thành phố Hồ Chí Minh
 								</p>
 								<div className="flex items-center">
 									<a
