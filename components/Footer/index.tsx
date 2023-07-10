@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import LogoLight from '../../public/images/logo/logo_light.png';
+import LogoLightSquare from '../../public/images/logo/logo_light_square.png';
 
 const Footer = () => {
 	return (
@@ -15,7 +16,7 @@ const Footer = () => {
 							<div className="mb-12 max-w-[360px] lg:mb-16">
 								<Link href="/" className="mb-8 inline-block">
 									<Image
-										src={LogoLight}
+										src={LogoLightSquare}
 										alt="logo"
 										className="w-full dark:hidden"
 										width={140}

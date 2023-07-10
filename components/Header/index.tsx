@@ -6,6 +6,7 @@ import menuData from './menuData';
 import { usePathname, useRouter } from 'next/navigation';
 import styles from './Header.module.css';
 import LogoLight from '../../public/images/logo/logo_light.png';
+import LogoLightSquare from '../../public/images/logo/logo_light_square.png';
 import { useAppContext } from '../../helpers';
 import { authLogoutSV } from '../../services/authen';
 import ButtonAuthenMobile from './buttonAuthenMobile';
@@ -97,7 +98,7 @@ const Header = () => {
 								} `}
 							>
 								<Image
-									src={LogoLight}
+									src={LogoLightSquare}
 									alt="logo"
 									width={140}
 									height={30}

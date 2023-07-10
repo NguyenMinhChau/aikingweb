@@ -18,6 +18,8 @@ export { default as TotalAssetsAndFund } from './TotalAssetsAndFund/';
 export { default as TotalItem } from './TotalAssetsAndFund/TotalItem';
 export { default as Modal } from './Modal/';
 export { default as CreditCard } from './CreditCard/';
+export { default as ContentOne } from './ContentOne/';
+export { default as ContentTwo } from './ContentTwo/';
 export { default as FormInput } from './FormInput/';
 export { default as FileUploadSingle } from './FileUploadSingle/';
 export { default as Breadcrumb } from './Common/Breadcrumb';

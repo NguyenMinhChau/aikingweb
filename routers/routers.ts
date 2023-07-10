@@ -8,7 +8,7 @@ const routers = {
 	financeReport: '/aboutus/financereport',
 	training: '/training',
 	web: '/productsandservices/web',
-	services: '/productsandservices/services',
+	servicesInvestment: '/productsandservices/services-investment',
 	fundHome: '/productsandservices/fund/home',
 	fundDeposits: '/productsandservices/fund/deposits',
 	fundWithdraw: '/productsandservices/fund/withdraw',
