@@ -24,8 +24,11 @@ export default function Home() {
 					]}
 					urlImage={LogoLightSquare?.src}
 				/>
-				<div className="text-[30px] text-dark font-bold uppercase">
+				<div className="text-[30px] italic text-center text-dark font-bold uppercase">
 					Các lĩnh vực hoạt động của công ty
+				</div>
+				<div className="flex items-center justify-center mt-3">
+					<div className="w-[15vw] h-[3px] bg-primary"></div>
 				</div>
 				<ContentTwo
 					title={`<b><span class='text-primary'>1. Máy tính</span.></b>`}
@@ -46,8 +49,11 @@ export default function Home() {
 					]}
 					urlImage={LogoLightSquare?.src}
 				/>
-				<div className="text-[30px] text-dark font-bold uppercase">
-					Sứ mệnh, tầm nhìn và giá trị cốt lỗi
+				<div className="text-[30px] italic text-center text-dark font-bold uppercase">
+					Sứ mệnh, tầm nhìn và giá trị cốt lõi
+				</div>
+				<div className="flex items-center justify-center mt-3">
+					<div className="w-[15vw] h-[3px] bg-primary"></div>
 				</div>
 				<ContentTwo
 					title={`<b><span class='text-primary'>Sứ mệnh và tầm nhìn</span.></b>`}
@@ -61,7 +67,7 @@ export default function Home() {
 					urlImage={LogoLightSquare?.src}
 				/>
 				<ContentOne
-					title={`<b><span class='text-primary'>Giá trị cốt lỗi</span></b>`}
+					title={`<b><span class='text-primary'>Giá trị cốt lõi</span></b>`}
 					desc={[
 						`- <b>Uy tín:</b> Luôn đặt chữ tín lên hàng đầu không ngừng hoàn thiện để đáp
 						ứng đúng và cao hơn những cam kết.`,
