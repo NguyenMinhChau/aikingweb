@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import className from 'classnames/bind';
 import styles from './styles.module.css';
@@ -21,7 +22,7 @@ export default function ContentOne({
 	children,
 }: ContentOneType) {
 	return (
-		<div className={`${cx('content-container')}`} data-aos="fade-down">
+		<div className={`${cx('content-container')}`}>
 			<div className={`${cx('content-left')}`}>
 				<div className={`${cx('left')}`}>{textVerticle}</div>
 				<div className={`${cx('middle')}`}>

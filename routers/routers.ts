@@ -7,7 +7,7 @@ const routers = {
 	introduce: '/aboutus/introduce',
 	financeReport: '/aboutus/financereport',
 	training: '/training',
-	web: '/productsandservices/web',
+	investmentGold: '/productsandservices/investment-gold',
 	servicesInvestment: '/productsandservices/services-investment',
 	fundHome: '/productsandservices/fund/home',
 	fundDeposits: '/productsandservices/fund/deposits',

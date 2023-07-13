@@ -34,16 +34,17 @@ const menuData: Menu[] = [
 		submenu: [
 			{
 				id: 21,
-				title: 'Web',
-				path: routers.web,
-				newTab: false,
-			},
-			{
-				id: 22,
 				title: 'Dịch vụ tư vấn đầu tư',
 				path: routers.servicesInvestment,
 				newTab: false,
 			},
+			{
+				id: 22,
+				title: 'Ủy thác đầu tư vàng',
+				path: routers.investmentGold,
+				newTab: false,
+			},
+
 			{
 				id: 23,
 				title: 'Quỹ tiết kiệm',

@@ -1,9 +1,9 @@
+'use client';
 import React from 'react';
 import className from 'classnames/bind';
 import styles from './styles.module.css';
 
 const cx = className.bind(styles);
-
 type ContentTwoType = {
 	titleHeader?: string;
 	title?: any;
@@ -22,7 +22,7 @@ export default function ContentTwo({
 	fontSizeTitle,
 }: ContentTwoType) {
 	return (
-		<div className={`${cx('content-container')}`} data-aos="fade-right">
+		<div className={`${cx('content-container')}`}>
 			<div className={`${cx('content-left')}`}>
 				<div
 					className={`${cx('left_img')}`}
