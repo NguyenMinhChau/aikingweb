@@ -26,6 +26,17 @@ const Hero = () => {
 											showCursor={false}
 										/>
 									</h1>
+									<div className="mb-5 text-3xl font-bold leading-tight dark:text-white text-[15px] italic text-black">
+										<Typed
+											strings={[
+												'Chúc bạn một ngày tốt lành 🍀',
+											]}
+											typeSpeed={80}
+											backSpeed={50}
+											startDelay={180}
+											showCursor={false}
+										/>
+									</div>
 								</Fade>
 							</div>
 						</div>
