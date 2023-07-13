@@ -30,11 +30,30 @@ const Footer = () => {
 										height={30}
 									/> */}
 								</Link>
-								<p className="mb-9 text-justify text-base font-medium leading-relaxed text-body-color">
-									The River Thủ Thiêm, 23 Đ. Trần Bạch Đằng,
-									An Khánh, Quận 2, Thành phố Hồ Chí Minh,
-									Việt Nam
-								</p>
+								<div className="mb-1 text-justify text-base font-medium leading-relaxed text-body-color">
+									<b className="text-black">Địa chỉ:</b> The
+									River Thủ Thiêm, 23 Đ. Trần Bạch Đằng, An
+									Khánh, Quận 2, Thành phố Hồ Chí Minh, Việt
+									Nam
+								</div>
+								<div className="mb-1 text-justify text-base font-medium leading-relaxed text-body-color">
+									<b className="text-black">Hotline:</b>{' '}
+									<Link
+										href="tel:0345335422"
+										className="italic text-primary"
+									>
+										0345.335.422
+									</Link>
+								</div>
+								<div className="mb-4 text-justify text-base font-medium leading-relaxed text-body-color">
+									<b className="text-black">Email:</b>{' '}
+									<Link
+										href="mailto:aikinginvesmentgroup@gmail.com"
+										className="italic text-primary"
+									>
+										aikinginvesmentgroup@gmail.com
+									</Link>
+								</div>
 								<div className="flex items-center">
 									<a
 										href="/"

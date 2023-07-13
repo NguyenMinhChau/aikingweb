@@ -1,0 +1,71 @@
+.container_content {
+	padding: 12px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+}
+.title_form {
+	text-transform: uppercase;
+	color: var(--color-primary);
+	margin-bottom: 24px;
+	font-weight: bold;
+}
+.form_container {
+	width: 50%;
+}
+.input_custom {
+	margin-bottom: 12px;
+}
+.textarea {
+	outline: none;
+	border: 1px solid #ccc;
+	width: 100%;
+	resize: none;
+	padding: 12px 17px;
+	font-family: 'Times New Roman', Times, serif;
+	font-size: 17px;
+	border-radius: 8px;
+}
+.textarea:hover {
+	box-shadow: 0 0 0 1px var(--primary-hover);
+}
+
+.textarea:focus {
+	border-color: var(--color-primary);
+	box-shadow: 0 0 0 0.1rem var(--primary-hover);
+}
+
+.textarea:focus::-webkit-input-placeholder {
+	color: var(--color-black);
+}
+
+.textarea:focus::-moz-placeholder {
+	color: var(--color-black);
+}
+
+.textarea:focus::-ms-input-placeholder {
+	color: var(--color-black);
+}
+.btn {
+	margin-top: 15px;
+	width: 100%;
+	color: var(--color-white);
+}
+.btn:hover {
+	color: var(--color-primary);
+}
+
+/* TABLET */
+@media (min-width: 46.25em) and (max-width: 63.9375em) {
+	.form_container {
+		width: 70%;
+	}
+}
+
+/* MOBILE */
+@media (max-width: 46.25em) {
+	.form_container {
+		width: 90%;
+	}
+}

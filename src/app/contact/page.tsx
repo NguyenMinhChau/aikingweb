@@ -1,6 +1,11 @@
 'use client';
 import Link from 'next/link';
-import { Breadcrumb } from '../../../components';
+import { TextareaAutosize } from '@mui/material';
+import classNames from 'classnames/bind';
+import styles from './styles.module.css';
+import { Breadcrumb, Button, FormInput } from '../../../components';
+
+const cx = classNames.bind(styles);
 
 const ContactPage = () => {
 	return (
@@ -8,31 +13,39 @@ const ContactPage = () => {
 			<Breadcrumb pageName="Liên hệ" description="Liên hệ" />
 			<div className="container">
 				<div className="my-3">
-					<div className="text-center italic font-bold text-[20px] mb-4">
-						Liên hệ với chúng tôi thông qua
-					</div>
-					<div className="flex flex-col gap-2">
-						<div className="flex gap-2 items-center">
-							<div className="font-bold italic text-[18px] uppercase">
-								Hotline:
-							</div>
-							<Link
-								className="text text-primary"
-								href="tel:0345335422"
-							>
-								0345.355.422
-							</Link>
-						</div>
-						<div className="flex gap-2 items-center">
-							<div className="font-bold italic text-[18px] uppercase">
-								e-Mail:
-							</div>
-							<Link
-								className="text text-primary"
-								href="mailto:aikinginvesmentgroup@gmail.com"
-							>
-								aikinginvesmentgroup@gmail.com
-							</Link>
+					<div className={`${cx('container_content')}`}>
+						<h1 className={`${cx('title_form')}`}>
+							Liên hệ tư vấn đầu tư
+						</h1>
+						<div className={`${cx('form_container')}`}>
+							<FormInput
+								placeholder="Nhập họ và tên..."
+								name="username"
+								classNameInput={`${cx('input_custom')}`}
+							/>
+							<FormInput
+								placeholder="Nhập số điện thoại..."
+								name="phone"
+								classNameInput={`${cx('input_custom')}`}
+							/>
+
+							<FormInput
+								placeholder="Nhập email..."
+								name="email"
+								classNameInput={`${cx('input_custom')}`}
+							/>
+							<TextareaAutosize
+								minRows={5}
+								maxRows={8}
+								placeholder="Nội dung liên hệ?"
+								// value={content}
+								// onChange={handleChangeTextAreae}
+								name="content"
+								className={`${cx('textarea')}`}
+							/>
+							<Button className={`${cx('btn')} confirmbgc`}>
+								Liên hệ
+							</Button>
 						</div>
 					</div>
 				</div>

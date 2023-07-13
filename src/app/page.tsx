@@ -2,6 +2,10 @@
 import { useEffect } from 'react';
 import { Inter } from 'next/font/google';
 import LogoLightSquare from '../../public/images/logo/logo_light_square.png';
+import ServiceIT from '../../public/images/home/service_it.png';
+import Introduce from '../../public/images/home/introduce.png';
+import Investment from '../../public/images/home/investment.png';
+import Sumenh from '../../public/images/home/su_menh.png';
 import { ContentOne, ContentTwo, Hero } from '../../components';
 const MessengerCustomerChat = require('react-messenger-customer-chat');
 
@@ -23,7 +27,7 @@ export default function Home() {
 						`- <b>Tên giao dịch:</b> Công ty TNHH MTV Đầu tư và Công nghệ Aiking.`,
 						`- <b>Mã số thuế:</b> <i>0316370529</i>. `,
 					]}
-					urlImage={LogoLightSquare?.src}
+					urlImage={Introduce?.src}
 				/>
 				<div
 					data-aos="fade-right"
@@ -43,16 +47,27 @@ export default function Home() {
 						`• Lập trình App.`,
 						`• Lập trình phần mềm theo yêu cầu của khách hàng ...`,
 					]}
-					urlImage={LogoLightSquare?.src}
+					urlImage={ServiceIT?.src}
 				/>
 				<ContentOne
-					title={`<b><span class='text-primary'>2. Dịch vụ tư vấn đầu tư và Kinh Doanh Hàng Hóa</span></b>`}
+					title={`<b><span class='text-primary'>2. Dịch vụ tư vấn đầu tư</span></b>`}
 					desc={[
-						`- Tư vấn cho khách hàng các kênh đầu tư có nguồn thu nhập thụ động hiệu quả.`,
-						`- Kinh doanh những sản phẩm trong lĩnh vực làm đẹp và sức khỏe. Phụ kiện ngành Nail: Đá trang trí móng, sticker, charm và các phụ kiện khác...`,
+						`<b>AIKING ĐI CÙNG NHÀ ĐẦU TƯ!</b>`,
+						`- Đội ngũ chuyên gia tài chính hơn 10 năm kinh nghiệm trong việc quản lý nguồn tiền sẽ giúp cho các nhà đầu tư:`,
+						`+ Có kênh đầu tư an toàn, tối ưu lợi nhuận.`,
+						`+ Có thêm nguồn thu nhập thụ động trong ngắn hạn và gia tăng tài sản trong dài hạn. `,
+						`- Đội ngũ chăm sóc khách hàng tận tình, chu đáo hỗ trợ khách hàng 24/7.`,
+						`<b>ĐẦU TƯ CHO CUỘC SỐNG AN NHÀN! TẠI SAO KHÔNG?</b>`,
+						`- Aiking tư vấn các sản phẩm giúp cho nhà đầu tư thảnh thơi tận hưởng cuộc sống trọn vẹn.`,
+						`- Tư vấn Ủy thác đầu tư: `,
+						`+ Tiết kiệm`,
+						`+ Vàng`,
+						`+ Đô la, ngoại hối`,
+						`<span class="text-primary font-bold">AIKING INVESTMENT</span> với dịch vụ tư vấn đầu tư tận tình và chu đáo sẽ không làm các nhà đầu tư thất vọng.`,
 					]}
-					urlImage={LogoLightSquare?.src}
+					urlImage={Investment?.src}
 				/>
+
 				<div className="text-[30px] text-center text-dark font-bold uppercase">
 					Sứ mệnh, tầm nhìn và giá trị cốt lõi
 				</div>
@@ -66,9 +81,9 @@ export default function Home() {
 						sản phẩm, dịch vụ để mang đến lợi ích tốt nhất cho khách hàng`,
 						`- <b>Tầm nhìn:</b> Trở thành biểu tượng uy tín hàng đầu Việt Nam về cung cấp
 						sản phẩm, dịch vụ trong lĩnh vực Công Nghệ, Thương Mại Dịch Vụ, Tư
-						Vấn Tài Chính.`,
+						Vấn Đầu Tư.`,
 					]}
-					urlImage={LogoLightSquare?.src}
+					urlImage={Sumenh?.src}
 				/>
 				<ContentOne
 					title={`<b><span class='text-primary'>Giá trị cốt lõi</span></b>`}
