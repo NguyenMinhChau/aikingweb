@@ -3,18 +3,17 @@ import { styled } from '@mui/material';
 import CounterUp from '../CounterUp';
 
 type ContentThreeContainerStyledType = {
-	theme?: any;
 	cols?: any;
 	spacing?: string;
 };
 type ContentThreeType = {
 	data?: any;
-	cols?: number;
+	cols?: any;
 	spacing?: string;
 };
 
 const ContentThreeContainerStyled = styled('div')(
-	({ theme, cols, spacing }: ContentThreeContainerStyledType) => ({
+	({ cols, spacing }: ContentThreeContainerStyledType) => ({
 		display: 'flex',
 		flexWrap: 'wrap',
 		alignItems: 'center',
