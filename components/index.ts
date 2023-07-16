@@ -20,6 +20,8 @@ export { default as Modal } from './Modal/';
 export { default as CreditCard } from './CreditCard/';
 export { default as ContentOne } from './ContentOne/';
 export { default as ContentTwo } from './ContentTwo/';
+export { default as ContentThree } from './ContentThree/';
+export { default as CounterUp } from './CounterUp/';
 export { default as FormInput } from './FormInput/';
 export { default as FileUploadSingle } from './FileUploadSingle/';
 export { default as Breadcrumb } from './Common/Breadcrumb';
