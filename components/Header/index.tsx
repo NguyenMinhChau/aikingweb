@@ -219,6 +219,11 @@ const Header = () => {
 																					submenuItem.id
 																				}
 																				className="block rounded py-2.5 text-sm text-dark hover:opacity-70 dark:text-white lg:px-3"
+																				onClick={() => {
+																					setNavbarOpen(
+																						false,
+																					);
+																				}}
 																			>
 																				{
 																					submenuItem.title
@@ -290,6 +295,11 @@ const Header = () => {
 																									submenuItemLevel2.id
 																								}
 																								className="block rounded py-2.5 text-sm text-dark hover:opacity-70 dark:text-white lg:px-3"
+																								onClick={() => {
+																									setNavbarOpen(
+																										false,
+																									);
+																								}}
 																							>
 																								{
 																									submenuItemLevel2.title
