@@ -144,7 +144,7 @@ const Header = () => {
 								</button>
 								<nav
 									id="navbarCollapse"
-									className={`navbar absolute right-0 z-30 w-[250px] rounded border-[.5px] border-body-color/50 bg-white py-4 px-6 duration-300 dark:border-body-color/20 dark:bg-dark lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
+									className={`navbar absolute right-0 z-30 bottom-0 left-0 top-[100%] h-[100vh] lg:h-auto rounded border-[.5px] border-body-color/50 py-4 px-6 duration-300 dark:border-body-color/20 bg-white lg:visible lg:static lg:w-auto lg:border-none lg:!bg-transparent lg:p-0 lg:opacity-100 ${
 										navbarOpen
 											? 'visibility top-full opacity-100'
 											: 'invisible top-[120%] opacity-0'
@@ -152,11 +152,13 @@ const Header = () => {
 								>
 									<ul className="block lg:flex lg:space-x-12">
 										{menuData.map((menuItem, index) => {
-											const classed =
-												menuItem.path ===
-												pathname?.toString()
-													? styles.active
-													: '';
+											const listPath =
+												pathname.split('/');
+											const classed = listPath.includes(
+												menuItem.title.toLowerCase(),
+											)
+												? styles.active
+												: '';
 											return (
 												<li
 													key={menuItem.id}
@@ -238,7 +240,14 @@ const Header = () => {
 																					key={
 																						submenuItem.id
 																					}
-																					className="flex cursor-pointer items-center rounded py-2.5 text-sm text-dark hover:opacity-70 dark:text-white lg:px-3"
+																					className={`flex cursor-pointer items-center rounded py-2.5 text-sm text-dark hover:opacity-70 dark:text-white lg:px-3 ${
+																						listPath[
+																							listPath.length -
+																								1
+																						] ===
+																							submenuItem.title.toLowerCase() &&
+																						styles.active
+																					}`}
 																				>
 																					{
 																						submenuItem.title

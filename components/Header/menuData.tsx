@@ -86,12 +86,18 @@ const menuData: Menu[] = [
 	},
 	{
 		id: 3,
+		title: 'Tin tức',
+		path: routers.news,
+		newTab: false,
+	},
+	{
+		id: 4,
 		title: 'Tuyển dụng',
 		path: routers.recruitment,
 		newTab: false,
 	},
 	{
-		id: 4,
+		id: 5,
 		title: 'Liên hệ',
 		path: routers.contact,
 		newTab: false,
