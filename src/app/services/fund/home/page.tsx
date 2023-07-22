@@ -30,7 +30,7 @@ type ItemStylesContainerType = {
 	spacing?: string;
 };
 
-const ItemStylesContainer = styled('div')(
+const ItemStylesContainer: any = styled('div')(
 	({ theme, cols, spacing }: ItemStylesContainerType) => ({
 		display: 'flex',
 		flexWrap: 'wrap',

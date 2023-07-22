@@ -374,10 +374,13 @@ const Header = () => {
 																											(
 																												submenuItemLevel2Item,
 																											) => {
+																												console.log(
+																													submenuItemLevel2Item,
+																												);
 																												return (
 																													<Link
 																														href={
-																															submenuItemLevel2Item?.path
+																															submenuItemLevel2Item?.path!
 																														}
 																														key={
 																															submenuItemLevel2Item.id
