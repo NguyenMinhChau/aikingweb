@@ -78,6 +78,7 @@ function FundPage() {
 									></i>
 								</span>
 							</h1>
+
 							<TotalAssetsAndFund>
 								<div className="w-full flex flex-col lg:flex-row lg:flex-nowrap md:flex-nowrap md:flex-row justify-between ">
 									<TotalItem

@@ -22,6 +22,44 @@ import { useEffect, useState } from 'react';
 import { userGetAssetSV } from '../../../../../services/user';
 import requestRefreshToken from '../../../../../helpers/axios/refreshToken';
 import { actions } from '../../../../../appState/';
+import { styled } from '@mui/material';
+
+type ItemStylesContainerType = {
+	theme?: any;
+	cols?: any;
+	spacing?: string;
+};
+
+const ItemStylesContainer = styled('div')(
+	({ theme, cols, spacing }: ItemStylesContainerType) => ({
+		display: 'flex',
+		flexWrap: 'wrap',
+		gap: '16px',
+		width: '100%',
+		height: '100%',
+		margin: '20px 0',
+		'& .item_content': {
+			// mobile
+			[theme.breakpoints.up('xs')]: {
+				flex: `1 1 calc((100% / 1) - (${spacing} * 2))`,
+			},
+			// Tablet
+			[theme.breakpoints.between('sm', 'md')]: {
+				flex: `1 1 calc((100% / 2) - (${spacing} * 2))`,
+			},
+			// PC
+			[theme.breakpoints.up('lg')]: {
+				flex: `1 1 calc((100% / ${cols}) - (${spacing} * 2))`,
+			},
+			borderRadius: '8px',
+			backgroundColor: '#fff',
+			border: '1px solid #ccc',
+			color: '#000',
+			overflow: 'hidden',
+			padding: '10px',
+		},
+	}),
+);
 
 const WebPage = () => {
 	const { state, dispatch } = useAppContext();
@@ -118,6 +156,32 @@ const WebPage = () => {
 							<Divider />
 						</>
 					)}
+					<div className="text-center text-[22px] font-bold text-primary uppercase">
+						Vì sao bạn nên đầu tư tiết kiệm?
+					</div>
+					<ItemStylesContainer cols={4} spacing="8px">
+						<div className="item_content flex items-center justify-start gap-2">
+							<div className="text-[16px] w-full text-center font-medium leading-6">
+								Lãi suất hấp dẫn
+							</div>
+						</div>
+						<div className="item_content flex items-center justify-start gap-2">
+							<div className="text-[16px] w-full text-center font-medium leading-6">
+								Tích lũy an nhàn, sinh lợi đều đặn
+							</div>
+						</div>
+						<div className="item_content flex items-center justify-start gap-2">
+							<div className="text-[16px] w-full text-center font-medium leading-6">
+								Hợp đồng uy tín
+							</div>
+						</div>
+						<div className="item_content flex items-center justify-start gap-2">
+							<div className="text-[16px] w-full text-center font-medium leading-6">
+								Đội ngũ tư vấn tận tâm, hỗ trợ khách hàng mọi
+								lúc mọi nơi
+							</div>
+						</div>
+					</ItemStylesContainer>
 					<h1 className="font-bold mb-3">Các dịch vụ</h1>
 					<div className="flex flex-wrap">
 						<ServicesLinkItem
