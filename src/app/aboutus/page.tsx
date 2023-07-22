@@ -1,12 +1,12 @@
 'use client';
-import LogoLightSquare from '../../../../public/images/logo/logo_light_square.png';
-import ServiceIT from '../../../../public/images/introduce/service_it.png';
-import Introduce from '../../../../public/images/introduce/introduce.png';
-import Investment from '../../../../public/images/introduce/investment.png';
-import Sumenh from '../../../../public/images/introduce/su_menh.png';
-import { Breadcrumb, ContentOne, ContentTwo } from '../../../../components';
+import LogoLightSquare from '../../../public/images/logo/logo_light_square.png';
+import ServiceIT from '../../../public/images/introduce/service_it.png';
+import Introduce from '../../../public/images/introduce/introduce.png';
+import Investment from '../../../public/images/introduce/investment.png';
+import Sumenh from '../../../public/images/introduce/su_menh.png';
+import { Breadcrumb, ContentOne, ContentTwo } from '../../../components';
 
-const IntroducePage = () => {
+const AboutUsPage = () => {
 	return (
 		<>
 			<Breadcrumb pageName="Giới thiệu" description="Giới thiệu" />
@@ -100,4 +100,4 @@ const IntroducePage = () => {
 	);
 };
 
-export default IntroducePage;
+export default AboutUsPage;

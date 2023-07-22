@@ -1,7 +1,7 @@
 export const metadata = {
 	title: `Giới thiệu • ${process.env.NEXT_PUBLIC_TITLE_APP}`,
 };
-export default function IntroduceLayout({
+export default function AboutUsLayout({
 	children,
 }: {
 	children: React.ReactNode;

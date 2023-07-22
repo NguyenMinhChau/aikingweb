@@ -6,20 +6,7 @@ const menuData: Menu[] = [
 		id: 1,
 		title: 'Về chúng tôi',
 		newTab: false,
-		submenu: [
-			{
-				id: 11,
-				title: 'Giới thiệu',
-				path: routers.introduce,
-				newTab: false,
-			},
-			{
-				id: 12,
-				title: 'Báo cáo tài chính',
-				path: routers.financeReport,
-				newTab: false,
-			},
-		],
+		path: routers.aboutus,
 	},
 	// {
 	// 	id: 2,
