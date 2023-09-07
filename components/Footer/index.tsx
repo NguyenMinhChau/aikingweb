@@ -31,10 +31,10 @@ const Footer = () => {
 									/> */}
 								</Link>
 								<div className="mb-1 text-justify text-base font-medium leading-relaxed text-body-color">
-									<b className="text-black">Địa chỉ:</b> The
-									River Thủ Thiêm, 23 Đ. Trần Bạch Đằng, An
-									Khánh, Quận 2, Thành phố Hồ Chí Minh, Việt
-									Nam
+									<b className="text-black">Địa chỉ:</b> 4.70
+									Tầng 4, Tòa nhà RiverGate, Số 151_155 Bến
+									Vân Đồn, Phường 06, Quận 4, Thành phố Hồ Chí
+									Minh, Việt Nam
 								</div>
 								<div className="mb-1 text-justify text-base font-medium leading-relaxed text-body-color">
 									<b className="text-black">Hotline:</b>{' '}
