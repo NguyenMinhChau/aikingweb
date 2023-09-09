@@ -30,6 +30,10 @@ const routers = {
 	updaterecuitercontent: 'update-content-recuiter',
 	createcontactcontent: 'create-contact-content',
 	updatecontactcontent: 'update-content-contact',
+	createforumcontent: 'create-forum-content',
+	updateforumcontent: 'update-forum-contact',
+	createdevelopercontent: 'create-developer-content',
+	updatedevelopercontent: 'update-developer-contact',
 	pageNotFound: '*',
 };
 

@@ -10,48 +10,60 @@ import WebContent from '../WebContent/WebContent';
 import ServiceSoftwareContent from '../ServiceSoftwareContent/ServiceSoftwareContent';
 import RecuiterContent from '../RecuiterContent/RecuiterContent';
 import ContactContent from '../ContactContent/ContactContent';
+import ForumContent from '../ForumContent/ForumContent';
+import DeveloperContent from '../DeveloperContent/DeveloperContent';
 
 const cx = className.bind(styles);
 const LIST_CONTENTS = [
+	// {
+	// 	id: 1,
+	// 	name: 'Trang chủ',
+	// 	component: <HomeContent />,
+	// },
+	// {
+	// 	id: 2,
+	// 	name: 'Giới thiệu',
+	// 	component: <IntroduceContent />,
+	// },
+	// {
+	// 	id: 3,
+	// 	name: 'Báo cáo tài chính',
+	// 	component: <FinanceReportContent />,
+	// },
+	// {
+	// 	id: 4,
+	// 	name: 'Đào tạo',
+	// 	component: <TrainingContent />,
+	// },
+	// {
+	// 	id: 5,
+	// 	name: 'Web',
+	// 	component: <WebContent />,
+	// },
+	// {
+	// 	id: 6,
+	// 	name: 'Dịch vụ phần mềm',
+	// 	component: <ServiceSoftwareContent />,
+	// },
+	// {
+	// 	id: 7,
+	// 	name: 'Tuyển dụng',
+	// 	component: <RecuiterContent />,
+	// },
+	// {
+	// 	id: 8,
+	// 	name: 'Liên hệ',
+	// 	component: <ContactContent />,
+	// },
 	{
 		id: 1,
-		name: 'Trang chủ',
-		component: <HomeContent />,
+		name: 'Tin tức',
+		component: <ForumContent />,
 	},
 	{
 		id: 2,
-		name: 'Giới thiệu',
-		component: <IntroduceContent />,
-	},
-	{
-		id: 3,
-		name: 'Báo cáo tài chính',
-		component: <FinanceReportContent />,
-	},
-	{
-		id: 4,
-		name: 'Đào tạo',
-		component: <TrainingContent />,
-	},
-	{
-		id: 5,
-		name: 'Web',
-		component: <WebContent />,
-	},
-	{
-		id: 6,
-		name: 'Dịch vụ phần mềm',
-		component: <ServiceSoftwareContent />,
-	},
-	{
-		id: 7,
-		name: 'Tuyển dụng',
-		component: <RecuiterContent />,
-	},
-	{
-		id: 8,
-		name: 'Liên hệ',
-		component: <ContactContent />,
+		name: 'Lập trình',
+		component: <DeveloperContent />,
 	},
 ];
 

@@ -23,6 +23,8 @@ import {
 	CreateServiceContent,
 	CreateRecuiterContent,
 	CreateContactContent,
+	CreateForumContent,
+	CreateDeveloperContent,
 } from '../Layouts';
 
 import { PageNotFound } from '../components';
@@ -120,12 +122,28 @@ export const privateRouter = [
 		component: CreateRecuiterContent,
 	},
 	{
+		path: `${routers.content}/${routers.createforumcontent}`,
+		component: CreateForumContent,
+	},
+	{
+		path: `${routers.content}/${routers.updateforumcontent}/:idForumContent`,
+		component: CreateForumContent,
+	},
+	{
 		path: `${routers.content}/${routers.createcontactcontent}`,
 		component: CreateContactContent,
 	},
 	{
 		path: `${routers.content}/${routers.updatecontactcontent}/:idContactContent`,
 		component: CreateContactContent,
+	},
+	{
+		path: `${routers.content}/${routers.createdevelopercontent}`,
+		component: CreateDeveloperContent,
+	},
+	{
+		path: `${routers.content}/${routers.updatedevelopercontent}/:idDeveloperContent`,
+		component: CreateDeveloperContent,
 	},
 	{ path: `${routers.user}/:idUser`, component: UserDetail },
 	{ path: routers.pageNotFound, component: PageNotFound, layout: null },

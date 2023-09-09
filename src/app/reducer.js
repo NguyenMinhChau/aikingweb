@@ -42,6 +42,8 @@ const initialState = {
 			dataUser: [],
 			dataFundUsd: [],
 			dataFundAgri: [],
+			dataForumContent: [],
+			dataDeveloperContent: [],
 		},
 		searchValues: {
 			dateFrom: '',
@@ -64,6 +66,7 @@ const initialState = {
 			serviceSoftwareContent: '',
 			recuiterContent: '',
 			contactContent: '',
+			forumContent: '',
 			topicSearch: '',
 		},
 		edit: {

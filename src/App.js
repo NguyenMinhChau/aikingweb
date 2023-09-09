@@ -39,6 +39,9 @@ function App() {
 			}
 		};
 		window.addEventListener('scroll', handleScrollToTop);
+		const isPath = publicRouter.filter((x) =>
+			window.location.pathname.includes(x.path),
+		);
 		if (currentUser && currentUser?.rule) {
 			dispatch(
 				actions.setData({
@@ -46,14 +49,16 @@ function App() {
 					currentUser: currentUser,
 				}),
 			);
+			if (isPath.length > 0) {
+				history(routers.content);
+			} else {
+				history(window.location.pathname);
+			}
 		} else {
-			if (
-				!currentUser &&
-				!!publicRouter.includes(window.location.pathname)
-			) {
+			if (!currentUser && isPath.length <= 0) {
 				history(routers.login);
 			} else {
-				publicRouter.includes(window.location.pathname);
+				history(window.location.pathname);
 			}
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
