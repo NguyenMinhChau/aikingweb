@@ -64,13 +64,18 @@ const initialState = {
 			serviceSoftwareContent: '',
 			recuiterContent: '',
 			contactContent: '',
+			topicSearch: '',
 		},
 		edit: {
 			id: '',
 			data: null,
 			itemData: null,
 		},
-		editor: {},
+		editor: {
+			title: '',
+			subTitle: '',
+			topic: '',
+		},
 	},
 	toggle: {
 		modalDepositsEdit: false,
