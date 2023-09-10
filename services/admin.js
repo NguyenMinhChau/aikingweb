@@ -419,3 +419,50 @@ export const adminUpdateStatusContractSV = async (props = {}) => {
 		});
 	}
 };
+
+export const getAllForumContentSV = async (props = {}) => {
+	const { token, setSnackbar, dispatch, state } = props;
+	try {
+		const resGet = await adminGet(
+			'forum',
+			{},
+			// { headers: { Authorization: `Bearer ${token}` } },
+		);
+		dispatch(
+			actions.setData({
+				dataForum: resGet?.metadata,
+			}),
+		);
+	} catch (err) {
+		setSnackbar({
+			open: true,
+			type: 'error',
+			message: `Tải dữ liệu thất bại. ${err?.response?.data?.message}`,
+		});
+	}
+};
+
+export const getForumByIdSV = async (props = {}) => {
+	const { id_post, setSnackbar, dispatch, state, token } = props;
+	try {
+		const resGet = await adminGet(
+			`forum/${id_post}`,
+			{},
+			// { headers: { Authorization: `Bearer ${token}` } },
+		);
+		dispatch(
+			actions.setData({
+				setItem: {
+					...state.set.edit,
+					dataItem: resGet?.metadata,
+				},
+			}),
+		);
+	} catch (err) {
+		setSnackbar({
+			open: true,
+			type: 'error',
+			message: `Tải dữ liệu thất bại. ${err?.response?.data?.message}`,
+		});
+	}
+};
