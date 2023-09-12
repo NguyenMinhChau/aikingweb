@@ -467,13 +467,13 @@ const NewsPage = () => {
 		noReply,
 	}: {
 		item: any;
-		noReply: any;
+		noReply?: any;
 	}) => {
 		return (
 			<div className={`${cx('comment')}`}>
 				<div className={`${cx('comment_image_container')}`}>
 					<img
-						src={LOGO_COMPANY}
+						src={LOGO_COMPANY.src}
 						alt=""
 						className={`${cx('avatar_comment')}`}
 					/>
@@ -908,39 +908,48 @@ const NewsPage = () => {
 										'list_comment_container',
 									)}`}
 								>
-									{getCommentParent().map((item, index) => {
-										return (
-											<div
-												className={`${cx(
-													'comment_item',
-												)}`}
-												key={index}
-											>
-												<RenderCommentItem
-													item={item}
-												/>
-												{getCommentChild(item?.id)?.map(
-													(itemChild, indexChild) => {
-														return (
-															<div
-																key={indexChild}
-																className={`${cx(
-																	'content_item_child',
-																)}`}
-															>
-																<RenderCommentItem
-																	noReply
-																	item={
-																		itemChild
+									{getCommentParent().map(
+										(item: any, index: any) => {
+											return (
+												<div
+													className={`${cx(
+														'comment_item',
+													)}`}
+													key={index}
+												>
+													<RenderCommentItem
+														item={item}
+													/>
+													{getCommentChild(
+														item?.id,
+													)?.map(
+														(
+															itemChild,
+															indexChild,
+														) => {
+															return (
+																<div
+																	key={
+																		indexChild
 																	}
-																/>
-															</div>
-														);
-													},
-												)}
-											</div>
-										);
-									})}
+																	className={`${cx(
+																		'content_item_child',
+																	)}`}
+																>
+																	<RenderCommentItem
+																		noReply
+																		item={
+																			itemChild
+																		}
+																	/>
+																</div>
+															);
+														},
+													)}
+												</div>
+											);
+										},
+									)}
 								</div>
 							</>
 						) : (

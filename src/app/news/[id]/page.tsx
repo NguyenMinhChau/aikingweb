@@ -175,7 +175,7 @@ const NewsDetail = () => {
 						const data: any = doc.data();
 						if (data.likes.includes(currentUser?.id)) {
 							Likes.doc(idPost).update({
-								likes: data.likes.filter((item) => {
+								likes: data.likes.filter((item: any) => {
 									return item !== currentUser?.id;
 								}),
 							});
@@ -215,7 +215,7 @@ const NewsDetail = () => {
 			<div className={`${cx('comment')}`}>
 				<div className={`${cx('comment_image_container')}`}>
 					<img
-						src={LOGO_COMPANY}
+						src={LOGO_COMPANY.src}
 						alt=""
 						className={`${cx('avatar_comment')}`}
 					/>
@@ -473,7 +473,7 @@ const NewsDetail = () => {
 											}
 										}}
 									>
-										<i class="bx bx-chat bx-tada"></i>{' '}
+										<i className="bx bx-chat bx-tada"></i>{' '}
 										<span>Bình luận</span>
 									</div>
 								</Tooltip>
