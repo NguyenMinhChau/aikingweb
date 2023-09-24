@@ -18,6 +18,7 @@ export const TabBottomRouterObj = {
     screen: PlanCP,
     tabBarLabel: 'Kế hoạch',
     tabIconLabel: 'calendar',
+    iconName: 'calendar-number-outline',
     isIconLabelCustom: false,
     navigationOptions: {
       headerShown: false,
@@ -27,6 +28,7 @@ export const TabBottomRouterObj = {
     screen: TimeKeepingScreen,
     tabBarLabel: 'Chấm công',
     tabIconLabel: 'clock',
+    iconName: 'calendar-outline',
     isIconLabelCustom: false,
     navigationOptions: {
       headerShown: false,
@@ -36,6 +38,7 @@ export const TabBottomRouterObj = {
     screen: DashboardPage,
     tabBarLabel: 'Dashboard',
     tabIconLabel: 'home',
+    iconName: 'home-outline',
     isIconLabelCustom: true,
     navigationOptions: {
       headerShown: false,
@@ -45,6 +48,7 @@ export const TabBottomRouterObj = {
     screen: InfoScreen,
     tabBarLabel: 'Tài khoản',
     tabIconLabel: 'user',
+    iconName: 'person-outline',
     isIconLabelCustom: false,
     navigationOptions: {
       headerShown: false,
@@ -54,6 +58,7 @@ export const TabBottomRouterObj = {
     screen: SettingScreen,
     tabBarLabel: 'Cài đặt',
     tabIconLabel: 'cog',
+    iconName: 'settings-outline',
     isIconLabelCustom: false,
     navigationOptions: {
       headerShown: false,

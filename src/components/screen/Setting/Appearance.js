@@ -10,7 +10,6 @@ import {useColorScheme} from 'react-native';
 import tw from '../../../styles/twrnc.global';
 import {MAIN_COLOR} from '../../../styles/colors.global';
 import {Iconify} from 'react-native-iconify';
-import Footer from '../../General/Footer';
 import RadioGroupCP from '../../General/RadioGroupCP';
 import useAppContext from '../../../utils/hooks/useAppContext';
 import {
@@ -28,11 +27,11 @@ export default function AppearanceScreen({navigation}) {
   };
   const DATA_RADIO_APPEARANCE = [
     {label: 'Hệ thống', value: displaySystem || 'light'},
-    {label: 'Tối', value: 'dark'},
+    {label: 'Tối', value: 'dark-no-system'},
     {label: 'Sáng', value: 'light-no-system'},
   ];
   return (
-    <SafeAreaView style={tw`flex-1 flex-col bg-[${MAIN_COLOR}]`}>
+    <View style={tw`flex-1 flex-col bg-[${MAIN_COLOR}]`}>
       <View style={tw`flex-row items-center justify-between z-20 p-2`}>
         <TouchableOpacity
           activeOpacity={0.8}
@@ -61,8 +60,7 @@ export default function AppearanceScreen({navigation}) {
             />
           </View>
         </View>
-        <Footer />
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

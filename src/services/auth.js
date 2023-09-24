@@ -4,6 +4,7 @@ import {axiosGetNoToken, axiosPostNoToken} from '../utils/axios/axiosInstance';
 import {
   getAsyncCacheAccessToken,
   getAsyncCacheCurrentUser,
+  getAsyncCacheLoaderSliderUsed,
   removeAsyncCache,
   setAsyncCacheAccessToken,
   setAsyncCacheCurrentUser,
@@ -38,14 +39,18 @@ export const AUTH_REGISTER = async (props = {}) => {
         pathFile: 'services/auth.js',
       },
     });
-  } catch (err) {
+  } catch (error) {
+    const msg =
+      error?.errors?.message ||
+      error?.response?.data?.message ||
+      errorMessage(error);
     setTxtButtonLogin('GET OTP');
     setShowOtpInput(false);
     setLoad(false);
     ToastShow({
       type: TYPE_TOAST.ERROR,
       propsMessage: {
-        message: errorMessage(err),
+        message: msg,
         action: 'AUTH_REGISTER',
         pathFile: 'services/auth.js',
       },
@@ -70,14 +75,18 @@ export const AUTH_SEND_OTP_CODE = async (props = {}) => {
         pathFile: 'services/auth.js',
       },
     });
-  } catch (err) {
+  } catch (error) {
+    const msg =
+      error?.errors?.message ||
+      error?.response?.data?.message ||
+      errorMessage(error);
     setTxtButtonLogin('GET OTP');
     setShowOtpInput(false);
     setLoad(false);
     ToastShow({
       type: TYPE_TOAST.ERROR,
       propsMessage: {
-        message: errorMessage(err),
+        message: msg,
         action: 'AUTH_SEND_OTP_CODE',
         pathFile: 'services/auth.js',
       },
@@ -97,13 +106,11 @@ export const AUTH_VERIFY_OTP_CODE = async (props = {}) => {
     setLoad,
     navigation,
   } = props;
-  console.log('props: ', props);
   try {
     const resPost = await axiosPostNoToken(`auth/login/`, {
       email: email,
       otp: otpCode,
     });
-    console.log('resPost: ', resPost);
     setTxtButtonLogin('GET OTP');
     setShowOtpInput(false);
     setEmailValue('');
@@ -113,24 +120,30 @@ export const AUTH_VERIFY_OTP_CODE = async (props = {}) => {
     });
     await getAsyncCacheCurrentUser(dispatch);
     await getAsyncCacheAccessToken(dispatch);
-    ToastShow({
-      type: TYPE_TOAST.INFO,
-      propsMessage: {
-        message: 'Đăng nhập thành công',
-        action: 'AUTH_VERIFY_OTP_CODE',
-        pathFile: 'services/auth.js',
-      },
-    });
-    setLoad(false);
-    navigation.navigate(SCREEN_NAVIGATE.Dashboard_Screen);
-  } catch (err) {
-    console.log('err: ', err);
+    await getAsyncCacheLoaderSliderUsed(dispatch);
+    setTimeout(() => {
+      ToastShow({
+        type: TYPE_TOAST.INFO,
+        propsMessage: {
+          message: 'Đăng nhập thành công',
+          action: 'AUTH_VERIFY_OTP_CODE',
+          pathFile: 'services/auth.js',
+        },
+      });
+      setLoad(false);
+      navigation.navigate(SCREEN_NAVIGATE.Dashboard_Screen);
+    }, 2000);
+  } catch (error) {
+    const msg =
+      error?.errors?.message ||
+      error?.response?.data?.message ||
+      errorMessage(error);
     setLoad(false);
     setTxtButtonLogin('SENDING OTP');
     ToastShow({
       type: TYPE_TOAST.ERROR,
       propsMessage: {
-        message: errorMessage(err),
+        message: msg,
         action: 'AUTH_VERIFY_OTP_CODE',
         pathFile: 'services/auth.js',
       },
@@ -139,15 +152,22 @@ export const AUTH_VERIFY_OTP_CODE = async (props = {}) => {
 };
 // ?! AUTH LOGOUT - OK
 export const AUTH_LOGOUT = async (props = {}) => {
-  const {dispatch, navigation} = props;
+  const {dispatch} = props;
   try {
     await removeAsyncCache();
-    navigation.navigate(SCREEN_NAVIGATE.Login_Screen);
-  } catch (err) {
+    await setAsyncCacheCurrentUser(null);
+    await setAsyncCacheAccessToken({accessToken: null});
+    await getAsyncCacheCurrentUser(dispatch);
+    await getAsyncCacheAccessToken(dispatch);
+  } catch (error) {
+    const msg =
+      error?.errors?.message ||
+      error?.response?.data?.message ||
+      errorMessage(error);
     ToastShow({
       type: TYPE_TOAST.ERROR,
       propsMessage: {
-        message: 'Đã xảy ra lỗi. Vui lòng liên hệ admin',
+        message: msg,
         action: 'AUTH_LOGOUT',
         pathFile: 'services/auth.js',
       },
@@ -162,11 +182,15 @@ export const AUTH_RETRIEVE = async (props = {}) => {
     await setAsyncCacheAccessToken({accessToken});
     await getAsyncCacheCurrentUser(dispatch);
     await getAsyncCacheAccessToken(dispatch);
-  } catch (err) {
+  } catch (error) {
+    const msg =
+      error?.errors?.message ||
+      error?.response?.data?.message ||
+      errorMessage(error);
     ToastShow({
       type: TYPE_TOAST.ERROR,
       propsMessage: {
-        message: 'Đã xảy ra lỗi. Vui lòng liên hệ admin',
+        message: msg,
         action: 'AUTH_RETRIEVE',
         pathFile: 'services/auth.js',
       },
@@ -192,12 +216,15 @@ export const AUTH_BY_TOKEN = async (props = {}) => {
     });
 
     navigation.navigate(SCREEN_NAVIGATE.Dashboard_Screen);
-  } catch (err) {
-    console.log('err: ', err);
+  } catch (error) {
+    const msg =
+      error?.errors?.message ||
+      error?.response?.data?.message ||
+      errorMessage(error);
     ToastShow({
       type: TYPE_TOAST.ERROR,
       propsMessage: {
-        message: errorMessage(err),
+        message: msg,
         action: 'AUTH_BY_TOKEN',
         pathFile: 'services/auth.js',
       },

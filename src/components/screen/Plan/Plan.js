@@ -1,11 +1,12 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   View,
   Text,
   FlatList,
-  SafeAreaView,
+  RefreshControl,
   Image,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import tw from '../../../styles/twrnc.global';
@@ -19,7 +20,10 @@ import {
 import Banner from '../Banner/Banner';
 import useAppContext from '../../../utils/hooks/useAppContext';
 import TextInputCP from '../../General/TextInputCP';
-import {SET_DATA_PAYLOAD} from '../../Context/AppContext.reducer';
+import {
+  SET_DATA_PAYLOAD,
+  SET_TOGGLE_PAYLOAD,
+} from '../../Context/AppContext.reducer';
 import ButtonCP from '../../General/ButtonCP';
 import {dd_mm_yy_hh_mm_ss} from '../../../utils/TimerFormat';
 import {SCREEN_NAVIGATE} from '../../routersConfig/General.config';
@@ -27,14 +31,22 @@ import ModalCP from '../../General/ModalCP';
 import {ToastShow} from '../../../utils/Toast';
 import {TYPE_TOAST} from '../../../utils/toast.config';
 import {requestCameraPermission} from '../../../utils/camera.permission';
+import {CREATE_NEW_PLAN, GET_LIST_POST_PLAN} from '../../../services/admin';
+import LoadingScreen from '../../General/LoadingScreen';
+import {URL_SERVER} from '@env';
+import {fList} from '../../../utils/array.utils';
+import {useRefreshList} from '../../../utils/refreshList.utils';
 
 const MAX_IMAGES = 1;
 
 export default function PlanCP({navigation}) {
   const {state, dispatch} = useAppContext();
-  const {data_plan_post, content, title, sub_title, image64, image} =
-    state.set_data.plan_post;
-  const {search} = state.set_data;
+  const {content, title, sub_title, image64} = state.set_data.plan_post;
+  const {list_post_plan} = state.set_data.admin;
+  const {search, currentUser} = state.set_data;
+  const {submitting} = state.set_toggle;
+
+  const {role} = {...currentUser?.user};
 
   const [toggleModal, setToggleModal] = React.useState(false);
   const [isProgress, setProgress] = React.useState(false);
@@ -60,28 +72,30 @@ export default function PlanCP({navigation}) {
         )}>
         <View style={tw.style('flex-row items-start gap-2')}>
           <Image
-            source={require('../../../assets/images/logo_company/logo_square.png')}
+            source={{uri: `${URL_SERVER}${item?.image}`}}
             resizeMode="contain"
             style={tw.style('rounded-lg  w-[100px] h-[100px]')}
           />
           <View style={tw.style('flex-col flex-1 w-1')}>
             <Text style={tw.style('text-black font-bold text-[15px]')}>
-              Tiêu đề kế hoạch
+              {item?.title}
             </Text>
-            <Text style={tw.style('text-[12px] text-gray-400 italic')}>
-              Tiêu đề phụ
-            </Text>
+            {item?.subTitle && (
+              <Text style={tw.style('text-[12px] text-gray-400 italic')}>
+                Tiêu đề phụ
+              </Text>
+            )}
             <View style={tw.style('flex-row items-center gap-[2px]')}>
               <Text style={tw.style('text-[12px] text-gray-400 italic')}>
                 Ngày đăng:{' '}
               </Text>
               <Text
                 style={tw.style('text-[12px] text-gray-400 flex-1 w-1 italic')}>
-                {dd_mm_yy_hh_mm_ss(new Date())}
+                {dd_mm_yy_hh_mm_ss(item?.createdAt || new Date())}
               </Text>
             </View>
             <Text style={tw.style('text-black py-2 text-[14px]')}>
-              Nội dung kế hoạch
+              {item?.content}
             </Text>
             <TouchableOpacity
               activeOpacity={0.8}
@@ -108,8 +122,6 @@ export default function PlanCP({navigation}) {
     const options = {
       title: 'Select Photo',
       mediaType: 'photo',
-      maxWidth: 500,
-      maxHeight: 500,
       multiple: true,
       selectionLimit: MAX_IMAGES,
       includeBase64: true,
@@ -140,8 +152,6 @@ export default function PlanCP({navigation}) {
   const handleTakePhoto = async () => {
     const options = {
       title: 'Take Photo',
-      maxWidth: 500,
-      maxHeight: 500,
       includeBase64: true,
       quality: 1,
     };
@@ -179,12 +189,17 @@ export default function PlanCP({navigation}) {
   };
 
   const handleSubmit = () => {
-    const body = {
+    dispatch(SET_TOGGLE_PAYLOAD({key: 'submitting', value: true}));
+    const payload = {
       title: title,
       content: content,
-      image: selectedImages,
+      ...selectedImages,
     };
-    console.log('body: ', body);
+    CREATE_NEW_PLAN({
+      dispatch,
+      state,
+      payload,
+    });
     setToggleModal(false);
     dispatch(
       SET_DATA_PAYLOAD({
@@ -201,130 +216,174 @@ export default function PlanCP({navigation}) {
     );
   };
 
+  const CallAPI = () => {
+    GET_LIST_POST_PLAN({state, dispatch});
+  };
+
+  useEffect(() => {
+    CallAPI();
+  }, []);
+
+  let DATA_PLAN_FLAG = list_post_plan || [];
+  if (search) {
+    DATA_PLAN_FLAG = DATA_PLAN_FLAG.filter(
+      item =>
+        item.title.toLowerCase().includes(search.toLowerCase()) ||
+        item.content.toLowerCase().includes(search.toLowerCase()),
+    );
+  }
+
+  const {refreshing, onRefresh} = useRefreshList(CallAPI);
+
   return (
-    <SafeAreaView style={tw`flex-1 flex-col bg-[${MAIN_COLOR}]`}>
-      <Banner navigation={navigation} />
-      <View style={tw.style('bg-white px-3 py-1')}>
-        <View style={tw`flex-row items-center mb-2`}>
-          <Text style={tw`text-[${MAIN_TEXT_COLOR}] font-bold text-[20px]`}>
-            Kế hoạch công ty
-          </Text>
-        </View>
-        <View style={tw.style('flex-row items-center justify-center gap-1')}>
-          <TextInputCP
-            name="search"
-            value={search}
-            onChange={val =>
-              dispatch(SET_DATA_PAYLOAD({key: 'search', value: val}))
-            }
-            outlineColor={PRIMARY_COLOR}
-            placeholder="Tìm kiếm kế hoạch"
-            style={tw.style('flex-1')}
-            outlinedStyle={tw`border border-gray-400`}
-          />
-          <ButtonCP
-            text="Tạo mới"
-            colorBG={CRITICAL_COLOR}
-            colorBorder={CRITICAL_COLOR}
-            variant="outlined"
-            onPress={() => setToggleModal(true)}
-            styleContainer={tw.style('m-auto py-[15px] w-[100px]')}
-          />
-        </View>
-      </View>
-      <View style={tw.style('px-3 py-1 flex-grow bg-white')}>
-        <View style={tw.style('flex-1')}>
-          {data_plan_post.length > 0 ? (
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              data={data_plan_post}
-              contentContainerStyle={tw.style('flex-grow gap-2')}
-              keyExtractor={item => item.toString()}
-              renderItem={RenderItem}
-            />
-          ) : (
-            <View style={tw.style('items-center justify-center flex-1')}>
-              <Text style={tw.style('text-center text-black italic')}>
-                Không tìm thấy dữ liệu
+    <>
+      {submitting ? (
+        <LoadingScreen />
+      ) : (
+        <View style={tw`flex-1 flex-col bg-white`}>
+          <Banner navigation={navigation} />
+          <View style={tw.style('bg-white px-3 py-1')}>
+            <View style={tw`flex-row items-center mb-2`}>
+              <Text style={tw`text-[${MAIN_TEXT_COLOR}] font-bold text-[20px]`}>
+                Kế hoạch công ty
               </Text>
             </View>
-          )}
-        </View>
-      </View>
-      <ModalCP
-        open={toggleModal}
-        close={() => setToggleModal(false)}
-        title={'Thêm mới kế hoạch'}>
-        <View style={tw.style('px-3')}>
-          <TextInputCP
-            name="title"
-            value={title}
-            onChange={val => handleChangePlan('title', val)}
-            placeholder="Tiêu đề (Bắt buộc)"
-            style={tw.style('w-full')}
-            outlinedStyle={tw`border border-gray-400`}
-          />
-          <TextInputCP
-            name="sub_title"
-            value={sub_title}
-            onChange={val => handleChangePlan('sub_title', val)}
-            placeholder="Tiêu đề phụ"
-            style={tw.style('w-full')}
-            outlinedStyle={tw`border border-gray-400`}
-          />
-          <TextInputCP
-            name="content"
-            value={content}
-            onChange={val => handleChangePlan('content', val)}
-            placeholder="Nội dung (Bắt buộc)"
-            multiline={true}
-            style={tw.style('h-[150px] w-full')}
-            contentStyle={tw`p-2`}
-            outlinedStyle={tw`border border-gray-400`}
-          />
-          {image64 && (
             <View
-              style={tw.style(
-                'w-full h-[250px] my-2 rounded-xl overflow-hidden',
-              )}>
-              <Image
-                source={{
-                  uri: image64,
-                }}
-                style={tw.style('w-full h-full')}
-                resizeMode="stretch"
+              style={tw.style('flex-row items-center justify-center gap-1')}>
+              <TextInputCP
+                name="search"
+                value={search}
+                onChange={val =>
+                  dispatch(SET_DATA_PAYLOAD({key: 'search', value: val}))
+                }
+                outlineColor={PRIMARY_COLOR}
+                placeholder="Tìm kiếm kế hoạch"
+                style={tw.style('flex-1')}
+                outlinedStyle={tw`border border-gray-400`}
+              />
+              {role === 'admin' && (
+                <ButtonCP
+                  text="Tạo mới"
+                  colorBG={CRITICAL_COLOR}
+                  colorBorder={CRITICAL_COLOR}
+                  variant="outlined"
+                  onPress={() => setToggleModal(true)}
+                  styleContainer={tw.style('m-auto py-[15px] w-[100px]')}
+                />
+              )}
+            </View>
+          </View>
+          <View style={tw.style('px-3 py-1 flex-grow bg-white')}>
+            <View style={tw.style('flex-1')}>
+              {fList(DATA_PLAN_FLAG).length > 0 ? (
+                <FlatList
+                  showsVerticalScrollIndicator={false}
+                  data={DATA_PLAN_FLAG}
+                  contentContainerStyle={tw.style('flex-grow gap-2')}
+                  keyExtractor={item => item._id.toString()}
+                  renderItem={RenderItem}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
+                  }
+                />
+              ) : (
+                <ScrollView
+                  contentContainerStyle={tw.style(
+                    'items-center justify-center flex-1',
+                  )}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={refreshing}
+                      onRefresh={onRefresh}
+                    />
+                  }
+                  showsVerticalScrollIndicator={false}>
+                  <Text style={tw.style('text-center text-black italic')}>
+                    Chưa có kế hoạch nào
+                  </Text>
+                </ScrollView>
+              )}
+            </View>
+          </View>
+          <ModalCP
+            open={toggleModal}
+            close={() => setToggleModal(false)}
+            title={'Thêm mới kế hoạch'}>
+            <View style={tw.style('px-3')}>
+              <TextInputCP
+                name="title"
+                value={title}
+                onChange={val => handleChangePlan('title', val)}
+                placeholder="Tiêu đề (Bắt buộc)"
+                style={tw.style('w-full')}
+                outlinedStyle={tw`border border-gray-400`}
+              />
+              <TextInputCP
+                name="sub_title"
+                value={sub_title}
+                onChange={val => handleChangePlan('sub_title', val)}
+                placeholder="Tiêu đề phụ"
+                style={tw.style('w-full')}
+                outlinedStyle={tw`border border-gray-400`}
+              />
+              <TextInputCP
+                name="content"
+                value={content}
+                onChange={val => handleChangePlan('content', val)}
+                placeholder="Nội dung (Bắt buộc)"
+                multiline={true}
+                style={tw.style('h-[150px] w-full')}
+                contentStyle={tw`p-2`}
+                outlinedStyle={tw`border border-gray-400`}
+              />
+              {image64 && (
+                <View
+                  style={tw.style(
+                    'w-full h-[250px] my-2 rounded-xl overflow-hidden',
+                  )}>
+                  <Image
+                    source={{
+                      uri: image64,
+                    }}
+                    style={tw.style('w-full h-full')}
+                    resizeMode="stretch"
+                  />
+                </View>
+              )}
+              <View style={tw.style('flex-row gap-2')}>
+                <ButtonCP
+                  text="Tải ảnh"
+                  colorBG={PRIMARY_COLOR}
+                  colorBorder={PRIMARY_COLOR}
+                  variant="outlined"
+                  onPress={handleChoosePhoto}
+                  styleContainer={tw.style('flex-1')}
+                />
+                <ButtonCP
+                  text="Chụp ảnh"
+                  colorBG={WARNING_COLOR}
+                  colorBorder={WARNING_COLOR}
+                  variant="outlined"
+                  onPress={handleTakePhoto}
+                  styleContainer={tw.style('flex-1')}
+                />
+              </View>
+              <ButtonCP
+                text="Thêm mới"
+                colorBG={PRIMARY_COLOR}
+                colorBorder={PRIMARY_COLOR}
+                variant="outlined"
+                onPress={handleSubmit}
+                styleContainer={tw.style('py-[10px] my-3 w-full')}
+                disabled={!title || !content || !image64}
               />
             </View>
-          )}
-          <View style={tw.style('flex-row gap-2')}>
-            <ButtonCP
-              text="Tải ảnh"
-              colorBG={PRIMARY_COLOR}
-              colorBorder={PRIMARY_COLOR}
-              variant="outlined"
-              onPress={handleChoosePhoto}
-              styleContainer={tw.style('flex-1')}
-            />
-            <ButtonCP
-              text="Chụp ảnh"
-              colorBG={WARNING_COLOR}
-              colorBorder={WARNING_COLOR}
-              variant="outlined"
-              onPress={handleTakePhoto}
-              styleContainer={tw.style('flex-1')}
-            />
-          </View>
-          <ButtonCP
-            text="Thêm mới"
-            colorBG={PRIMARY_COLOR}
-            colorBorder={PRIMARY_COLOR}
-            variant="outlined"
-            onPress={handleSubmit}
-            styleContainer={tw.style('py-[10px] my-3 w-full')}
-            disabled={!title || !content || !image64}
-          />
+          </ModalCP>
         </View>
-      </ModalCP>
-    </SafeAreaView>
+      )}
+    </>
   );
 }

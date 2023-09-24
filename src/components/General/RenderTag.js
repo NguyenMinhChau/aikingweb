@@ -56,7 +56,7 @@ const MAP_COLOR = [
     color: '#f1c40f',
   },
   {
-    list: ['processing', 'cúp điện', 'inf-btht', 'plan'],
+    list: ['processing', 'cúp điện', 'inf-btht', 'plan', 'approvedcheckin'],
     color: '#1e90ff',
   },
   {

@@ -12,9 +12,13 @@ import Banner from '../Banner/Banner';
 import tw from '../../../styles/twrnc.global';
 import {Iconify} from 'react-native-iconify';
 import {CARD_DATA} from './Dashboard.data';
-import {SET_TOGGLE_PAYLOAD} from '../../Context/AppContext.reducer';
+import {
+  SET_DATA_PAYLOAD,
+  SET_TOGGLE_PAYLOAD,
+} from '../../Context/AppContext.reducer';
 import useAppContext from '../../../utils/hooks/useAppContext';
 import {
+  BLACK_COLOR,
   MAIN_COLOR,
   MAIN_TEXT_COLOR,
   PRIMARY_COLOR,
@@ -30,32 +34,28 @@ import {
   getAsyncCacheLoaderSliderUsed,
   setAsyncCacheLoaderSliderUsed,
 } from '../../../utils/cache.services';
+import {IconCP} from '../../../utils/icon.utils';
 
 const DashboardPage = ({navigation, route}) => {
   const {dispatch, state} = useAppContext();
 
   const {data} = {...route.params};
 
-  const {accessToken, loader_slider_used} = state.set_data;
+  const {accessToken, loader_slider_used, currentUser} = state.set_data;
   const {colors} = useGetColorThemeDisplay();
+
+  const {role} = {...currentUser?.user};
 
   // ?! CHECK CURRENT USER AND ACCESS TOKEN
   React.useEffect(() => {
     const initialize = async () => {
-      getAsyncCacheLoaderSliderUsed(dispatch);
       const tokenAccess = accessToken?.accessToken;
       try {
-        if (tokenAccess && isValidToken(tokenAccess)) {
-          const user = await processToken(
-            tokenAccess,
-            false,
-            navigation,
-            dispatch,
-          );
+        if (currentUser?.user?.email && isValidToken(tokenAccess)) {
           AUTH_RETRIEVE({
             dispatch,
             state,
-            data: user,
+            data: currentUser,
             accessToken: tokenAccess,
           });
           navigation.navigate(SCREEN_NAVIGATE.Bottom_Tab_Screen);
@@ -91,13 +91,22 @@ const DashboardPage = ({navigation, route}) => {
     });
   };
 
-  const handleRedirect = router => {
+  const handleRedirect = (router, group) => {
     navigation.navigate({
       name: router,
       params: {
         data: data,
       },
     });
+    dispatch(
+      SET_DATA_PAYLOAD({
+        key: 'admin',
+        value: {
+          ...state.set_data.admin,
+          group: group,
+        },
+      }),
+    );
   };
 
   // ?! DIVIDED COLUMNS FOR LAYOUT (2 COLUMNS)
@@ -111,7 +120,7 @@ const DashboardPage = ({navigation, route}) => {
         activeOpacity={0.8}
         key={item.id}
         style={tw.style(
-          `border-2 border-[${PRIMARY_COLOR}] bg-white rounded-lg p-2 justify-center items-center gap-1`,
+          `shadow-md bg-white rounded-lg p-2 justify-center items-center gap-1`,
           {
             width: widthEventUsed,
             marginLeft: index % 2 === 0 ? 0 : 8,
@@ -125,19 +134,19 @@ const DashboardPage = ({navigation, route}) => {
             }),
           );
           item?.router
-            ? handleRedirect(item?.router)
+            ? handleRedirect(item?.router, item?.group)
             : handleCardPress(item.id);
         }}>
-        {item?.icon ? (
-          item?.icon
-        ) : (
-          <Image source={item.image} style={tw`w-[30px] h-[30px]`} />
-        )}
+        <IconCP
+          name={item?.iconName}
+          size={25}
+          color={BLACK_COLOR}
+          typeIcon={item?.typeIcon}
+        />
         <Text style={tw`font-bold text-black text-[14px] mt-1`}>
           {item.title}
         </Text>
         <Text style={tw`text-gray-400 text-[13px]`}>{item.category}</Text>
-        {/* <Image source={require('../../../assets/images/arrow.png')}></Image> */}
       </TouchableOpacity>
     );
   };
@@ -153,8 +162,7 @@ const DashboardPage = ({navigation, route}) => {
           }}
         />
       ) : (
-        <SafeAreaView
-          style={tw`flex-1 justify-start items-start bg-[${MAIN_COLOR}]`}>
+        <View style={tw`flex-1 justify-start items-start bg-white`}>
           <Banner navigation={navigation} />
 
           <View
@@ -174,21 +182,22 @@ const DashboardPage = ({navigation, route}) => {
 
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={CARD_DATA('admin')}
+              data={CARD_DATA(role)}
               contentContainerStyle={{
                 flexGrow: 1,
                 justifyContent: 'flex-start',
                 marginTop: 16,
                 paddingBottom: 50,
-                gap: 7,
+                gap: 10,
                 paddingHorizontal: 12,
+                paddingVertical: 8,
               }}
-              numColumns={CARD_DATA('admin').length === 2 ? 1 : 2}
+              numColumns={CARD_DATA(role).length === 2 ? 1 : 2}
               keyExtractor={item => item.id}
               renderItem={RenderFlatList}
             />
           </View>
-        </SafeAreaView>
+        </View>
       )}
     </>
   );

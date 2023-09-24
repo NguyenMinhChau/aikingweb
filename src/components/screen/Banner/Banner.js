@@ -8,6 +8,7 @@ import {SET_TOGGLE_PAYLOAD} from '../../Context/AppContext.reducer';
 import {useLayoutAnimation} from '../../../utils/LayoutAnimation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {MAIN_COLOR} from '../../../styles/colors.global';
+import {IconCP} from '../../../utils/icon.utils';
 
 const Banner = ({navigation}) => {
   const {dispatch, state} = useAppContext();
@@ -55,7 +56,11 @@ const Banner = ({navigation}) => {
       <TouchableOpacity
         onPress={toggleVisibility}
         style={tw.style('absolute top-[30%] right-0  mr-6', {zIndex: 100})}>
-        <Icon name={isVisible_menu ? 'times' : 'list'} size={25} color="#fff" />
+        <IconCP
+          name={isVisible_menu ? 'close-outline' : 'list-outline'}
+          size={35}
+          color="#fff"
+        />
       </TouchableOpacity>
       {isVisible_menu && (
         <View

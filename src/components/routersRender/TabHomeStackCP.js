@@ -5,17 +5,26 @@ import {SCREEN_NAVIGATE} from '../routersConfig/General.config';
 import TabHomeStackRouterObj from '../routersConfig/TabHomeStack.config';
 import useAppContext from '../../utils/hooks/useAppContext';
 import {isValidToken} from '../../services/jwt';
+import {
+  getAsyncCacheAccessToken,
+  getAsyncCacheCurrentUser,
+  getAsyncCacheLoaderSliderUsed,
+} from '../../utils/cache.services';
 
 const Stack = createNativeStackNavigator();
 
 export default function TabHomeStackCP() {
-  const {state} = useAppContext();
+  const {state, dispatch} = useAppContext();
   const {accessToken, currentUser} = state.set_data;
 
+  React.useEffect(() => {
+    getAsyncCacheLoaderSliderUsed(dispatch);
+    getAsyncCacheCurrentUser(dispatch);
+    getAsyncCacheAccessToken(dispatch);
+  }, []);
+
   const isCheckLogin =
-    currentUser?.user?.email &&
-    accessToken &&
-    isValidToken(accessToken?.accessToken);
+    currentUser?.user?.email && isValidToken(accessToken?.accessToken);
 
   return (
     <NavigationContainer>

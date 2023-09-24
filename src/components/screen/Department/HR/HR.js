@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, Text, ScrollView, SafeAreaView} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import tw from '../../../../styles/twrnc.global';
-import {MAIN_COLOR} from '../../../../styles/colors.global';
 import Banner from '../../Banner/Banner';
 import RowDialogCP from '../../../General/Dialog/RowDialogCP';
 import {Iconify} from 'react-native-iconify';
@@ -9,7 +8,7 @@ import {SCREEN_NAVIGATE} from '../../../routersConfig/General.config';
 
 export default function HRScreen({navigation}) {
   return (
-    <SafeAreaView style={tw`flex-1 flex-col bg-[${MAIN_COLOR}]`}>
+    <View style={tw`flex-1 flex-col bg-white`}>
       <Banner navigation={navigation} />
       <ScrollView
         showsVerticalScrollIndicator={false}
@@ -36,6 +35,6 @@ export default function HRScreen({navigation}) {
           />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

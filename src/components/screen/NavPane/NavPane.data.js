@@ -2,6 +2,8 @@ import {Iconify} from 'react-native-iconify';
 import {fList} from '../../../utils/array.utils';
 import {SCREEN_NAVIGATE} from '../../routersConfig/General.config';
 import tw from '../../../styles/twrnc.global';
+import {IconCP} from '../../../utils/icon.utils';
+import {BLACK_COLOR} from '../../../styles/colors.global';
 
 export const DATA_NAV_PANE = authPage => {
   if (authPage) {
@@ -36,7 +38,7 @@ export const DATA_NAV_PANE = authPage => {
         icon: (
           <Iconify
             size={23}
-            color="#000"
+            color={BLACK_COLOR}
             icon="carbon:ibm-secure-infrastructure-on-vpc-for-regulated-industries"
             style={tw`mr-1`}
           />
@@ -59,29 +61,23 @@ export const DATA_NAV_PANE = authPage => {
       index: 1,
       label: 'Kế hoạch',
       icon: (
-        <Iconify
+        <IconCP
           size={23}
-          color="#000"
-          icon="grommet-icons:plan"
+          color={BLACK_COLOR}
+          name="calendar-number-outline"
           style={tw`mr-1`}
         />
       ),
-      subMenuLev1: [
-        {
-          id: 1,
-          label: 'Tổng quan',
-          router: SCREEN_NAVIGATE.Dashboard_Screen,
-        },
-      ],
+      router: SCREEN_NAVIGATE.Plan_Screen,
     },
     {
       index: 2,
       label: 'Phòng ban',
       icon: (
-        <Iconify
+        <IconCP
           size={23}
-          color="#000"
-          icon="mingcute:department-line"
+          color={BLACK_COLOR}
+          name="library-outline"
           style={tw`mr-1`}
         />
       ),
@@ -107,10 +103,10 @@ export const DATA_NAV_PANE = authPage => {
       index: 3,
       label: 'Chấm công',
       icon: (
-        <Iconify
+        <IconCP
           size={23}
-          color="#000"
-          icon="ion:time-outline"
+          color={BLACK_COLOR}
+          name="calendar-outline"
           style={tw`mr-1`}
         />
       ),
@@ -120,10 +116,10 @@ export const DATA_NAV_PANE = authPage => {
       index: 4,
       label: 'Thông tin',
       icon: (
-        <Iconify
+        <IconCP
           size={23}
-          color="#000"
-          icon="material-symbols:info-outline"
+          color={BLACK_COLOR}
+          name="information-circle-outline"
           style={tw`mr-1`}
         />
       ),
@@ -133,7 +129,12 @@ export const DATA_NAV_PANE = authPage => {
       index: 5,
       label: 'Cài đặt',
       icon: (
-        <Iconify size={23} color="#000" icon="uil:setting" style={tw`mr-1`} />
+        <IconCP
+          size={23}
+          color={BLACK_COLOR}
+          name="settings-outline"
+          style={tw`mr-1`}
+        />
       ),
       router: SCREEN_NAVIGATE.Setting_Screen,
     },

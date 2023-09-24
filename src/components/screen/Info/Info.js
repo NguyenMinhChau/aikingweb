@@ -1,14 +1,6 @@
 import React from 'react';
-import {
-  Text,
-  View,
-  SafeAreaView,
-  Image,
-  RefreshControl,
-  ScrollView,
-} from 'react-native';
+import {Text, View, Image, RefreshControl, ScrollView} from 'react-native';
 import tw from '../../../styles/twrnc.global';
-import {MAIN_COLOR} from '../../../styles/colors.global';
 import useAppContext from '../../../utils/hooks/useAppContext';
 import RowDialogCP from '../../General/Dialog/RowDialogCP';
 import Banner from '../Banner/Banner';
@@ -25,7 +17,7 @@ export default function InfoScreen({navigation}) {
   };
 
   return (
-    <SafeAreaView style={tw`flex-1 flex-col bg-[${MAIN_COLOR}]`}>
+    <View style={tw`flex-1 flex-col bg-white`}>
       <Banner navigation={navigation} />
       <View style={tw.style('p-3 pb-1 bg-white')}>
         <View style={tw.style('rounded-lg bg-white p-2 shadow-md')}>
@@ -72,6 +64,6 @@ export default function InfoScreen({navigation}) {
           />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }

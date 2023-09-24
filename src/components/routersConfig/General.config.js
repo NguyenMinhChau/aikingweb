@@ -8,6 +8,7 @@ export const SCREEN_NAVIGATE = {
   Setting_Screen: 'Cài đặt',
   Appearance_Screen: 'Giao diện',
   TimeKeeping_Screen: 'Chấm công',
+  Employee_List_Screen: 'Danh sách nhân viên',
   HR_Screen: 'Nhân sự',
   Marketing_Screen: 'Marketing',
   IT_Screen: 'IT',

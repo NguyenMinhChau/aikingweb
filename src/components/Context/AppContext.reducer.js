@@ -1,5 +1,6 @@
 import {SET_DATA, SET_TOGGLE} from './AppContext.actions';
 import {
+  ADMIN_STATE,
   CHAT_STATE,
   DATE_TIME_STATE,
   PLAN_POST_STATE,
@@ -16,10 +17,12 @@ const initialStateApp = {
     appearance_display: null,
     loader_slider_used: null,
     search: '',
+    month: '',
     date_time: DATE_TIME_STATE,
     chat: CHAT_STATE,
     user_list: USER_LIST_STATE,
     plan_post: PLAN_POST_STATE,
+    admin: ADMIN_STATE,
   },
   set_toggle: {
     isVisible_menu: false,

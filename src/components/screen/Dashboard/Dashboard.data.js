@@ -2,6 +2,7 @@ import {Iconify} from 'react-native-iconify';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {SCREEN_NAVIGATE} from '../../routersConfig/General.config';
 import {PRIMARY_COLOR} from '../../../styles/colors.global';
+import {IconCP} from '../../../utils/icon.utils';
 
 export const CARD_DATA = role => {
   return [
@@ -9,42 +10,50 @@ export const CARD_DATA = role => {
       id: 1,
       title: 'Chấm công',
       category: 'Calendar',
-      icon: <Iconify icon="ion:time-outline" size={35} color={PRIMARY_COLOR} />,
+      iconName: 'calendar-outline',
       router: SCREEN_NAVIGATE.TimeKeeping_Screen,
     },
     {
       id: 2,
       title: 'Nhân sự',
+      group: 'NHAN_SU',
       category: 'Department',
-      icon: (
-        <Iconify
-          icon="healthicons:human-resoruces-outline"
-          size={35}
-          color={PRIMARY_COLOR}
-        />
-      ),
+      iconName: 'people-outline',
       router: SCREEN_NAVIGATE.HR_Screen,
     },
     {
       id: 3,
       title: 'Marketing',
+      group: 'MARKETING',
       category: 'Department',
-      icon: <Iconify icon="nimbus:marketing" size={35} color={PRIMARY_COLOR} />,
+      iconName: 'megaphone-outline',
       router: SCREEN_NAVIGATE.Marketing_Screen,
     },
     {
       id: 4,
       title: 'IT',
+      group: 'IT',
       category: 'Department',
-      icon: <Icon name="unity" size={35} color={PRIMARY_COLOR} />,
+      iconName: 'code-slash-outline',
       router: SCREEN_NAVIGATE.IT_Screen,
     },
-    {
-      id: 5,
-      title: 'Duyệt chấm công',
-      category: 'Admin',
-      icon: <Icon name="calendar-check" size={35} color={PRIMARY_COLOR} />,
-      router: SCREEN_NAVIGATE.Verify_TimeKeeping_Screnn,
-    },
+    ...(role === 'admin'
+      ? [
+          {
+            id: 5,
+            title: 'Duyệt chấm công',
+            category: 'Admin',
+            iconName: 'checkmark-done-circle-outline',
+            router: SCREEN_NAVIGATE.Verify_TimeKeeping_Screnn,
+          },
+          {
+            id: 6,
+            title: 'Danh sách nhân viên',
+            category: 'Admin',
+            iconName: 'person-add-outline',
+            router: SCREEN_NAVIGATE.Employee_List_Screen,
+          },
+        ]
+      : []),
   ];
 };

@@ -1,15 +1,15 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import {SCREEN_NAVIGATE} from '../routersConfig/General.config';
 import {PRIMARY_COLOR} from '../../styles/colors.global';
 import {Text, TouchableOpacity, View} from 'react-native';
 import tw from '../../styles/twrnc.global';
 import useAppContext from '../../utils/hooks/useAppContext';
 import TabBottomRouterObj from '../routersConfig/TabBottom.config';
+import {IconCP} from '../../utils/icon.utils';
 
 const Tab = createBottomTabNavigator();
 
-function IconTabLabel({color, name, size = 20, isCustom = false}) {
+function IconTabLabel({color, name, size = 20, isCustom = false, typeIcon}) {
   return (
     <>
       {isCustom ? (
@@ -17,10 +17,10 @@ function IconTabLabel({color, name, size = 20, isCustom = false}) {
           style={tw.style(
             `w-[45px] h-[45px] rounded-full border-[2px] border-[${PRIMARY_COLOR}] items-center justify-center`,
           )}>
-          <Icon name={name} size={size} color={color} />
+          <IconCP name={name} size={size} color={color} typeIcon={typeIcon} />
         </View>
       ) : (
-        <Icon name={name} size={size} color={color} />
+        <IconCP name={name} size={size} color={color} typeIcon={typeIcon} />
       )}
     </>
   );
@@ -38,6 +38,8 @@ function TabBarCustom({state, descriptors, navigation}) {
         const label = options.tabBarLabel;
         const tabIconLabel = options.tabIconLabel;
         const isIconLabelCustom = options.isIconLabelCustom;
+        const iconName = options.iconName;
+        const typeIcon = options.typeIcon;
         const isFocused = state.index === index;
 
         const onPress = () => {
@@ -72,7 +74,8 @@ function TabBarCustom({state, descriptors, navigation}) {
             style={tw.style('flex-1 flex-col items-center gap-1 py-1')}>
             <IconTabLabel
               isCustom={isIconLabelCustom}
-              name={tabIconLabel}
+              name={iconName}
+              typeIcon={typeIcon}
               size={20}
               color={
                 isIconLabelCustom
@@ -99,13 +102,14 @@ function TabBarCustom({state, descriptors, navigation}) {
 
 export default function TabBottomCP() {
   const {state} = useAppContext();
-  const {isVisible_menu} = state.set_toggle;
+  const {isVisible_menu, submitting} = state.set_toggle;
   const {loader_slider_used} = state.set_data;
+  console.log('loader_slider_used?.state:', loader_slider_used?.state);
   return (
     <Tab.Navigator
       initialRouteName={SCREEN_NAVIGATE.Dashboard_Screen}
       tabBar={props =>
-        isVisible_menu || loader_slider_used?.state ? null : (
+        isVisible_menu || loader_slider_used?.state || submitting ? null : (
           <TabBarCustom {...props} />
         )
       }>
@@ -116,6 +120,8 @@ export default function TabBottomCP() {
           tabBarLabel,
           tabIconLabel,
           isIconLabelCustom,
+          iconName,
+          typeIcon,
         } = {
           ...TabBottomRouterObj[key],
         };
@@ -130,6 +136,8 @@ export default function TabBottomCP() {
               tabBarLabel: tabBarLabel,
               tabIconLabel: tabIconLabel,
               isIconLabelCustom: isIconLabelCustom,
+              iconName: iconName,
+              typeIcon: typeIcon || '',
             }}
           />
         );

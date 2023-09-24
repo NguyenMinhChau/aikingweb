@@ -57,9 +57,8 @@ export default function Login({navigation}) {
 
   // ?! CHECK CURRENT USER
   React.useEffect(() => {
-    getAsyncCacheLoaderSliderUsed(dispatch);
     const tokenAccess = accessToken?.accessToken;
-    if (currentUser?.user?.email && tokenAccess && isValidToken(tokenAccess)) {
+    if (currentUser?.user?.email && isValidToken(tokenAccess)) {
       navigation.navigate(SCREEN_NAVIGATE.Bottom_Tab_Screen);
     }
   }, []);
@@ -202,7 +201,7 @@ export default function Login({navigation}) {
   return (
     <>
       {isLoad ? (
-        <LoadingScreen navigation={navigation} />
+        <LoadingScreen />
       ) : loader_slider_used?.state ? (
         <LoaderSliderCP
           redirect={navigation}

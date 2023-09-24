@@ -24,3 +24,15 @@ export const CHAT_STATE = {
   image: null,
   data_chat: [],
 };
+
+export const ADMIN_STATE = {
+  list_user: [],
+  list_user_by_group: [],
+  list_post_plan: [],
+  list_user_time_keeping: [],
+  list_calculator_salary: [],
+  wage: 0,
+  date: '',
+  hours: 0,
+  group: '',
+};

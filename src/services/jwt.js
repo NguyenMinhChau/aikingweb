@@ -13,15 +13,6 @@ const {TYPE_TOAST} = require('../utils/toast.config');
 
 const isValidToken = accessToken => {
   if (!accessToken) {
-    ToastShow({
-      type: TYPE_TOAST.INFO,
-      propsMessage: {
-        message: 'Vui lòng đăng nhập lại!',
-        action: 'isValidToken',
-        pathFile: 'services/jwt.js',
-      },
-    });
-
     return false;
   }
   const decoded = jwtDecode(accessToken);
@@ -98,7 +89,6 @@ const processToken = async (
   setSession(accessToken, navigation, dispatch);
 
   try {
-    // TODO:
     const response = await axiosGetNoToken('auth/get-info-user-by-token');
 
     const user = {
@@ -107,16 +97,15 @@ const processToken = async (
 
     return user;
   } catch (error) {
-    const msg = error?.errors?.message || errorMessage(error);
-
-    ToastShow({
-      type: TYPE_TOAST.ERROR,
-      propsMessage: {
-        message: msg,
-        action: 'processToken',
-        pathFile: 'services/jwt.js',
-      },
-    });
+    // const msg = error?.errors?.message || errorMessage(error);
+    // ToastShow({
+    //   type: TYPE_TOAST.ERROR,
+    //   propsMessage: {
+    //     message: msg,
+    //     action: 'processToken',
+    //     pathFile: 'services/jwt.js',
+    //   },
+    // });
   }
 };
 

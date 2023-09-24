@@ -5,11 +5,11 @@ import {
   BLACK_COLOR,
   PRIMARY_COLOR,
   WHITE_COLOR,
-} from '../../../../styles/colors.global';
-import useAppContext from '../../../../utils/hooks/useAppContext';
-import {SET_DATA_PAYLOAD} from '../../../Context/AppContext.reducer';
-import tw from '../../../../styles/twrnc.global';
-import {yyyy_mm} from '../../../../utils/TimerFormat';
+} from '../../../src/styles/colors.global';
+import useAppContext from '../../../src/utils/hooks/useAppContext';
+import {SET_DATA_PAYLOAD} from '../../components/Context/AppContext.reducer';
+import tw from '../../../src/styles/twrnc.global';
+import {yyyy_mm} from '../../../src/utils/TimerFormat';
 
 export default function CalendarCP() {
   const {dispatch, state} = useAppContext();
@@ -30,8 +30,8 @@ export default function CalendarCP() {
   const renderArrow = direction => {
     const image =
       direction === 'left'
-        ? require('../../../../assets/images/icons/arrow_left.png')
-        : require('../../../../assets/images/icons/arrow_right.png');
+        ? require('../../../src/assets/images/icons/arrow_left.png')
+        : require('../../../src/assets/images/icons/arrow_right.png');
     return (
       <Image
         source={image}
@@ -97,6 +97,18 @@ export default function CalendarCP() {
     today: 'Hôm Nay',
   };
   LocaleConfig.defaultLocale = 'vi';
+
+  React.useEffect(() => {
+    dispatch(
+      SET_DATA_PAYLOAD({
+        key: 'date_time',
+        value: {
+          day: new Date(),
+          month: new Date(),
+        },
+      }),
+    );
+  }, []);
 
   return (
     <View style={tw``}>

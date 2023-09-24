@@ -19,7 +19,8 @@ export const useGetColorThemeDisplay = () => {
     },
   };
   const colors =
-    appearance_display?.value === 'dark'
+    appearance_display?.value === 'dark' ||
+    appearance_display?.value === 'dark-no-system'
       ? themeDark?.colors
       : themeLight?.colors;
 
