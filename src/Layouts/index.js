@@ -11,6 +11,7 @@ export { default as Deposits } from './Deposits/Deposits';
 export { default as DepositsWithdrawDetail } from './DepositsWithdrawDetail/DepositsWithdrawDetail';
 export { default as Withdraw } from './Withdraw/Withdraw';
 export { default as User } from './User/User';
+export { default as InfoCompany } from './InfoCompany/InfoCompany';
 export { default as Content } from './Contents/Content';
 export { default as HomeContent } from './HomeContent/HomeContent';
 export { default as CreateHomeContent } from './HomeContent/CreateHomeContent';

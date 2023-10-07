@@ -25,6 +25,7 @@ import {
 	CreateContactContent,
 	CreateForumContent,
 	CreateDeveloperContent,
+	InfoCompany,
 } from '../Layouts';
 
 import { PageNotFound } from '../components';
@@ -65,6 +66,7 @@ export const privateRouter = [
 	},
 	{ path: routers.user, component: User },
 	{ path: routers.content, component: Content },
+	{ path: routers.infoCompany, component: InfoCompany },
 	{
 		path: `${routers.content}/${routers.createhomecontent}`,
 		component: CreateHomeContent,

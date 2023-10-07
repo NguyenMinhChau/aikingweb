@@ -46,6 +46,11 @@ const LIST_SIDEBAR = [
 		path: routers.content,
 		icon: <Icons.ContentIcon className={`${cx('custom-icon')}`} />,
 	},
+	{
+		name: 'Thông tin công ty',
+		path: routers.infoCompany,
+		icon: <Icons.InfoIcon className={`${cx('custom-icon')}`} />,
+	},
 ];
 const LIST_SIDEBAR_USER = [];
 

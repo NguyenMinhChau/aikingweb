@@ -1,0 +1,14 @@
+.btn {
+	background-color: #fcc31f;
+	border: 1px solid #fcc31f !important;
+	color: #fff !important;
+}
+.btn:hover {
+	background-color: transparent !important;
+	color: #fcc31f !important;
+}
+
+.detail-title {
+	min-width: 100px;
+	font-size: 16px;
+}

@@ -14,6 +14,7 @@ const routers = {
 	contractAgriculture: '/contract-agriculture',
 	user: '/user',
 	content: '/content',
+	infoCompany: '/info-company',
 	createhomecontent: 'create-home-content',
 	updatehomecontent: 'update-content-home',
 	createintroducecontent: 'create-introduce-content',

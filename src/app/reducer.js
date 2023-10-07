@@ -25,6 +25,8 @@ const initialState = {
 			email: '',
 			password: '',
 			otpCode: '',
+			phone: '',
+			address: '',
 		},
 		pagination: {
 			page: 1,
