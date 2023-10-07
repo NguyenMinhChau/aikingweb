@@ -16,7 +16,7 @@ const AboutUsPage = () => {
 						title={`<b>Giới thiệu chung về <span class='text-primary'>Aiking Investment</span></b>`}
 						desc={[
 							`- Công Ty <b>TNHH MTV Đầu Tư Và Công Nghệ Aiking</b> được cấp phép hoạt động bởi Sở Kế Hoạch Đầu Tư Thành Phố Hồ Chí Minh ngày 07/07/2020.`,
-							`- <b>Tên giao dịch:</b> Công ty TNHH MTV Đầu tư và Công nghệ Aiking.`,
+							`- <b>Tên doanh nghiệp:</b> Công ty TNHH MTV Đầu tư và Công nghệ Aiking.`,
 							`- <b>Mã số thuế:</b> <i>0316370529</i>. `,
 						]}
 						urlImage={Introduce?.src}

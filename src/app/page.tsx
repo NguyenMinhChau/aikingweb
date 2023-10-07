@@ -19,10 +19,12 @@ export default function Home() {
 			<div className="container">
 				<div className="m-3">
 					<div className="text-[18px] text-justify leading-9">
-						<b className="text-primary">AIIKING INVETSMENT</b> mang
-						đến sự thịnh vượng, thảnh thơi, an nhàn cho quý khách
-						hàng, quý đối tác. Chúng tôi không ngừng xây dựng phát
-						triển để cho khách hàng trải nghiệm các dịch vụ tốt
+						<b className="text-primary">
+							Công ty TNHH MTV Đầu tư và Công nghệ Aiking
+						</b>{' '}
+						mang đến sự thịnh vượng, thảnh thơi, an nhàn cho quý
+						khách hàng, quý đối tác. Chúng tôi không ngừng xây dựng
+						phát triển để cho khách hàng trải nghiệm các dịch vụ tốt
 						nhất. Tại <b className="text-primary">AIKING</b>, chúng
 						tôi có:
 					</div>
