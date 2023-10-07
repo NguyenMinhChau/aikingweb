@@ -14,6 +14,8 @@ import SalaryDetailScreen from '../screen/Department/GeneralComponent/SalaryDeta
 import VerifyTimeKeepingScreen from '../screen/Admin/VerifyTimeKeeping/VerifyTimeKeeping';
 import PlanDetailScreen from '../screen/Plan/PlanDetail';
 import EmployeeListScreen from '../screen/Admin/EmployeeList/EmployeeList';
+import AppInfoScreen from '../screen/Setting/AppInfo';
+import WebViewReviewScreen from '../screen/WebViewReview/WebViewReview';
 
 const {
   Login_Screen,
@@ -28,8 +30,10 @@ const {
   Verify_TimeKeeping_Screnn,
   Plan_Detail_Screen,
   Bottom_Tab_Screen,
+  AppInfo_Screen,
   LoaderSliderCP_Screen,
   Employee_List_Screen,
+  WebView_Review_Screen,
 } = SCREEN_NAVIGATE;
 
 export const TabHomeStackRouterObj = {
@@ -102,6 +106,18 @@ export const TabHomeStackRouterObj = {
   },
   [Plan_Detail_Screen]: {
     screen: PlanDetailScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  [AppInfo_Screen]: {
+    screen: AppInfoScreen,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  [WebView_Review_Screen]: {
+    screen: WebViewReviewScreen,
     navigationOptions: {
       headerShown: false,
     },

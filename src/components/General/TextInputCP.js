@@ -10,6 +10,7 @@ const TextInputCP = (
     label,
     disabled = false,
     placeholder,
+    placeholderTextColor,
     error = false,
     style,
     contentStyle,
@@ -25,7 +26,7 @@ const TextInputCP = (
     keyboardType = 'default',
     autoCorrect = false,
     returnKeyType = 'next',
-    cursorColor = '#000',
+    cursorColor = '#000000',
     theme = {
       colors: {
         primary: tw.color('gray-500'),
@@ -48,7 +49,9 @@ const TextInputCP = (
       })}
       cursorColor={cursorColor}
       textColor={textColor}
-      placeholderTextColor={tw.color('gray-400')}
+      placeholderTextColor={
+        placeholderTextColor ? placeholderTextColor : tw.color('gray-400')
+      }
       error={error}
       outlineColor={outlineColor}
       outlineStyle={tw.style('rounded-lg', {...outlinedStyle})}

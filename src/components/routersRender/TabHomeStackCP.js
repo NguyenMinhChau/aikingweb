@@ -46,7 +46,12 @@ export default function TabHomeStackCP() {
               key={index}
               name={key}
               component={screen}
-              options={navigationOptions}
+              options={{
+                presentation: 'containedTransparentModal',
+                animationTypeForReplace: 'push',
+                animation: 'fade',
+                ...navigationOptions,
+              }}
             />
           );
         })}

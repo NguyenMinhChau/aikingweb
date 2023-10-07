@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Image,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Image, ScrollView, TouchableOpacity} from 'react-native';
 import {useColorScheme} from 'react-native';
 import tw from '../../../styles/twrnc.global';
 import {MAIN_COLOR} from '../../../styles/colors.global';
@@ -16,6 +10,7 @@ import {
   getAsyncCacheSettingAppearance,
   setAsyncCacheSettingAppearance,
 } from '../../../utils/cache.services';
+import BannerNestedScreen from '../../General/BannerNestedScreen';
 
 export default function AppearanceScreen({navigation}) {
   const {state, dispatch} = useAppContext();
@@ -32,25 +27,15 @@ export default function AppearanceScreen({navigation}) {
   ];
   return (
     <View style={tw`flex-1 flex-col bg-[${MAIN_COLOR}]`}>
-      <View style={tw`flex-row items-center justify-between z-20 p-2`}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => navigation.goBack()}>
-          <Iconify icon="ic:baseline-arrow-back" size={25} color="#fff" />
-        </TouchableOpacity>
-        <View style={tw`w-[60px] h-[40px]`}>
-          <Image
-            source={require('../../../assets/images/logo_company/logo_square.png')}
-            style={tw`w-full h-full`}
-            resizeMode="contain"
-          />
-        </View>
-      </View>
+      <BannerNestedScreen navigation={navigation} title="Giao diện hiển thị" />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tw.style('p-3 flex-grow bg-white')}>
         <View style={tw`flex-col gap-2`}>
-          <View style={tw`flex-col gap-2`}>
+          <View
+            style={tw.style(
+              'rounded-lg bg-white p-2 shadow-md flex-col gap-3',
+            )}>
             <RadioGroupCP
               dataOptions={DATA_RADIO_APPEARANCE}
               valueSelect={appearance_display}

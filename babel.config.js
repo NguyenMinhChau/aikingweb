@@ -6,7 +6,6 @@ module.exports = {
     },
   },
   plugins: [
-    'react-native-reanimated/plugin',
     'react-native-iconify/plugin',
     [
       'module:react-native-dotenv',
@@ -16,5 +15,6 @@ module.exports = {
         path: '.env',
       },
     ],
+    'react-native-reanimated/plugin',
   ],
 };

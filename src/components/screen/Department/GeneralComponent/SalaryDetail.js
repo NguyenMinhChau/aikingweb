@@ -17,6 +17,9 @@ import {formatVND} from '../../../../utils/money.utils';
 import {fList} from '../../../../utils/array.utils';
 import {dd_mm_yy_hh_mm_ss} from '../../../../utils/TimerFormat';
 import RenderTagCP from '../../../General/RenderTag';
+import BannerNestedScreen from '../../../General/BannerNestedScreen';
+import {EMPTY_CHAR} from '../../../../helpers/_empty';
+import FastImageCP from '../../../General/FastImageCP';
 
 export default function SalaryDetailScreen({navigation, route}) {
   const {data, day, month} = route.params;
@@ -91,20 +94,11 @@ export default function SalaryDetailScreen({navigation, route}) {
 
   return (
     <View style={tw`flex-1 flex-col bg-[${MAIN_COLOR}]`}>
-      <View style={tw`flex-row items-center justify-between z-20 p-2`}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => navigation.goBack()}>
-          <Iconify icon="ic:baseline-arrow-back" size={25} color="#fff" />
-        </TouchableOpacity>
-        <View style={tw`w-[60px] h-[40px]`}>
-          <Image
-            source={require('../../../../assets/images/logo_company/logo_square.png')}
-            style={tw`w-full h-full`}
-            resizeMode="contain"
-          />
-        </View>
-      </View>
+      <BannerNestedScreen
+        navigation={navigation}
+        title={`Bảng lương chi tiết, ${name || EMPTY_CHAR}`}
+        styleText={tw.style('text-[14px]')}
+      />
       <View style={tw.style('flex-1 bg-white py-2 px-3')}>
         <View style={tw.style('mb-2 flex-row')}>
           <Text style={tw.style('text-black font-bold')}>Bảng lương, </Text>
@@ -189,6 +183,11 @@ export default function SalaryDetailScreen({navigation, route}) {
             />
           ) : (
             <View style={tw.style('items-center justify-center flex-1')}>
+              <FastImageCP
+                uriLocal={require('../../../../assets/images/no_data.png')}
+                resizeMode="contain"
+                style={tw.style('w-full h-[200px]')}
+              />
               <Text style={tw.style('text-center text-black italic')}>
                 Không tìm thấy dữ liệu
               </Text>

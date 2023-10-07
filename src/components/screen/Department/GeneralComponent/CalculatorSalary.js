@@ -23,6 +23,8 @@ import {SET_DATA_PAYLOAD} from '../../../Context/AppContext.reducer';
 import {fList} from '../../../../utils/array.utils';
 import {yyyy_mm} from '../../../../utils/TimerFormat';
 import {useRefreshList} from '../../../../utils/refreshList.utils';
+import BannerNestedScreen from '../../../General/BannerNestedScreen';
+import FastImageCP from '../../../General/FastImageCP';
 
 export default function CalculatorSalaryScreen({navigation}) {
   const {state, dispatch} = useAppContext();
@@ -55,7 +57,7 @@ export default function CalculatorSalaryScreen({navigation}) {
           });
         }}>
         <Image
-          source={require('../../../../assets/images/logo_company/logo_square.png')}
+          source={require('../../../../assets/images/Info/avatar_placeholder.png')}
           resizeMode="contain"
           style={tw.style(
             'w-[50px] h-[50px] border border-gray-200 rounded-full',
@@ -108,20 +110,10 @@ export default function CalculatorSalaryScreen({navigation}) {
 
   return (
     <View style={tw`flex-1 flex-col bg-[${MAIN_COLOR}]`}>
-      <View style={tw`flex-row items-center justify-between z-20 p-2`}>
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => navigation.goBack()}>
-          <Iconify icon="ic:baseline-arrow-back" size={25} color="#fff" />
-        </TouchableOpacity>
-        <View style={tw`w-[60px] h-[40px]`}>
-          <Image
-            source={require('../../../../assets/images/logo_company/logo_square.png')}
-            style={tw`w-full h-full`}
-            resizeMode="contain"
-          />
-        </View>
-      </View>
+      <BannerNestedScreen
+        navigation={navigation}
+        title="Tính lương nhân viên"
+      />
       <CalendarCP />
       <View style={tw.style('flex-row px-3 bg-white')}>
         <Text style={tw.style('text-black font-bold')}>Bảng lương: </Text>
@@ -170,6 +162,11 @@ export default function CalculatorSalaryScreen({navigation}) {
               contentContainerStyle={tw.style(
                 'items-center justify-center flex-1',
               )}>
+              <FastImageCP
+                uriLocal={require('../../../../assets/images/no_data.png')}
+                resizeMode="contain"
+                style={tw.style('w-full h-[200px]')}
+              />
               <Text style={tw.style('text-center text-black italic')}>
                 Không tìm thấy dữ liệu
               </Text>

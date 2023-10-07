@@ -25,7 +25,6 @@ import {useLayoutAnimation} from '../../../utils/LayoutAnimation';
 import {DATA_MENU} from './config';
 import {ToastShow} from '../../../utils/Toast';
 import {TYPE_TOAST} from '../../../utils/toast.config';
-import {requestCameraPermission} from '../../../utils/camera.permission';
 import {useRefreshList} from '../../../utils/refreshList.utils';
 import {onCopyToClipboard} from '../../../utils/copy.clipboard';
 import moment from 'moment';
@@ -48,6 +47,8 @@ import {formatVND} from '../../../utils/money.utils';
 import {IconCP} from '../../../utils/icon.utils';
 import TextInputCP from '../../General/TextInputCP';
 import LoadingScreen from '../../General/LoadingScreen';
+import FastImageCP from '../../General/FastImageCP';
+import {TYPE_ACCESS, requestPermission} from '../../../utils/MgnAccess/config';
 
 const MAX_IMAGES = 1;
 
@@ -394,7 +395,7 @@ export default function TimeKeepingScreen({navigation}) {
         } else if (response.error) {
           console.log('ImagePicker Error: ', response.error);
         } else {
-          const image = response.assets[0];
+          const image = response?.assets?.[0];
           const body = {
             fileBinary: image.base64,
             nameFile: image.fileName || `image_${Date.now()}`,
@@ -419,15 +420,14 @@ export default function TimeKeepingScreen({navigation}) {
       includeBase64: true,
       quality: 1,
     };
-
-    await requestCameraPermission();
+    await requestPermission(TYPE_ACCESS.CAMERA);
     await launchCamera(options, response => {
       if (response.didCancel) {
         console.log('User cancelled camera');
       } else if (response.error) {
         console.log('Camera Error: ', response.error);
       } else {
-        const image = response.assets[0];
+        const image = response?.assets?.[0];
         if (image) {
           const body = {
             fileBinary: image.base64,
@@ -585,6 +585,11 @@ export default function TimeKeepingScreen({navigation}) {
                   contentContainerStyle={tw.style(
                     'flex-1 items-center justify-center',
                   )}>
+                  <FastImageCP
+                    uriLocal={require('../../../assets/images/no_data.png')}
+                    resizeMode="contain"
+                    style={tw.style('w-full h-[200px]')}
+                  />
                   <Text
                     style={tw.style(
                       'text-[14px] text-black text-center italic',

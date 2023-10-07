@@ -1,34 +1,13 @@
 import React from 'react';
-import {View, TouchableOpacity, Image, Dimensions} from 'react-native';
-import NavPane from '../NavPane/NavPane';
+import {View, Image} from 'react-native';
 import {SCREEN_NAVIGATE} from '../../routersConfig/General.config';
 import tw from '../../../styles/twrnc.global';
 import useAppContext from '../../../utils/hooks/useAppContext';
 import {SET_TOGGLE_PAYLOAD} from '../../Context/AppContext.reducer';
-import {useLayoutAnimation} from '../../../utils/LayoutAnimation';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 import {MAIN_COLOR} from '../../../styles/colors.global';
-import {IconCP} from '../../../utils/icon.utils';
 
 const Banner = ({navigation}) => {
-  const {dispatch, state} = useAppContext();
-  const {isVisible_menu} = state.set_toggle;
-  const {LayoutAnimationConfig, ANIMATION_PROPERTY, ANIMATION_TYPE} =
-    useLayoutAnimation();
-
-  const toggleVisibility = e => {
-    e.stopPropagation();
-    dispatch(
-      SET_TOGGLE_PAYLOAD({key: 'isVisible_menu', value: !isVisible_menu}),
-    );
-    LayoutAnimationConfig(
-      100,
-      ANIMATION_TYPE.EASE_IN_EASE_OUT,
-      ANIMATION_PROPERTY.OPACITY,
-    );
-  };
-
-  const heightDevice = Dimensions.get('window').height;
+  const {dispatch} = useAppContext();
 
   return (
     <View
@@ -52,41 +31,6 @@ const Banner = ({navigation}) => {
           resizeMode="contain"
         />
       </View>
-      {/* Menu toggle */}
-      <TouchableOpacity
-        onPress={toggleVisibility}
-        style={tw.style('absolute top-[30%] right-0  mr-6', {zIndex: 100})}>
-        <IconCP
-          name={isVisible_menu ? 'close-outline' : 'list-outline'}
-          size={35}
-          color="#fff"
-        />
-      </TouchableOpacity>
-      {isVisible_menu && (
-        <View
-          style={tw.style(
-            `absolute top-[100%] left-0 w-full h-full min-h-[${
-              heightDevice - 60
-            }px] flex-grow bottom-0 bg-black bg-opacity-40`,
-          )}
-          onTouchStart={toggleVisibility}>
-          <View
-            style={tw`w-[75%] h-full bg-white p-2`}
-            onTouchStart={e => {
-              e.stopPropagation();
-              if (isVisible_menu) {
-                dispatch(
-                  SET_TOGGLE_PAYLOAD({
-                    key: 'isVisible_menu',
-                    value: true,
-                  }),
-                );
-              }
-            }}>
-            <NavPane navigation={navigation} />
-          </View>
-        </View>
-      )}
     </View>
   );
 };

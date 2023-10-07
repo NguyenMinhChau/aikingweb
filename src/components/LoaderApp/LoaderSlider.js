@@ -8,6 +8,7 @@ import Footer from '../General/Footer';
 import {SCREEN_NAVIGATE} from '../routersConfig/General.config';
 import useAppContext from '../../utils/hooks/useAppContext';
 import {fList} from '../../utils/array.utils';
+import FastImage from 'react-native-fast-image';
 
 const IMAGE_SLIDER = [
   require('../../assets/images/slider_images/image_six.png'),
@@ -27,20 +28,26 @@ export default function LoaderSliderCP({redirect, onClick}) {
         style={tw.style(
           'flex-1 flex-col bg-white items-center justify-center',
         )}>
-        <View style={tw.style('h-[60%] w-full bg-gray-100')}>
+        <View style={tw.style('h-[60%] w-full bg-white')}>
           <SliderBox
+            ImageComponent={FastImage}
             images={IMAGE_SLIDER}
             sliderBoxHeight={500}
             paginationBoxVerticalPadding={20}
             autoplay
-            circleLoop
+            autoplayInterval={5000}
             resizeMethod={'resize'}
+            // resizeMode={'contain'}
             resizeMode={'cover'}
-            paginationBoxStyle={tw.style('mt-0')}
+            paginationBoxStyle={tw.style(
+              'absolute bottom-0 p-0 m-0 items-center justify-center py-4 self-center',
+            )}
             dotColor={PRIMARY_COLOR}
             inactiveDotColor={tw.color('gray-400')}
-            dotStyle={tw.style('h-2 w-5 rounded-lg')}
-            ImageComponentStyle={tw.style('w-full h-full')}
+            dotStyle={tw.style('h-1 w-4 rounded-lg')}
+            ImageComponentStyle={tw.style(
+              'w-[95%] h-[95%] bg-white shadow rounded-lg',
+            )}
             imageLoadingColor={PRIMARY_COLOR}
           />
         </View>

@@ -5,11 +5,12 @@ import Banner from '../../Banner/Banner';
 import RowDialogCP from '../../../General/Dialog/RowDialogCP';
 import {Iconify} from 'react-native-iconify';
 import {SCREEN_NAVIGATE} from '../../../routersConfig/General.config';
+import BannerNestedScreen from '../../../General/BannerNestedScreen';
 
 export default function HRScreen({navigation}) {
   return (
     <View style={tw`flex-1 flex-col bg-white`}>
-      <Banner navigation={navigation} />
+      <BannerNestedScreen navigation={navigation} title="Nhân sự" />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={tw.style('p-3 flex-grow bg-white')}>

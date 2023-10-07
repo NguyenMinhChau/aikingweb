@@ -1,14 +1,7 @@
 import React from 'react';
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  Image,
-  Dimensions,
-  SafeAreaView,
-  FlatList,
-} from 'react-native';
+import {View, TouchableOpacity, Text, Dimensions, FlatList} from 'react-native';
 import Banner from '../Banner/Banner';
+import {SliderBox} from 'react-native-image-slider-box';
 import tw from '../../../styles/twrnc.global';
 import {Iconify} from 'react-native-iconify';
 import {CARD_DATA} from './Dashboard.data';
@@ -19,11 +12,11 @@ import {
 import useAppContext from '../../../utils/hooks/useAppContext';
 import {
   BLACK_COLOR,
-  MAIN_COLOR,
   MAIN_TEXT_COLOR,
   PRIMARY_COLOR,
+  WHITE_COLOR,
 } from '../../../styles/colors.global';
-import {isValidToken, processToken} from '../../../services/jwt';
+import {isValidToken} from '../../../services/jwt';
 import {AUTH_RETRIEVE} from '../../../services/auth';
 import {SCREEN_NAVIGATE} from '../../routersConfig/General.config';
 import {ToastShow} from '../../../utils/Toast';
@@ -35,6 +28,16 @@ import {
   setAsyncCacheLoaderSliderUsed,
 } from '../../../utils/cache.services';
 import {IconCP} from '../../../utils/icon.utils';
+import FastImage from 'react-native-fast-image';
+
+const IMAGE_SLIDER = [
+  require('../../../assets/images/slider_images/image_six.png'),
+  require('../../../assets/images/slider_images/image_seven.png'),
+  require('../../../assets/images/slider_images/image_eight.png'),
+  require('../../../assets/images/slider_images/image_night.png'),
+  require('../../../assets/images/slider_images/image_one.png'),
+  require('../../../assets/images/slider_images/image_two.png'),
+];
 
 const DashboardPage = ({navigation, route}) => {
   const {dispatch, state} = useAppContext();
@@ -164,7 +167,32 @@ const DashboardPage = ({navigation, route}) => {
       ) : (
         <View style={tw`flex-1 justify-start items-start bg-white`}>
           <Banner navigation={navigation} />
-
+          <View
+            style={tw.style('h-[30%] w-full', {
+              backgroundColor: WHITE_COLOR,
+            })}>
+            <SliderBox
+              ImageComponent={FastImage}
+              images={IMAGE_SLIDER}
+              sliderBoxHeight={200}
+              paginationBoxVerticalPadding={20}
+              autoplay
+              autoplayInterval={5000}
+              resizeMethod={'resize'}
+              // resizeMode={'contain'}
+              resizeMode={'cover'}
+              paginationBoxStyle={tw.style(
+                'absolute bottom-0 p-0 m-0 items-center justify-center py-4 self-center',
+              )}
+              dotColor={PRIMARY_COLOR}
+              inactiveDotColor={tw.color('gray-400')}
+              dotStyle={tw.style('h-1 w-4 rounded-lg')}
+              ImageComponentStyle={tw.style(
+                'w-[97%] my-2 bg-white shadow rounded-lg',
+              )}
+              imageLoadingColor={PRIMARY_COLOR}
+            />
+          </View>
           <View
             style={tw.style(`flex-1 w-full `, {
               backgroundColor: colors.background,

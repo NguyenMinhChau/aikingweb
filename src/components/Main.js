@@ -32,7 +32,6 @@ import {
   PRIMARY_COLOR,
 } from '../styles/colors.global';
 import LoaderGifCP from './LoaderApp/LoaderGif';
-import LoadingScreen from './General/LoadingScreen';
 
 export default function Main() {
   const {dispatch, state} = useAppContext();
@@ -59,24 +58,20 @@ export default function Main() {
     };
     checkSettingAppearance();
     const initCheckApp = async () => {
-      VersionCheck.needUpdate({
-        packageName: PACKAGE_NAME_APP,
-      }).then(async res => {
-        if (res?.isNeeded) {
-          setIsUpdateApp(true);
-          setVersionNewApp(res?.latestVersion);
-        } else {
-          setIsUpdateApp(false);
-          setVersionNewApp(null);
-        }
-      });
+      // VersionCheck.needUpdate({
+      //   packageName: PACKAGE_NAME_APP,
+      // }).then(async res => {
+      //   if (res?.isNeeded) {
+      //     setIsUpdateApp(true);
+      //     setVersionNewApp(res?.latestVersion);
+      //   } else {
+      //     setIsUpdateApp(false);
+      //     setVersionNewApp(null);
+      //   }
+      // });
       setLoaderGif(true);
       setTimeout(() => {
         setLoaderGif(false);
-        // setLoaderBgc(true);
-        // setTimeout(() => {
-        //   setLoaderBgc(false);
-        // }, 2000);
       }, 2000);
     };
     initCheckApp();

@@ -12,7 +12,6 @@ import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import tw from '../../../styles/twrnc.global';
 import {
   CRITICAL_COLOR,
-  MAIN_COLOR,
   MAIN_TEXT_COLOR,
   PRIMARY_COLOR,
   WARNING_COLOR,
@@ -30,12 +29,13 @@ import {SCREEN_NAVIGATE} from '../../routersConfig/General.config';
 import ModalCP from '../../General/ModalCP';
 import {ToastShow} from '../../../utils/Toast';
 import {TYPE_TOAST} from '../../../utils/toast.config';
-import {requestCameraPermission} from '../../../utils/camera.permission';
 import {CREATE_NEW_PLAN, GET_LIST_POST_PLAN} from '../../../services/admin';
 import LoadingScreen from '../../General/LoadingScreen';
 import {URL_SERVER} from '@env';
 import {fList} from '../../../utils/array.utils';
 import {useRefreshList} from '../../../utils/refreshList.utils';
+import FastImageCP from '../../General/FastImageCP';
+import {TYPE_ACCESS, requestPermission} from '../../../utils/MgnAccess/config';
 
 const MAX_IMAGES = 1;
 
@@ -134,7 +134,7 @@ export default function PlanCP({navigation}) {
         } else if (response.error) {
           console.log('ImagePicker Error: ', response.error);
         } else {
-          const image = response.assets[0];
+          const image = response?.assets[0];
           const body = {
             fileBinary: image.base64,
             nameFile: image.fileName || `image_${Date.now()}`,
@@ -155,16 +155,14 @@ export default function PlanCP({navigation}) {
       includeBase64: true,
       quality: 1,
     };
-
-    await requestCameraPermission();
-
+    await requestPermission(TYPE_ACCESS.CAMERA);
     await launchCamera(options, response => {
       if (response.didCancel) {
         console.log('User cancelled camera');
       } else if (response.error) {
         console.log('Camera Error: ', response.error);
       } else {
-        const image = response.assets[0];
+        const image = response?.assets?.[0];
         if (image) {
           const body = {
             fileBinary: image.base64,
@@ -301,6 +299,11 @@ export default function PlanCP({navigation}) {
                     />
                   }
                   showsVerticalScrollIndicator={false}>
+                  <FastImageCP
+                    uriLocal={require('../../../assets/images/no_data.png')}
+                    resizeMode="contain"
+                    style={tw.style('w-full h-[200px]')}
+                  />
                   <Text style={tw.style('text-center text-black italic')}>
                     Chưa có kế hoạch nào
                   </Text>

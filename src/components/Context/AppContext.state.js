@@ -36,3 +36,8 @@ export const ADMIN_STATE = {
   hours: 0,
   group: '',
 };
+
+export const FILE_STATE = {
+  file_list: [],
+  file_singer: null,
+};

@@ -17,6 +17,8 @@ export const SCREEN_NAVIGATE = {
   Verify_TimeKeeping_Screnn: 'Duyệt bảng lương',
   Plan_Screen: 'Kế hoạch',
   Plan_Detail_Screen: 'Chi tiết kế hoạch',
+  AppInfo_Screen: 'Thông tin ứng dụng',
+  WebView_Review_Screen: 'WebView Review',
   Bottom_Tab_Screen: 'MainPage',
   LoaderSliderCP_Screen: 'LoaderSliderCP',
 };

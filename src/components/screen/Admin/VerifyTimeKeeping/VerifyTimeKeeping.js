@@ -38,6 +38,8 @@ import LoadingScreen from '../../../General/LoadingScreen';
 import Banner from '../../Banner/Banner';
 import RenderTagCP from '../../../General/RenderTag';
 import {useRefreshList} from '../../../../utils/refreshList.utils';
+import FastImageCP from '../../../General/FastImageCP';
+import BannerNestedScreen from '../../../General/BannerNestedScreen';
 
 export default function VerifyTimeKeepingScreen({navigation}) {
   const {state, dispatch} = useAppContext();
@@ -198,13 +200,8 @@ export default function VerifyTimeKeepingScreen({navigation}) {
         <LoadingScreen />
       ) : (
         <View style={tw`flex-1 flex-col bg-white`}>
-          <Banner navigation={navigation} />
+          <BannerNestedScreen navigation={navigation} title="Duyệt chấm công" />
           <View style={tw.style('bg-white px-3 py-1')}>
-            <View style={tw`flex-row items-center mb-2`}>
-              <Text style={tw`text-[${MAIN_TEXT_COLOR}] font-bold text-[20px]`}>
-                Duyệt chấm công
-              </Text>
-            </View>
             <TextInputCP
               name="search"
               value={search}
@@ -243,6 +240,11 @@ export default function VerifyTimeKeepingScreen({navigation}) {
                   contentContainerStyle={tw.style(
                     'items-center justify-center flex-1',
                   )}>
+                  <FastImageCP
+                    uriLocal={require('../../../../assets/images/no_data.png')}
+                    resizeMode="contain"
+                    style={tw.style('w-full h-[200px]')}
+                  />
                   <Text style={tw.style('text-center text-black italic')}>
                     Không tìm thấy dữ liệu
                   </Text>

@@ -27,10 +27,11 @@ import {
 import LoadingScreen from '../../General/LoadingScreen';
 import ModalCP from '../../General/ModalCP';
 import TextInputCP from '../../General/TextInputCP';
-import {requestCameraPermission} from '../../../utils/camera.permission';
 import {TYPE_TOAST} from '../../../utils/toast.config';
 import {ToastShow} from '../../../utils/Toast';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {TYPE_ACCESS, requestPermission} from '../../../utils/MgnAccess/config';
+import BannerNestedScreen from '../../General/BannerNestedScreen';
 
 const MAX_IMAGES = 1;
 
@@ -80,7 +81,7 @@ export default function PlanDetailScreen({navigation, route}) {
         } else if (response.error) {
           console.log('ImagePicker Error: ', response.error);
         } else {
-          const image = response.assets[0];
+          const image = response?.assets?.[0];
           const body = {
             fileBinary: image.base64,
             nameFile: image.fileName || `image_${Date.now()}`,
@@ -100,16 +101,14 @@ export default function PlanDetailScreen({navigation, route}) {
       includeBase64: true,
       quality: 1,
     };
-
-    await requestCameraPermission();
-
+    await requestPermission(TYPE_ACCESS.CAMERA);
     await launchCamera(options, response => {
       if (response.didCancel) {
         console.log('User cancelled camera');
       } else if (response.error) {
         console.log('Camera Error: ', response.error);
       } else {
-        const image = response.assets[0];
+        const image = response?.assets?.[0];
         if (image) {
           const body = {
             fileBinary: image.base64,
@@ -182,20 +181,10 @@ export default function PlanDetailScreen({navigation, route}) {
         <LoadingScreen />
       ) : (
         <View style={tw`flex-1 flex-col bg-[${MAIN_COLOR}]`}>
-          <View style={tw`flex-row items-center justify-between z-20 p-2`}>
-            <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => navigation.goBack()}>
-              <Iconify icon="ic:baseline-arrow-back" size={25} color="#fff" />
-            </TouchableOpacity>
-            <View style={tw`w-[60px] h-[40px]`}>
-              <Image
-                source={require('../../../assets/images/logo_company/logo_square.png')}
-                style={tw`w-full h-full`}
-                resizeMode="contain"
-              />
-            </View>
-          </View>
+          <BannerNestedScreen
+            navigation={navigation}
+            title="Chi tiết kế hoạch"
+          />
           <ScrollView
             showsVerticalScrollIndicator={false}
             contentContainerStyle={tw.style('p-3 flex-grow bg-white')}>

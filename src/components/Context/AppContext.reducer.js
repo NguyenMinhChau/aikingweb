@@ -3,6 +3,7 @@ import {
   ADMIN_STATE,
   CHAT_STATE,
   DATE_TIME_STATE,
+  FILE_STATE,
   PLAN_POST_STATE,
   USER_LIST_STATE,
 } from './AppContext.state';
@@ -20,12 +21,14 @@ const initialStateApp = {
     month: '',
     date_time: DATE_TIME_STATE,
     chat: CHAT_STATE,
+    file: FILE_STATE,
     user_list: USER_LIST_STATE,
     plan_post: PLAN_POST_STATE,
     admin: ADMIN_STATE,
   },
   set_toggle: {
     isVisible_menu: false,
+    isVisible_search: false,
     submitting: false,
   },
 };
