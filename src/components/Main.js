@@ -58,17 +58,17 @@ export default function Main() {
     };
     checkSettingAppearance();
     const initCheckApp = async () => {
-      // VersionCheck.needUpdate({
-      //   packageName: PACKAGE_NAME_APP,
-      // }).then(async res => {
-      //   if (res?.isNeeded) {
-      //     setIsUpdateApp(true);
-      //     setVersionNewApp(res?.latestVersion);
-      //   } else {
-      //     setIsUpdateApp(false);
-      //     setVersionNewApp(null);
-      //   }
-      // });
+      VersionCheck.needUpdate({
+        packageName: PACKAGE_NAME_APP,
+      }).then(async res => {
+        if (res?.isNeeded) {
+          setIsUpdateApp(true);
+          setVersionNewApp(res?.latestVersion);
+        } else {
+          setIsUpdateApp(false);
+          setVersionNewApp(null);
+        }
+      });
       setLoaderGif(true);
       setTimeout(() => {
         setLoaderGif(false);

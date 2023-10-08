@@ -1,20 +1,8 @@
 import React from 'react';
-import {
-  View,
-  Image,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Linking,
-} from 'react-native';
+import {View, Text, ScrollView, Linking} from 'react-native';
 import tw from '../../../styles/twrnc.global';
 import {IconCP} from '../../../utils/icon.utils';
-import {
-  BLACK_COLOR,
-  MAIN_COLOR,
-  PRIMARY_COLOR,
-  WHITE_COLOR,
-} from '../../../styles/colors.global';
+import {BLACK_COLOR, PRIMARY_COLOR} from '../../../styles/colors.global';
 import RowDialogCP from '../../General/Dialog/RowDialogCP';
 import {DATA_SETTING_APP_INFO_CONFIG} from './config';
 import DeviceInfo from 'react-native-device-info';
@@ -33,17 +21,17 @@ export default function AppInfoScreen({navigation}) {
 
   React.useEffect(() => {
     const initCheckApp = async () => {
-      // VersionCheck.needUpdate({
-      //   packageName: PACKAGE_NAME_APP,
-      // }).then(async res => {
-      //   if (res?.isNeeded) {
-      //     setIsUpdateApp(true);
-      //     setVersionNewApp(res?.latestVersion);
-      //   } else {
-      //     setIsUpdateApp(false);
-      //     setVersionNewApp(null);
-      //   }
-      // });
+      VersionCheck.needUpdate({
+        packageName: PACKAGE_NAME_APP,
+      }).then(async res => {
+        if (res?.isNeeded) {
+          setIsUpdateApp(true);
+          setVersionNewApp(res?.latestVersion);
+        } else {
+          setIsUpdateApp(false);
+          setVersionNewApp(null);
+        }
+      });
     };
     initCheckApp();
   }, []);
