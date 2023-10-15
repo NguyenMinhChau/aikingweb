@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, TouchableOpacity, Text, Dimensions, FlatList} from 'react-native';
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  Dimensions,
+  FlatList,
+  Platform,
+} from 'react-native';
 import Banner from '../Banner/Banner';
 import {SliderBox} from 'react-native-image-slider-box';
 import tw from '../../../styles/twrnc.global';
@@ -29,6 +36,7 @@ import {
 } from '../../../utils/cache.services';
 import {IconCP} from '../../../utils/icon.utils';
 import FastImage from 'react-native-fast-image';
+import {onDisplayNotification} from '../../../utils/notification.utils';
 
 const IMAGE_SLIDER = [
   require('../../../assets/images/slider_images/image_six.png'),
@@ -66,10 +74,8 @@ const DashboardPage = ({navigation, route}) => {
           AUTH_RETRIEVE({dispatch, state, data: null, accessToken: null});
           ToastShow({
             type: TYPE_TOAST.INFO,
-            propsMessage: {
+            props: {
               message: 'Hết phiên đăng nhập!',
-              action: 'isValidToken',
-              pathFile: 'services/jwt.js',
             },
           });
           navigation.navigate(SCREEN_NAVIGATE.Login_Screen);
@@ -81,18 +87,6 @@ const DashboardPage = ({navigation, route}) => {
     };
     initialize();
   }, []);
-
-  const handleCardPress = cardId => {
-    console.log('Card ID: ', cardId);
-    ToastShow({
-      type: TYPE_TOAST.INFO,
-      propsMessage: {
-        message: 'Giao diện đang được phát triển!',
-        action: 'handleCardPress',
-        pathFile: 'components/screen/Dashboard/Dashboard.js',
-      },
-    });
-  };
 
   const handleRedirect = (router, group) => {
     navigation.navigate({
@@ -138,7 +132,10 @@ const DashboardPage = ({navigation, route}) => {
           );
           item?.router
             ? handleRedirect(item?.router, item?.group)
-            : handleCardPress(item.id);
+            : onDisplayNotification({
+                title: 'Thông báo',
+                body: 'Giao diện đang được phát triển',
+              });
         }}>
         <IconCP
           name={item?.iconName}

@@ -23,7 +23,6 @@ import {ActivityIndicator} from 'react-native-paper';
 import LoadingScreen from '../../General/LoadingScreen';
 import {
   AUTH_REGISTER,
-  AUTH_RETRIEVE,
   AUTH_SEND_OTP_CODE,
   AUTH_VERIFY_OTP_CODE,
 } from '../../../services/auth.js';
@@ -36,6 +35,8 @@ import {
   getAsyncCacheLoaderSliderUsed,
   setAsyncCacheLoaderSliderUsed,
 } from '../../../utils/cache.services.js';
+import CustomSelectCP from '../../General/CustomSelectCP.js';
+import {DATA_DEPARTMENT} from './config.js';
 
 const checkEnvDev = ENV === 'development';
 
@@ -46,11 +47,13 @@ export default function Login({navigation}) {
   const [showOtpInput, setShowOtpInput] = React.useState(false);
   const [isLoad, setLoad] = React.useState(false);
   const [isRegister, setIsRegister] = React.useState(false);
+  const [toggleDropDownDepartment, setToggleDropDownDepartment] =
+    React.useState(false);
   const [emailValue, setEmailValue] = React.useState('');
   const [userNameValue, setUserNameValue] = React.useState('');
+  const [departmentValue, setDepartmentValue] = React.useState('');
   const [otpValue, setOtpValue] = React.useState('');
   const [txtButtonLogin, setTxtButtonLogin] = React.useState('GET OTP');
-  const [isLoadSlider, setLoadSlider] = React.useState(false);
 
   const refEmail = React.useRef(null);
   const refUserName = React.useRef(null);
@@ -70,16 +73,17 @@ export default function Login({navigation}) {
   const handleChangeInputUserName = value => {
     setUserNameValue(value);
   };
+  const handleChangeDepartment = value => {
+    setDepartmentValue(value);
+  };
 
   const onPressRegister = async () => {
     const checkEmail = emailPerm(emailValue);
     if (!checkEmail) {
       ToastShow({
         type: TYPE_TOAST.ERROR,
-        propsMessage: {
+        props: {
           message: 'Email không hợp lệ vui lòng thử lại!',
-          action: 'GET OTP LOGIN',
-          pathFile: 'components/screen/Login/Login.js',
         },
       });
       refEmail.current.focus();
@@ -88,6 +92,7 @@ export default function Login({navigation}) {
       AUTH_REGISTER({
         email: emailValue,
         username: userNameValue,
+        department: departmentValue,
         setTxtButtonLogin,
         setShowOtpInput,
         setIsRegister,
@@ -101,10 +106,8 @@ export default function Login({navigation}) {
     if (!checkEmail) {
       ToastShow({
         type: TYPE_TOAST.ERROR,
-        propsMessage: {
+        props: {
           message: 'Email không hợp lệ vui lòng thử lại!',
-          action: 'GET OTP LOGIN',
-          pathFile: 'components/screen/Login/Login.js',
         },
       });
       refEmail.current.focus();
@@ -123,10 +126,8 @@ export default function Login({navigation}) {
     if (otpValue.length === 6) {
       ToastShow({
         type: TYPE_TOAST.INFO,
-        propsMessage: {
+        props: {
           message: 'Vui lòng đợi, chúng tôi đang kiểm tra...',
-          action: 'SENDING OTP LOGIN',
-          pathFile: 'components/screen/Login/Login.js',
         },
       });
       setTxtButtonLogin(<ActivityIndicator size={12} color="#fff" />);
@@ -145,10 +146,8 @@ export default function Login({navigation}) {
     } else {
       ToastShow({
         type: TYPE_TOAST.ERROR,
-        propsMessage: {
+        props: {
           message: 'Mã OTP không hợp lệ!',
-          action: 'SENDING OTP LOGIN',
-          pathFile: 'components/screen/Login/Login.js',
         },
       });
     }
@@ -161,10 +160,8 @@ export default function Login({navigation}) {
   const handleShowToast = action => {
     ToastShow({
       type: TYPE_TOAST.INFO,
-      propsMessage: {
+      props: {
         message: 'Coming soon!',
-        action: action,
-        pathFile: 'components/screen/Login/Login.js',
       },
     });
   };
@@ -173,10 +170,8 @@ export default function Login({navigation}) {
     if (!emailValue) {
       ToastShow({
         type: TYPE_TOAST.INFO,
-        propsMessage: {
+        props: {
           message: 'Vui lòng nhập email trước khi nhập mã OTP',
-          action: 'RESEND OTP LOGIN',
-          pathFile: 'components/screen/Login/Login.js',
         },
       });
     } else {
@@ -184,10 +179,8 @@ export default function Login({navigation}) {
       if (!checkEmail) {
         ToastShow({
           type: TYPE_TOAST.ERROR,
-          propsMessage: {
+          props: {
             message: 'Email không hợp lệ vui lòng thử lại!',
-            action: 'RESEND OTP LOGIN',
-            pathFile: 'components/screen/Login/Login.js',
           },
         });
         setShowOtpInput(false);
@@ -271,7 +264,7 @@ export default function Login({navigation}) {
                             'p-2 w-full',
                             showOtpInput && 'text-gray-400',
                           )}
-                          outlinedStyle={tw`border-0 border-b-[1px] rounded-none w-[90%]`}
+                          outlinedStyle={tw`border-0 border-b-[1px] rounded-none w-[88%]`}
                           onChange={val => handleChangeInputUserName(val)}
                           keyboardType="default"
                           returnKeyType="next"
@@ -297,8 +290,10 @@ export default function Login({navigation}) {
                           'p-2 w-full',
                           showOtpInput && 'text-gray-400',
                         )}
-                        outlinedStyle={tw`border-0 border-b-[1px] rounded-none w-[90%]`}
-                        onChange={val => handleChangeInputEmail(val)}
+                        outlinedStyle={tw`border-0 border-b-[1px] rounded-none w-[88%]`}
+                        onChange={val =>
+                          handleChangeInputEmail(val?.toLowerCase())
+                        }
                         keyboardType="email-address"
                         returnKeyType="next"
                         autoCorrect={false}
@@ -307,6 +302,22 @@ export default function Login({navigation}) {
                         ref={refEmail}
                       />
                     </View>
+
+                    {isRegister && (
+                      <View style={tw.style('w-[80%] mt-5')}>
+                        <CustomSelectCP
+                          dataList={DATA_DEPARTMENT}
+                          placeholder="Chọn phòng ban"
+                          toggleDropDown={toggleDropDownDepartment}
+                          setToggleDropDown={setToggleDropDownDepartment}
+                          selectList={[departmentValue]}
+                          onSelectValue={val => handleChangeDepartment(val)}
+                          isQuantityInitData
+                          quantityDataInit={10}
+                          styleContainer={tw.style('mb-0')}
+                        />
+                      </View>
+                    )}
 
                     {showOtpInput ? (
                       <View style={tw`mt-5 w-[80%]`}>

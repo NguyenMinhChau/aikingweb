@@ -53,6 +53,12 @@ export const CARD_DATA = role => {
             iconName: 'person-add-outline',
             router: SCREEN_NAVIGATE.Employee_List_Screen,
           },
+          {
+            id: 7,
+            title: 'Push notification',
+            category: 'Admin',
+            iconName: 'megaphone-outline',
+          },
         ]
       : []),
   ];

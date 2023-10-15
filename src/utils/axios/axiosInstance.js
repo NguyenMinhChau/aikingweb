@@ -28,10 +28,8 @@ axiosInstance.interceptors.request.use(
     } else {
       ToastShow({
         type: TYPE_TOAST.ERROR,
-        propsMessage: {
+        props: {
           message: 'Hết phiên đăng nhập. Vui lòng đăng xuất và đăng nhập lại!',
-          action: 'axiosInstance',
-          pathFile: 'utils/axios/axiosInstance.js',
         },
       });
     }

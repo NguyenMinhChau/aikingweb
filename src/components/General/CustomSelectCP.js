@@ -21,6 +21,7 @@ const CustomSelectCP = ({
   isQuantityInitData = false,
   quantityDataInit = 10,
   NUMBER_SPLICE = 13,
+  styleContainer,
 }) => {
   const [searchText, setSearchText] = useState('');
   const [msg, setMsg] = useState('');
@@ -104,7 +105,10 @@ const CustomSelectCP = ({
 
   return (
     <>
-      <View style={tw`w-full flex-1 min-h-[45px] mb-2`}>
+      <View
+        style={tw.style(`w-full flex-1 min-h-[45px] mb-2`, {
+          ...styleContainer,
+        })}>
         <View
           style={tw`w-full px-3 pr-[13px] h-full rounded-lg border border-gray-300 justify-between items-center flex-row`}>
           {toggleDropDown && (

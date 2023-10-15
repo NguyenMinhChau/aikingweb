@@ -30,8 +30,8 @@ import TextInputCP from '../../General/TextInputCP';
 import {TYPE_TOAST} from '../../../utils/toast.config';
 import {ToastShow} from '../../../utils/Toast';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {TYPE_ACCESS, requestPermission} from '../../../utils/MgnAccess/config';
 import BannerNestedScreen from '../../General/BannerNestedScreen';
+import useAppPermission from '../../../utils/MgnAccess/config';
 
 const MAX_IMAGES = 1;
 
@@ -41,6 +41,7 @@ export default function PlanDetailScreen({navigation, route}) {
   const {currentUser} = state.set_data;
   const {submitting} = state.set_toggle;
   const {role} = {...currentUser?.user};
+  const {checkPermission, TYPE_ACCESS} = useAppPermission();
   const {data} = route.params;
   const {
     _id,
@@ -101,7 +102,7 @@ export default function PlanDetailScreen({navigation, route}) {
       includeBase64: true,
       quality: 1,
     };
-    await requestPermission(TYPE_ACCESS.CAMERA);
+    checkPermission(TYPE_ACCESS.CAMERA);
     await launchCamera(options, response => {
       if (response.didCancel) {
         console.log('User cancelled camera');
@@ -116,16 +117,6 @@ export default function PlanDetailScreen({navigation, route}) {
           };
           handleChangePlan('image64', `data:image/png;base64,${image.base64}}`);
           setSelectedImages(body);
-        } else {
-          ToastShow({
-            type: TYPE_TOAST.ERROR,
-            propsMessage: {
-              message: 'Đã xảy ra vấn đề khi mở thiết bị chụp ảnh!',
-              action: 'handleTakePhoto',
-              pathFile:
-                'components/screen/ImageProcessing/PhotoSelectionPage.js',
-            },
-          });
         }
       }
     });
@@ -190,7 +181,7 @@ export default function PlanDetailScreen({navigation, route}) {
             contentContainerStyle={tw.style('p-3 flex-grow bg-white')}>
             <ImageBackground
               source={{uri: `${URL_SERVER}${image}`}}
-              resizeMode="cover"
+              resizeMode="stretch"
               style={tw.style('w-full h-[300px] rounded-md overflow-hidden')}
             />
             <View style={tw.style('flex-col')}>

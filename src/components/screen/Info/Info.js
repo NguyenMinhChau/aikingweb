@@ -20,10 +20,12 @@ import {
   launchImageLibraryUtils,
 } from '../../../utils/file.utils';
 import {optionsImageLibrary, optionsLaunchCamera} from './config';
+import useAppPermission from '../../../utils/MgnAccess/config';
 
 export default function InfoScreen({navigation}) {
   const {state, dispatch} = useAppContext();
   const {refreshing, onRefresh} = useRefreshList();
+  const {checkPermission, TYPE_ACCESS} = useAppPermission();
   const {currentUser} = state.set_data;
   const {file_single} = state.set_data.file;
   const [isVisible, setIsVisible] = React.useState(false);
@@ -98,7 +100,10 @@ export default function InfoScreen({navigation}) {
           <RowDialogCP
             label="Mã NV"
             noneBorderBottom
-            value={_id}
+            value={
+              _id?.slice(_id?.length - 10, _id?.length)?.toUpperCase() ||
+              EMPTY_CHAR
+            }
             styleLabel={tw`font-medium`}
             noBullet
           />
@@ -124,9 +129,10 @@ export default function InfoScreen({navigation}) {
             styleLabel={tw`font-medium`}
             styleRow={tw.style('py-3')}
             leftNameIcon={'camera-outline'}
-            onClickAccord={() =>
-              launchCameraUtils(optionsLaunchCamera, handleChangePhoto)
-            }
+            onClickAccord={() => {
+              checkPermission(TYPE_ACCESS.CAMERA, false);
+              launchCameraUtils(optionsLaunchCamera, handleChangePhoto);
+            }}
             noValue
           />
         </View>

@@ -35,7 +35,7 @@ import {URL_SERVER} from '@env';
 import {fList} from '../../../utils/array.utils';
 import {useRefreshList} from '../../../utils/refreshList.utils';
 import FastImageCP from '../../General/FastImageCP';
-import {TYPE_ACCESS, requestPermission} from '../../../utils/MgnAccess/config';
+import useAppPermission from '../../../utils/MgnAccess/config';
 
 const MAX_IMAGES = 1;
 
@@ -45,6 +45,7 @@ export default function PlanCP({navigation}) {
   const {list_post_plan} = state.set_data.admin;
   const {search, currentUser} = state.set_data;
   const {submitting} = state.set_toggle;
+  const {checkPermission, TYPE_ACCESS} = useAppPermission();
 
   const {role} = {...currentUser?.user};
 
@@ -73,7 +74,7 @@ export default function PlanCP({navigation}) {
         <View style={tw.style('flex-row items-start gap-2')}>
           <Image
             source={{uri: `${URL_SERVER}${item?.image}`}}
-            resizeMode="contain"
+            resizeMode="stretch"
             style={tw.style('rounded-lg  w-[100px] h-[100px]')}
           />
           <View style={tw.style('flex-col flex-1 w-1')}>
@@ -95,7 +96,8 @@ export default function PlanCP({navigation}) {
               </Text>
             </View>
             <Text style={tw.style('text-black py-2 text-[14px]')}>
-              {item?.content}
+              {item?.content?.slice(0, 50)}{' '}
+              {item?.content?.length > 50 ? '...' : ''}
             </Text>
             <TouchableOpacity
               activeOpacity={0.8}
@@ -155,7 +157,7 @@ export default function PlanCP({navigation}) {
       includeBase64: true,
       quality: 1,
     };
-    await requestPermission(TYPE_ACCESS.CAMERA);
+    checkPermission(TYPE_ACCESS.CAMERA, false);
     await launchCamera(options, response => {
       if (response.didCancel) {
         console.log('User cancelled camera');
@@ -171,16 +173,6 @@ export default function PlanCP({navigation}) {
           handleChangePlan('image64', `data:image/png;base64,${image.base64}}`);
           setSelectedImages(body);
           setProgress(true);
-        } else {
-          ToastShow({
-            type: TYPE_TOAST.ERROR,
-            propsMessage: {
-              message: 'Đã xảy ra vấn đề khi mở thiết bị chụp ảnh!',
-              action: 'handleTakePhoto',
-              pathFile:
-                'components/screen/ImageProcessing/PhotoSelectionPage.js',
-            },
-          });
         }
       }
     });

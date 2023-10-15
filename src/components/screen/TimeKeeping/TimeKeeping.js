@@ -48,7 +48,7 @@ import {IconCP} from '../../../utils/icon.utils';
 import TextInputCP from '../../General/TextInputCP';
 import LoadingScreen from '../../General/LoadingScreen';
 import FastImageCP from '../../General/FastImageCP';
-import {TYPE_ACCESS, requestPermission} from '../../../utils/MgnAccess/config';
+import useAppPermission from '../../../utils/MgnAccess/config';
 
 const MAX_IMAGES = 1;
 
@@ -69,6 +69,7 @@ export default function TimeKeepingScreen({navigation}) {
   const contentMessageRef = React.useRef(null);
   const {LayoutAnimationConfig, ANIMATION_TYPE, ANIMATION_PROPERTY} =
     useLayoutAnimation();
+  const {checkPermission, TYPE_ACCESS} = useAppPermission();
   const {width} = useWindowDimensions();
 
   const isCheckTimeOut = React.useMemo(() => {
@@ -153,7 +154,7 @@ export default function TimeKeepingScreen({navigation}) {
           if (!isCheckTimeOut || !isCheckTimeIn) {
             ToastShow({
               type: TYPE_TOAST.ERROR,
-              propsMessage: {
+              props: {
                 message: `Chưa đến giờ ${item?.notify}`,
               },
             });
@@ -162,12 +163,10 @@ export default function TimeKeepingScreen({navigation}) {
             handleChangeChat('action', item?.value);
             ToastShow({
               type: TYPE_TOAST.INFO,
-              propsMessage: {
+              props: {
                 message: `Mời bạn tải hoặc chụp ảnh để ${
                   item?.value === '/vao' ? 'check in' : 'check out'
                 }`,
-                action: 'RenderMenuItem',
-                pathFile: 'components/screen/TimeKeeping/TimeKeeping.js',
               },
             });
           }
@@ -420,7 +419,7 @@ export default function TimeKeepingScreen({navigation}) {
       includeBase64: true,
       quality: 1,
     };
-    await requestPermission(TYPE_ACCESS.CAMERA);
+    checkPermission(TYPE_ACCESS.CAMERA, false);
     await launchCamera(options, response => {
       if (response.didCancel) {
         console.log('User cancelled camera');
@@ -440,16 +439,6 @@ export default function TimeKeepingScreen({navigation}) {
           } else {
             CallAPICheckOut(body);
           }
-        } else {
-          ToastShow({
-            type: TYPE_TOAST.ERROR,
-            propsMessage: {
-              message: 'Đã xảy ra vấn đề khi mở thiết bị chụp ảnh!',
-              action: 'handleTakePhoto',
-              pathFile:
-                'components/screen/ImageProcessing/PhotoSelectionPage.js',
-            },
-          });
         }
       }
     });
@@ -485,7 +474,7 @@ export default function TimeKeepingScreen({navigation}) {
     if (!kiemTraDinhDangYYY_DD(monthSalary)) {
       ToastShow({
         type: TYPE_TOAST.ERROR,
-        propsMessage: {
+        props: {
           message: 'Định dạng tháng không đúng!',
         },
       });

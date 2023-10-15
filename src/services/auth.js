@@ -9,6 +9,7 @@ import {
   setAsyncCacheAccessToken,
   setAsyncCacheCurrentUser,
 } from '../utils/cache.services';
+import {getTokenDevice} from '../utils/notification.utils';
 import {TYPE_TOAST} from '../utils/toast.config';
 import {errorMessage, processToken} from './jwt';
 
@@ -17,6 +18,7 @@ export const AUTH_REGISTER = async (props = {}) => {
   const {
     email,
     username,
+    department,
     setTxtButtonLogin,
     setShowOtpInput,
     setLoad,
@@ -26,6 +28,7 @@ export const AUTH_REGISTER = async (props = {}) => {
     const resPost = await axiosPostNoToken(`auth/register`, {
       email: email,
       name: username,
+      group: department,
     });
     setTxtButtonLogin('SENDING OTP');
     setShowOtpInput(true);
@@ -33,10 +36,8 @@ export const AUTH_REGISTER = async (props = {}) => {
     setIsRegister(false);
     ToastShow({
       type: TYPE_TOAST.INFO,
-      propsMessage: {
+      props: {
         message: 'Đã gửi OTP về email, vui lòng kiểm tra email của bạn!',
-        action: 'AUTH_REGISTER',
-        pathFile: 'services/auth.js',
       },
     });
   } catch (error) {
@@ -49,10 +50,8 @@ export const AUTH_REGISTER = async (props = {}) => {
     setLoad(false);
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'AUTH_REGISTER',
-        pathFile: 'services/auth.js',
       },
     });
   }
@@ -69,10 +68,8 @@ export const AUTH_SEND_OTP_CODE = async (props = {}) => {
     setLoad(false);
     ToastShow({
       type: TYPE_TOAST.INFO,
-      propsMessage: {
+      props: {
         message: 'Đã gửi OTP về email, vui lòng kiểm tra email của bạn!',
-        action: 'AUTH_SEND_OTP_CODE',
-        pathFile: 'services/auth.js',
       },
     });
   } catch (error) {
@@ -85,10 +82,8 @@ export const AUTH_SEND_OTP_CODE = async (props = {}) => {
     setLoad(false);
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'AUTH_SEND_OTP_CODE',
-        pathFile: 'services/auth.js',
       },
     });
   }
@@ -107,9 +102,11 @@ export const AUTH_VERIFY_OTP_CODE = async (props = {}) => {
     navigation,
   } = props;
   try {
+    const deviceToken = await getTokenDevice();
     const resPost = await axiosPostNoToken(`auth/login/`, {
       email: email,
       otp: otpCode,
+      deviceToken: deviceToken,
     });
     setTxtButtonLogin('GET OTP');
     setShowOtpInput(false);
@@ -124,10 +121,8 @@ export const AUTH_VERIFY_OTP_CODE = async (props = {}) => {
     setTimeout(() => {
       ToastShow({
         type: TYPE_TOAST.INFO,
-        propsMessage: {
+        props: {
           message: 'Đăng nhập thành công',
-          action: 'AUTH_VERIFY_OTP_CODE',
-          pathFile: 'services/auth.js',
         },
       });
       setLoad(false);
@@ -142,10 +137,8 @@ export const AUTH_VERIFY_OTP_CODE = async (props = {}) => {
     setTxtButtonLogin('SENDING OTP');
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'AUTH_VERIFY_OTP_CODE',
-        pathFile: 'services/auth.js',
       },
     });
   }
@@ -166,10 +159,8 @@ export const AUTH_LOGOUT = async (props = {}) => {
       errorMessage(error);
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'AUTH_LOGOUT',
-        pathFile: 'services/auth.js',
       },
     });
   }
@@ -189,10 +180,8 @@ export const AUTH_RETRIEVE = async (props = {}) => {
       errorMessage(error);
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'AUTH_RETRIEVE',
-        pathFile: 'services/auth.js',
       },
     });
   }
@@ -208,10 +197,8 @@ export const AUTH_BY_TOKEN = async (props = {}) => {
 
     ToastShow({
       type: TYPE_TOAST.SUCCESS,
-      propsMessage: {
+      props: {
         message: 'Đăng nhập thành công',
-        action: 'AUTH_BY_TOKEN',
-        pathFile: 'services/auth.js',
       },
     });
 
@@ -223,10 +210,8 @@ export const AUTH_BY_TOKEN = async (props = {}) => {
       errorMessage(error);
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'AUTH_BY_TOKEN',
-        pathFile: 'services/auth.js',
       },
     });
   }

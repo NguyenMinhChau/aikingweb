@@ -6,10 +6,8 @@ export const onCopyToClipboard = text => {
   Clipboard.setString(text);
   ToastShow({
     type: TYPE_TOAST.SUCCESS,
-    propsMessage: {
+    props: {
       message: 'Đã copy vào clipboard',
-      action: 'onCopyToClipboard',
-      pathFile: 'utils/copy.clipboard.js',
     },
   });
 };

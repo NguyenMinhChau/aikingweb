@@ -37,10 +37,8 @@ const handleTokenExpired = (exp, navigation, dispatch) => {
   expiredTimer = setTimeout(() => {
     ToastShow({
       type: TYPE_TOAST.WARNING,
-      propsMessage: {
+      props: {
         message: 'Hết phiên đăng nhập!',
-        action: 'handleTokenExpired',
-        pathFile: 'services/jwt.js',
       },
     });
 
@@ -100,10 +98,8 @@ const processToken = async (
     // const msg = error?.errors?.message || errorMessage(error);
     // ToastShow({
     //   type: TYPE_TOAST.ERROR,
-    //   propsMessage: {
+    //   props: {
     //     message: msg,
-    //     action: 'processToken',
-    //     pathFile: 'services/jwt.js',
     //   },
     // });
   }

@@ -28,10 +28,8 @@ export const GET_LIST_TIME_KEEPING_BY_MONTH_CURRENT = async (props = {}) => {
       errorMessage(error);
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'GET_LIST_TIME_KEEPING_BY_MONTH_CURRENT',
-        pathFile: 'services/time_keeping.js',
       },
     });
   }
@@ -46,10 +44,8 @@ export const CHECK_IN = async (props = {}) => {
     await GET_LIST_TIME_KEEPING_BY_MONTH_CURRENT({idUser, dispatch, state});
     ToastShow({
       type: TYPE_TOAST.SUCCESS,
-      propsMessage: {
+      props: {
         message: 'Checkin thành công',
-        action: 'CHECK_IN',
-        pathFile: 'services/time_keeping.js',
       },
     });
   } catch (error) {
@@ -62,10 +58,8 @@ export const CHECK_IN = async (props = {}) => {
     await GET_LIST_TIME_KEEPING_BY_MONTH_CURRENT({idUser, dispatch, state});
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'CHECK_IN',
-        pathFile: 'services/time_keeping.js',
       },
     });
   }
@@ -80,10 +74,8 @@ export const CHECK_OUT = async (props = {}) => {
     await GET_LIST_TIME_KEEPING_BY_MONTH_CURRENT({idUser, dispatch, state});
     ToastShow({
       type: TYPE_TOAST.SUCCESS,
-      propsMessage: {
+      props: {
         message: 'CheckOut thành công',
-        action: 'CHECK_OUT',
-        pathFile: 'services/time_keeping.js',
       },
     });
   } catch (error) {
@@ -96,10 +88,8 @@ export const CHECK_OUT = async (props = {}) => {
     await GET_LIST_TIME_KEEPING_BY_MONTH_CURRENT({idUser, dispatch, state});
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'CHECK_OUT',
-        pathFile: 'services/time_keeping.js',
       },
     });
   }
@@ -143,10 +133,8 @@ export const GET_LIST_TIME_KEEPING_BY_MONTH_CHOOSE = async (props = {}) => {
     dispatch(SET_DATA_PAYLOAD({key: 'month', value: ''}));
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'GET_LIST_TIME_KEEPING_BY_MONTH_CHOOSE',
-        pathFile: 'services/time_keeping.js',
       },
     });
   }

@@ -40,10 +40,8 @@ export const GET_LIST_USER = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'GET_LIST_USER',
-        pathFile: 'services/admin.js',
       },
     });
   }
@@ -84,10 +82,8 @@ export const GET_LIST_USER_BY_GROUP = async (props = {}) => {
     );
     // ToastShow({
     //   type: TYPE_TOAST.ERROR,
-    //   propsMessage: {
+    //   props: {
     //     message: msg,
-    //     action: 'GET_LIST_USER_BY_GROUP',
-    //     pathFile: 'services/admin.js',
     //   },
     // });
   }
@@ -125,10 +121,8 @@ export const GET_LIST_USER_TIME_KEEPING = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'GET_LIST_USER_TIME_KEEPING',
-        pathFile: 'services/admin.js',
       },
     });
   }
@@ -150,10 +144,8 @@ export const UPDATE_TIME_KEEPING_STATUS = async (props = {}) => {
     GET_LIST_USER_TIME_KEEPING({dispatch, state});
     ToastShow({
       type: TYPE_TOAST.SUCCESS,
-      propsMessage: {
+      props: {
         message: 'Thao tác thành công',
-        action: 'UPDATE_TIME_KEEPING_STATUS',
-        pathFile: 'services/admin.js',
       },
     });
   } catch (error) {
@@ -169,10 +161,8 @@ export const UPDATE_TIME_KEEPING_STATUS = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'UPDATE_TIME_KEEPING_STATUS',
-        pathFile: 'services/admin.js',
       },
     });
   }
@@ -202,10 +192,8 @@ export const UPDATE_WAGE_EMPLOYEE = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.SUCCESS,
-      propsMessage: {
+      props: {
         message: 'Thao tác thành công',
-        action: 'UPDATE_WAGE_EMPLOYEE',
-        pathFile: 'services/admin.js',
       },
     });
     GET_LIST_USER({dispatch, state});
@@ -222,10 +210,8 @@ export const UPDATE_WAGE_EMPLOYEE = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'UPDATE_WAGE_EMPLOYEE',
-        pathFile: 'services/admin.js',
       },
     });
   }
@@ -260,10 +246,8 @@ export const TIME_KEEPING_COMPENSATE = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.SUCCESS,
-      propsMessage: {
+      props: {
         message: 'Thao tác thành công',
-        action: 'TIME_KEEPING_COMPENSATE',
-        pathFile: 'services/admin.js',
       },
     });
   } catch (error) {
@@ -279,10 +263,8 @@ export const TIME_KEEPING_COMPENSATE = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'TIME_KEEPING_COMPENSATE',
-        pathFile: 'services/admin.js',
       },
     });
   }
@@ -320,10 +302,8 @@ export const GET_LIST_POST_PLAN = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'GET_LIST_POST_PLAN',
-        pathFile: 'services/admin.js',
       },
     });
   }
@@ -342,10 +322,8 @@ export const CREATE_NEW_PLAN = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.SUCCESS,
-      propsMessage: {
+      props: {
         message: 'Thao tác thành công',
-        action: 'CREATE_NEW_PLAN',
-        pathFile: 'services/admin.js',
       },
     });
     GET_LIST_POST_PLAN({state, dispatch});
@@ -362,10 +340,8 @@ export const CREATE_NEW_PLAN = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'CREATE_NEW_PLAN',
-        pathFile: 'services/admin.js',
       },
     });
   }
@@ -385,10 +361,8 @@ export const UPDATE_PLAN = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.SUCCESS,
-      propsMessage: {
+      props: {
         message: 'Thao tác thành công',
-        action: 'UPDATE_PLAN',
-        pathFile: 'services/admin.js',
       },
     });
     GET_LIST_POST_PLAN({dispatch, state});
@@ -406,10 +380,8 @@ export const UPDATE_PLAN = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'UPDATE_PLAN',
-        pathFile: 'services/admin.js',
       },
     });
   }
@@ -428,10 +400,8 @@ export const DELETE_PLAN = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.SUCCESS,
-      propsMessage: {
+      props: {
         message: 'Thao tác thành công',
-        action: 'DELETE_PLAN',
-        pathFile: 'services/admin.js',
       },
     });
     navigation.navigate(SCREEN_NAVIGATE.Plan_Screen);
@@ -448,10 +418,8 @@ export const DELETE_PLAN = async (props = {}) => {
     );
     ToastShow({
       type: TYPE_TOAST.ERROR,
-      propsMessage: {
+      props: {
         message: msg,
-        action: 'DELETE_PLAN',
-        pathFile: 'services/admin.js',
       },
     });
   }

@@ -1,4 +1,5 @@
 import {AppRegistry, LogBox} from 'react-native';
+import messaging from '@react-native-firebase/messaging';
 import App from './App';
 import {name as appName} from './app.json';
 
@@ -18,8 +19,10 @@ if (__DEV__) {
   };
 }
 
-// Removed the following line, as it is not necessary here:
-// AppRegistry.registerComponent('inasMobile', () => InasMobile);
+// Register background handler
+messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage);
+});
 
 AppRegistry.registerComponent(appName, () => App);
 LogBox.ignoreLogs(['Remote debugger']);

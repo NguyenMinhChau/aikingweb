@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "105570699577",
+    "project_id": "aiking-timekeeping",
+    "storage_bucket": "aiking-timekeeping.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105570699577:android:fb3bd8d3b15d40013f80e8",
+        "android_client_info": {
+          "package_name": "com.aiking_timekeeping"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4N1dIYHWZJUVi4wKLZgUDzaYxjT5K07k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

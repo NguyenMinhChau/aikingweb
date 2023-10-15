@@ -32,6 +32,8 @@ import {
   PRIMARY_COLOR,
 } from '../styles/colors.global';
 import LoaderGifCP from './LoaderApp/LoaderGif';
+import Toast from 'react-native-toast-message';
+import {toastConfig} from '../utils/toast.config';
 
 export default function Main() {
   const {dispatch, state} = useAppContext();
@@ -169,6 +171,7 @@ export default function Main() {
                 </ScrollView>
               </DialogCP>
             </SafeAreaView>
+            <Toast config={toastConfig()} />
           </>
         )}
       </PaperProvider>
